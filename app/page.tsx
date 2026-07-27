@@ -118,15 +118,7 @@ export default function Home() {
       </section>
 
       <section className="contact" id="contact">
-        <div><p className="section-label">06 / Contact</p><h2>Begin a conversation.</h2><p>For research collaboration inquiries, sponsored project discussions, or network information, contact the Clarion coordinating team.</p><div className="contact-person"><strong>Hua Xu</strong><a href="mailto:hua.xu@yale.edu">hua.xu@yale.edu</a><strong>Vipina Kuttichikeloth</strong><a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a></div></div>
-        <form>
-          <label>Full name<input name="name" autoComplete="name" placeholder="Your name" /></label>
-          <label>Institution or organization<input name="organization" autoComplete="organization" placeholder="Institution or organization" /></label>
-          <label>Email address<input name="email" type="email" autoComplete="email" placeholder="name@institution.edu" /></label>
-          <label>Inquiry<textarea name="inquiry" rows={4} placeholder="Please briefly describe your inquiry." /></label>
-          <button className="button button-primary" type="button">Send inquiry <Arrow /></button>
-          <p className="form-note">This demonstration form does not transmit information. A secure institutional endpoint will be configured before launch.</p>
-        </form>
+        <div><p className="section-label">06 / Contact</p><h2>Begin a conversation.</h2><p>For research collaboration inquiries, sponsored project discussions, or network information, contact the Clarion coordinating team.</p><div className="contact-person"><strong>Vipina K. Keloth, PhD</strong><a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a><strong>Hua Xu, PhD</strong><a href="mailto:hua.xu@yale.edu">hua.xu@yale.edu</a></div></div>
       </section>
 
       <footer><a className="wordmark" href="#top">CLARION</a><p>Collaborative oncology research infrastructure.</p><span>© {new Date().getFullYear()} Clarion</span></footer>

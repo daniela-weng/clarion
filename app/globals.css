@@ -12,3 +12,5 @@
 .contact-person { display:grid; gap:.3rem; margin-top:2rem; padding-top:1.2rem; border-top:1px solid var(--line); font-size:.9rem; }
 .contact-person strong { font-family:Georgia,serif; font-size:1.2rem; font-weight:400; }
 .contact-person a { color:var(--teal); font-size:.82rem; }
+.contact { display:block; }
+.contact-person { max-width:500px; }
