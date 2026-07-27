@@ -118,7 +118,7 @@ export default function Home() {
       </section>
 
       <section className="contact" id="contact">
-        <div><p className="section-label">06 / Contact</p><h2>Begin a conversation.</h2><p>For research collaboration inquiries, sponsored project discussions, or network information, contact the Clarion coordinating team.</p><div className="contact-person"><strong>Hua Xu</strong><a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a></div></div>
+        <div><p className="section-label">06 / Contact</p><h2>Begin a conversation.</h2><p>For research collaboration inquiries, sponsored project discussions, or network information, contact the Clarion coordinating team.</p><div className="contact-person"><strong>Hua Xu</strong><a href="mailto:hua.xu@yale.edu">hua.xu@yale.edu</a><strong>Vipina Kuttichikeloth</strong><a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a></div></div>
         <form>
           <label>Full name<input name="name" autoComplete="name" placeholder="Your name" /></label>
           <label>Institution or organization<input name="organization" autoComplete="organization" placeholder="Institution or organization" /></label>
