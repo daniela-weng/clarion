@@ -118,13 +118,13 @@ export default function Home() {
       </section>
 
       <section className="contact" id="contact">
-        <div><p className="section-label">06 / Contact</p><h2>Begin a conversation.</h2><p>For research collaboration inquiries, sponsored project discussions, or network information, contact the Clarion coordinating team.</p></div>
-        <form onSubmit={(event) => event.preventDefault()}>
+        <div><p className="section-label">06 / Contact</p><h2>Begin a conversation.</h2><p>For research collaboration inquiries, sponsored project discussions, or network information, contact the Clarion coordinating team.</p><div className="contact-person"><strong>Hua Xu</strong><a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a></div></div>
+        <form>
           <label>Full name<input name="name" autoComplete="name" placeholder="Your name" /></label>
           <label>Institution or organization<input name="organization" autoComplete="organization" placeholder="Institution or organization" /></label>
           <label>Email address<input name="email" type="email" autoComplete="email" placeholder="name@institution.edu" /></label>
           <label>Inquiry<textarea name="inquiry" rows={4} placeholder="Please briefly describe your inquiry." /></label>
-          <button className="button button-primary" type="submit">Send inquiry <Arrow /></button>
+          <button className="button button-primary" type="button">Send inquiry <Arrow /></button>
           <p className="form-note">This demonstration form does not transmit information. A secure institutional endpoint will be configured before launch.</p>
         </form>
       </section>
