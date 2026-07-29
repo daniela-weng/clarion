@@ -1,5 +1,14 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Arrow } from "./components/Arrow";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const sectionCards = [
   { href: "/about", label: "About", teaser: "Mission, introduction, and the network's core principles." },
@@ -22,7 +31,9 @@ export default function Home() {
               record data to accelerate real-world evidence generation in oncology research.
             </p>
             <div className="hero-actions">
-              <Link className="button button-primary" href="/about">Explore the network <Arrow /></Link>
+              <Button asChild size="lg" className="clarion-button">
+                <Link href="/about">Explore the network <ArrowUpRight data-icon="inline-end" /></Link>
+              </Button>
               <Link className="text-link" href="/contact">Contact the coordinating team <Arrow /></Link>
             </div>
           </div>
@@ -71,10 +82,16 @@ export default function Home() {
         <div className="section-heading"><p className="section-label">Explore</p><h2 id="explore-title">Explore the network.</h2></div>
         <div className="nav-cards">
           {sectionCards.map((card) => (
-            <Link key={card.href} href={card.href} className="nav-card">
-              <h3>{card.label} <Arrow /></h3>
-              <p>{card.teaser}</p>
-            </Link>
+            <Card key={card.href} className="nav-card" size="sm">
+              <CardHeader>
+                <CardTitle className="font-serif text-2xl font-normal tracking-[-.02em]">
+                  <Link href={card.href} className="card-link">{card.label} <ArrowUpRight aria-hidden="true" /></Link>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{card.teaser}</CardDescription>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
@@ -87,7 +104,9 @@ export default function Home() {
           </div>
           <div className="prose">
             <p>For sponsored project discussions, membership information, or research collaboration, contact the Clarion coordinating team at Yale University.</p>
-            <Link className="button button-dark" href="/contact">Contact the team <Arrow /></Link>
+            <Button asChild variant="secondary" size="lg" className="clarion-button clarion-button-light">
+              <Link href="/contact">Contact the team <ArrowUpRight data-icon="inline-end" /></Link>
+            </Button>
           </div>
         </div>
       </section>
