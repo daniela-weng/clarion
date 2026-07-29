@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { Arrow } from "./components/Arrow";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,104 +8,224 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { academicMembers } from "./content";
 
-const sectionCards = [
-  { href: "/about", label: "About", teaser: "Mission, introduction, and the network's core principles." },
-  { href: "/network", label: "Network", teaser: "Coordinating center, academic and industry members, and participating institutions." },
-  { href: "/governance", label: "Governance & Data", teaser: "Oversight committees, data protection, and network policies." },
-  { href: "/sponsored-research", label: "Sponsored Research", teaser: "Proposal eligibility, data-sharing policy, and the federated analysis workflow." },
+const researchAreas = [
+  {
+    href: "/network",
+    number: "01",
+    label: "The network",
+    teaser:
+      "Participating institutions, defined member roles, and Yale’s coordinating responsibilities.",
+  },
+  {
+    href: "/governance",
+    number: "02",
+    label: "Governance & data",
+    teaser:
+      "Shared oversight, privacy protections, and policies for responsible multi-institutional research.",
+  },
+  {
+    href: "/sponsored-research",
+    number: "03",
+    label: "Sponsored research",
+    teaser:
+      "Proposal review, feasibility assessment, and coordinated execution across approved member sites.",
+  },
+];
+
+const modelSteps = [
+  {
+    number: "01",
+    title: "Data remain local",
+    text: "Structured and unstructured EHR data stay within each institution’s secure environment.",
+  },
+  {
+    number: "02",
+    title: "Analyses run on site",
+    text: "Approved, standards-conforming workflows execute under local institutional oversight.",
+  },
+  {
+    number: "03",
+    title: "Results are synthesized",
+    text: "Only approved aggregate outputs return to the Coordinating Center for synthesis.",
+  },
 ];
 
 export default function Home() {
   return (
-    <main id="main-content">
-      <section className="hero charter-hero">
-        <div className="hero-main">
-          <div className="hero-lead">
-            <div className="eyebrow">Collaborative oncology research network</div>
-            <h1>Real-world evidence<br /><em>in oncology.</em></h1>
-            <p className="hero-copy">
-              Clarion is a collaborative data network of academic institutions and healthcare systems,
-              coordinated by Yale University, that uses structured and unstructured electronic health
-              record data to accelerate real-world evidence generation in oncology research.
+    <main id="main-content" className="home-page">
+      <section className="home-hero">
+        <div className="home-shell home-hero-grid">
+          <div className="home-hero-copy">
+            <p className="home-kicker">Collaborative oncology research network</p>
+            <h1>
+              Real-world evidence,
+              <span>built across institutions.</span>
+            </h1>
+            <p className="home-intro">
+              Clarion is a Yale-coordinated network of academic institutions and healthcare
+              systems advancing rigorous oncology research with structured and unstructured
+              electronic health record data.
             </p>
-            <div className="hero-actions">
+            <div className="home-actions">
               <Button asChild size="lg" className="clarion-button">
-                <Link href="/about">Explore the network <ArrowUpRight data-icon="inline-end" /></Link>
+                <Link href="/about">
+                  About Clarion <ArrowUpRight data-icon="inline-end" />
+                </Link>
               </Button>
-              <Link className="text-link" href="/contact">Contact the coordinating team <Arrow /></Link>
+              <Link className="home-text-link" href="/network">
+                View participating institutions <ArrowRight aria-hidden="true" />
+              </Link>
             </div>
           </div>
-          <aside className="hero-glance" aria-label="Clarion at a glance">
-            <p className="section-label">At a glance</p>
+
+          <aside className="home-summary" aria-label="Clarion network summary">
+            <div className="home-summary-heading">
+              <p className="home-kicker">Network at a glance</p>
+              <span>Current charter</span>
+            </div>
             <dl>
-              <div><dt>Coordinating Center</dt><dd>Yale University</dd></div>
-              <div><dt>Academic members</dt><dd>7 institutions</dd></div>
-              <div><dt>Analysis model</dt><dd>Federated / on-site</dd></div>
-              <div><dt>Data sharing</dt><dd>None by default</dd></div>
+              <div>
+                <dt>Coordinating center</dt>
+                <dd>Yale University</dd>
+              </div>
+              <div>
+                <dt>Initial academic members</dt>
+                <dd>7 institutions</dd>
+              </div>
+              <div>
+                <dt>Analysis model</dt>
+                <dd>Federated / on-site</dd>
+              </div>
+              <div>
+                <dt>Patient-level data sharing</dt>
+                <dd>None by default</dd>
+              </div>
             </dl>
           </aside>
         </div>
-        <div className="hero-rule" />
-        <div className="hero-facts" aria-label="Clarion data principles">
-          <span>Data remain local</span><span>No patient-level data sharing by default</span><span>Institutional oversight</span>
-        </div>
       </section>
 
-      <section className="model-section" aria-labelledby="model-title">
-        <div className="model-heading">
-          <p className="section-label">Research model</p>
-          <h2 id="model-title">A <em>federated</em> analysis model.</h2>
-          <p>Patient-level data never leave the institution. Approved analytic workflows run locally at each member site, and only aggregate results are synthesized by the Coordinating Center.</p>
-        </div>
-        <div className="federated-diagram" role="img" aria-label="Federated analysis diagram: member sites run analyses locally and return only aggregate outputs to the Clarion coordinating center.">
-          <div className="diagram-line line-a" aria-hidden="true" />
-          <div className="diagram-line line-b" aria-hidden="true" />
-          <div className="diagram-line line-c" aria-hidden="true" />
-          <div className="diagram-line line-d" aria-hidden="true" />
-          <div className="diagram-site site-one" aria-hidden="true">Member site<i /></div>
-          <div className="diagram-site site-two" aria-hidden="true">Member site<i /></div>
-          <div className="diagram-site site-three" aria-hidden="true">Member site<i /></div>
-          <div className="diagram-site site-four" aria-hidden="true">Member site<i /></div>
-          <div className="diagram-center" aria-hidden="true"><b>CLARION</b><span>Coordinating Center</span></div>
-          <div className="diagram-note" aria-hidden="true">Only aggregate outputs are returned</div>
-        </div>
-        <div className="model-steps">
-          <div><span>01</span><h3>Data stay local</h3><p>Structured and unstructured EHR data remain behind each institution&apos;s firewall under local IRB oversight.</p></div>
-          <div><span>02</span><h3>Analyses run on site</h3><p>Network-distributed, standards-conforming code executes within each institution&apos;s secure environment.</p></div>
-          <div><span>03</span><h3>Aggregates synthesized</h3><p>Only derived variables, summary statistics, and other approved outputs are returned and harmonized centrally.</p></div>
-        </div>
-      </section>
-
-      <section className="nav-cards-section" aria-labelledby="explore-title">
-        <div className="section-heading"><p className="section-label">Explore</p><h2 id="explore-title">Explore the network.</h2></div>
-        <div className="nav-cards">
-          {sectionCards.map((card) => (
-            <Card key={card.href} className="nav-card" size="sm">
-              <CardHeader>
-                <CardTitle className="font-serif text-2xl font-normal tracking-[-.02em]">
-                  <Link href={card.href} className="card-link">{card.label} <ArrowUpRight aria-hidden="true" /></Link>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>{card.teaser}</CardDescription>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section className="collaboration">
-        <p className="section-label">Get in touch</p>
-        <div className="collaboration-grid">
-          <div>
-            <h2>Research collaboration inquiries.</h2>
+      <section className="home-members" aria-labelledby="members-title">
+        <div className="home-shell">
+          <div className="home-members-heading">
+            <div>
+              <p className="home-kicker">Initial academic members</p>
+              <h2 id="members-title">A multi-institutional network.</h2>
+            </div>
+            <Link href="/network">
+              Network overview <ArrowUpRight aria-hidden="true" />
+            </Link>
           </div>
-          <div className="prose">
-            <p>For sponsored project discussions, membership information, or research collaboration, contact the Clarion coordinating team at Yale University.</p>
-            <Button asChild variant="secondary" size="lg" className="clarion-button clarion-button-light">
-              <Link href="/contact">Contact the team <ArrowUpRight data-icon="inline-end" /></Link>
-            </Button>
+          <ul className="home-institution-list">
+            {academicMembers.map((institution) => (
+              <li key={institution}>{institution}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="home-model" aria-labelledby="model-title">
+        <div className="home-shell">
+          <div className="home-section-heading home-section-heading-split">
+            <div>
+              <p className="home-kicker">Research model</p>
+              <h2 id="model-title">Federated by design.</h2>
+            </div>
+            <p>
+              Clarion supports multi-institutional analysis while preserving local control
+              of patient-level data and institutional oversight.
+            </p>
+          </div>
+          <ol className="home-model-steps">
+            {modelSteps.map((step, index) => (
+              <li key={step.number}>
+                <div className="home-step-meta">
+                  <span>{step.number}</span>
+                  {index < modelSteps.length - 1 && <ArrowRight aria-hidden="true" />}
+                </div>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </li>
+            ))}
+          </ol>
+          <Link className="home-text-link home-model-link" href="/governance">
+            Review governance and data protections <ArrowRight aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
+      <section className="home-areas" aria-labelledby="areas-title">
+        <div className="home-shell">
+          <div className="home-section-heading">
+            <p className="home-kicker">Explore Clarion</p>
+            <h2 id="areas-title">The network’s operating framework.</h2>
+          </div>
+          <div className="home-area-grid">
+            {researchAreas.map((area) => (
+              <Card key={area.href} className="home-area-card">
+                <CardHeader>
+                  <span className="home-card-number">{area.number}</span>
+                  <CardTitle>
+                    <Link href={area.href}>
+                      {area.label} <ArrowUpRight aria-hidden="true" />
+                    </Link>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>{area.teaser}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="home-assurance" aria-labelledby="assurance-title">
+        <div className="home-shell">
+          <div className="home-assurance-intro">
+            <p className="home-kicker">Governance assurance</p>
+            <h2 id="assurance-title">Research with institutional control.</h2>
+          </div>
+          <div className="home-assurance-points">
+            <article>
+              <span>01</span>
+              <h3>Local oversight</h3>
+              <p>Each institution maintains its own regulatory and operational oversight.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>Privacy by default</h3>
+              <p>Patient-level data are not transferred as part of standard network operations.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Coordinated review</h3>
+              <p>Projects follow common review, approval, analysis, and publication processes.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="home-contact" aria-labelledby="contact-title">
+        <div className="home-shell home-contact-grid">
+          <div>
+            <p className="home-kicker">Contact</p>
+            <h2 id="contact-title">Research collaboration inquiries.</h2>
+          </div>
+          <div className="home-contact-people">
+            <p>For membership information, sponsored projects, or research collaboration:</p>
+            <address>
+              <a href="mailto:vipina.kuttichikeloth@yale.edu">
+                <strong>Vipina K. Keloth, PhD</strong>
+                <span>vipina.kuttichikeloth@yale.edu</span>
+              </a>
+              <a href="mailto:hua.xu@yale.edu">
+                <strong>Hua Xu, PhD</strong>
+                <span>hua.xu@yale.edu</span>
+              </a>
+            </address>
           </div>
         </div>
       </section>
