@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUpRight,
+  Building2,
+  Database,
+  Layers3,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ColorBends from "@/components/ColorBends";
 import { academicMembers } from "./content";
 
 const researchAreas = [
@@ -82,30 +88,41 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="home-hero-visual" aria-hidden="true">
-              <ColorBends
-                colors={["#1B2632", "#4F828F", "#FFB162"]}
-                rotation={105}
-                speed={0.06}
-                scale={1.25}
-                frequency={0.7}
-                warpStrength={0.45}
-                mouseInfluence={0.12}
-                noise={0.04}
-                parallax={0.12}
-                iterations={1}
-                intensity={0.7}
-                bandWidth={4}
-                transparent
-                autoRotate={0}
-              />
-              <div className="home-visual-caption">
-                <span>Federated by design</span>
-                <span>Oncology real-world evidence</span>
+            <div className="home-federated-visual" aria-label="Federated analysis pathway">
+              <div className="home-visual-heading">
+                <span>Federated analysis pathway</span>
+                <span>Patient-level data remain local</span>
+              </div>
+              <div className="home-site-nodes">
+                {["01", "02", "03"].map((site) => (
+                  <article key={site}>
+                    <div className="home-site-icon">
+                      <Building2 aria-hidden="true" />
+                      <Database aria-hidden="true" />
+                    </div>
+                    <strong>Member site {site}</strong>
+                    <span>Local data environment</span>
+                  </article>
+                ))}
+              </div>
+              <div className="home-aggregate-flow">
+                <ArrowDown aria-hidden="true" />
+                <span>Approved aggregate outputs</span>
+              </div>
+              <div className="home-clarion-node">
+                <Layers3 aria-hidden="true" />
+                <div>
+                  <strong>CLARION</strong>
+                  <span>Coordinating Center</span>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
+      <section className="home-summary-band">
+        <div className="home-shell">
           <aside className="home-summary" aria-label="Clarion network summary">
             <div className="home-summary-heading">
               <p className="home-kicker">Network at a glance</p>
