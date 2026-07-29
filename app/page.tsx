@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import ColorBends from "@/components/ColorBends";
 import { academicMembers } from "./content";
 
 const researchAreas = [
@@ -56,27 +57,52 @@ export default function Home() {
   return (
     <main id="main-content" className="home-page">
       <section className="home-hero">
-        <div className="home-shell home-hero-grid">
-          <div className="home-hero-copy">
-            <p className="home-kicker">Collaborative oncology research network</p>
-            <h1>
-              Real-world evidence,
-              <span>built across institutions.</span>
-            </h1>
-            <p className="home-intro">
-              Clarion is a Yale-coordinated network of academic institutions and healthcare
-              systems advancing rigorous oncology research with structured and unstructured
-              electronic health record data.
-            </p>
-            <div className="home-actions">
-              <Button asChild size="lg" className="clarion-button">
-                <Link href="/about">
-                  About Clarion <ArrowUpRight data-icon="inline-end" />
+        <div className="home-shell">
+          <div className="home-hero-grid">
+            <div className="home-hero-copy">
+              <p className="home-kicker">Collaborative oncology research network</p>
+              <h1>
+                Real-world evidence,
+                <span>built across institutions.</span>
+              </h1>
+              <p className="home-intro">
+                Clarion is a Yale-coordinated network of academic institutions and healthcare
+                systems advancing rigorous oncology research with structured and unstructured
+                electronic health record data.
+              </p>
+              <div className="home-actions">
+                <Button asChild size="lg" className="clarion-button">
+                  <Link href="/about">
+                    About Clarion <ArrowUpRight data-icon="inline-end" />
+                  </Link>
+                </Button>
+                <Link className="home-text-link" href="/network">
+                  View participating institutions <ArrowRight aria-hidden="true" />
                 </Link>
-              </Button>
-              <Link className="home-text-link" href="/network">
-                View participating institutions <ArrowRight aria-hidden="true" />
-              </Link>
+              </div>
+            </div>
+
+            <div className="home-hero-visual" aria-hidden="true">
+              <ColorBends
+                colors={["#1B2632", "#4F828F", "#FFB162"]}
+                rotation={105}
+                speed={0.06}
+                scale={1.25}
+                frequency={0.7}
+                warpStrength={0.45}
+                mouseInfluence={0.12}
+                noise={0.04}
+                parallax={0.12}
+                iterations={1}
+                intensity={0.7}
+                bandWidth={4}
+                transparent
+                autoRotate={0}
+              />
+              <div className="home-visual-caption">
+                <span>Federated by design</span>
+                <span>Oncology real-world evidence</span>
+              </div>
             </div>
           </div>
 

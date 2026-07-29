@@ -295,7 +295,7 @@ footer p,footer span { color:#D6DBD9; }
 .home-shell { width:min(1180px,calc(100% - 3rem)); margin:0 auto; }
 .home-kicker { margin:0 0 .9rem; color:var(--teal); font-size:.67rem; font-weight:750; letter-spacing:.15em; text-transform:uppercase; }
 .home-hero { padding:clamp(5.5rem,9vw,8.5rem) 0 5rem; background:var(--paper); border-bottom:1px solid var(--line); }
-.home-hero-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr); gap:clamp(4rem,8vw,8rem); align-items:end; }
+.home-hero-grid { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr); gap:clamp(3rem,6vw,6rem); align-items:center; }
 .home-hero-copy h1 { max-width:780px; font-size:clamp(3.5rem,6.8vw,6.2rem); line-height:.94; letter-spacing:-.052em; }
 .home-hero-copy h1 span { display:block; color:var(--teal); font-style:italic; }
 .home-intro { max-width:670px; margin:2.25rem 0 0; color:var(--slate); font-size:clamp(1.02rem,1.4vw,1.18rem); line-height:1.7; }
@@ -304,13 +304,17 @@ footer p,footer span { color:#D6DBD9; }
 .home-text-link svg { width:1rem; height:1rem; transition:transform .2s ease; }
 .home-text-link:hover { color:var(--rust); }
 .home-text-link:hover svg { transform:translateX(3px); }
-.home-summary { border-top:3px solid var(--amber); background:rgba(255,252,246,.52); }
+.home-hero-visual { position:relative; height:440px; overflow:hidden; border:1px solid rgba(27,38,50,.14); background:var(--navy); }
+.home-hero-visual::before { content:""; position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(90deg,rgba(238,233,223,.32),transparent 36%),linear-gradient(180deg,transparent 58%,rgba(27,38,50,.5)); }
+.home-hero-visual .color-bends-container { position:absolute; inset:0; }
+.home-visual-caption { position:absolute; left:1.25rem; right:1.25rem; bottom:1.15rem; z-index:3; display:flex; justify-content:space-between; gap:1rem; color:#FFFCF6; font-size:.61rem; font-weight:700; letter-spacing:.11em; text-transform:uppercase; }
+.home-summary { margin-top:4rem; border-top:3px solid var(--amber); background:transparent; }
 .home-summary-heading { display:flex; justify-content:space-between; gap:1rem; padding:1.35rem 0 .35rem; }
 .home-summary-heading span { color:var(--slate); font-size:.68rem; }
-.home-summary dl { margin:0; }
-.home-summary dl>div { display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:baseline; padding:1rem 0; border-bottom:1px solid var(--line); }
+.home-summary dl { display:grid; grid-template-columns:repeat(4,1fr); margin:0; border-left:1px solid var(--line); }
+.home-summary dl>div { display:grid; gap:.8rem; align-content:start; padding:1rem 1.2rem 1.2rem; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
 .home-summary dt { color:var(--slate); font-size:.78rem; line-height:1.4; }
-.home-summary dd { margin:0; color:var(--ink); font-family:Georgia,serif; font-size:1.02rem; line-height:1.25; text-align:right; }
+.home-summary dd { margin:0; color:var(--ink); font-family:Georgia,serif; font-size:1.02rem; line-height:1.25; text-align:left; }
 .home-members { padding:4.5rem 0; background:var(--white); border-bottom:1px solid var(--line); }
 .home-members-heading { display:flex; align-items:end; justify-content:space-between; gap:2rem; margin-bottom:2.25rem; }
 .home-members-heading h2 { font-size:clamp(2rem,3.5vw,3.25rem); }
@@ -363,7 +367,8 @@ footer p,footer span { color:#D6DBD9; }
 
 @media (max-width:900px) {
   .home-hero-grid { grid-template-columns:1fr; gap:3.5rem; }
-  .home-summary { max-width:620px; }
+  .home-hero-visual { height:320px; }
+  .home-summary dl { grid-template-columns:repeat(2,1fr); }
   .home-institution-list { grid-template-columns:repeat(2,1fr); }
   .home-section-heading-split,.home-assurance .home-shell,.home-contact-grid { grid-template-columns:1fr; gap:2.5rem; }
   .home-area-grid { grid-template-columns:1fr; }
@@ -384,7 +389,9 @@ footer p,footer span { color:#D6DBD9; }
   .home-hero-copy h1 { font-size:clamp(2.8rem,12vw,3.7rem); }
   .home-intro { margin-top:1.5rem; font-size:1rem; line-height:1.62; }
   .home-actions { align-items:flex-start; flex-direction:column; }
-  .home-summary dl>div { padding:.8rem 0; }
+  .home-hero-visual { height:210px; }
+  .home-summary { margin-top:2.75rem; }
+  .home-summary dl>div { padding:.8rem; }
   .home-members,.home-model,.home-areas,.home-assurance,.home-contact { padding:3.75rem 0; }
   .home-members-heading { align-items:flex-start; flex-direction:column; gap:1rem; }
   .home-institution-list { grid-template-columns:1fr 1fr; }
