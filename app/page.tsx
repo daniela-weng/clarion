@@ -1,13 +1,8 @@
 import Link from "next/link";
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  Building2,
-  Database,
-  Layers3,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { BlurText } from "./components/BlurText";
+import { HeroActions } from "./components/HeroActions";
+import PixelBlast from "./components/PixelBlast";
 import {
   Card,
   CardContent,
@@ -63,60 +58,43 @@ export default function Home() {
   return (
     <main id="main-content" className="home-page">
       <section className="home-hero">
+        <div className="home-hero-gradient" aria-hidden="true" />
+        <div className="home-hero-mesh" aria-hidden="true" />
+        <div className="home-hero-pixels" aria-hidden="true">
+          <PixelBlast
+            variant="square"
+            pixelSize={3}
+            color="#A6D4DE"
+            patternScale={2.4}
+            patternDensity={1.05}
+            pixelSizeJitter={0}
+            enableRipples
+            rippleSpeed={0.4}
+            rippleThickness={0.12}
+            rippleIntensityScale={1.5}
+            liquid={false}
+            speed={0.5}
+            edgeFade={0.26}
+            transparent
+          />
+        </div>
+        <div className="home-hero-glow" aria-hidden="true" />
+        <div className="home-hero-overlay" aria-hidden="true" />
         <div className="home-shell">
-          <div className="home-hero-grid">
-            <div className="home-hero-copy">
-              <p className="home-kicker">Collaborative oncology research network</p>
-              <h1>
-                Real-world evidence,
-                <span>built across institutions.</span>
-              </h1>
-              <p className="home-intro">
-                Clarion is a Yale-coordinated network of academic institutions and healthcare
-                systems advancing rigorous oncology research with structured and unstructured
-                electronic health record data.
-              </p>
-              <div className="home-actions">
-                <Button asChild size="lg" className="clarion-button">
-                  <Link href="/about">
-                    About Clarion <ArrowUpRight data-icon="inline-end" />
-                  </Link>
-                </Button>
-                <Link className="home-text-link" href="/network">
-                  View participating institutions <ArrowRight aria-hidden="true" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="home-federated-visual" aria-label="Federated analysis pathway">
-              <div className="home-visual-heading">
-                <span>Federated analysis pathway</span>
-                <span>Patient-level data remain local</span>
-              </div>
-              <div className="home-site-nodes">
-                {["01", "02", "03"].map((site) => (
-                  <article key={site}>
-                    <div className="home-site-icon">
-                      <Building2 aria-hidden="true" />
-                      <Database aria-hidden="true" />
-                    </div>
-                    <strong>Member site {site}</strong>
-                    <span>Local data environment</span>
-                  </article>
-                ))}
-              </div>
-              <div className="home-aggregate-flow">
-                <ArrowDown aria-hidden="true" />
-                <span>Approved aggregate outputs</span>
-              </div>
-              <div className="home-clarion-node">
-                <Layers3 aria-hidden="true" />
-                <div>
-                  <strong>CLARION</strong>
-                  <span>Coordinating Center</span>
-                </div>
-              </div>
-            </div>
+          <div className="home-hero-content">
+            <p className="home-kicker">Collaborative oncology research network</p>
+            <h1>
+              <BlurText text="Real-world evidence" />
+              <span className="hero-line-2">
+                <BlurText text="in oncology." delay={0.14} />
+              </span>
+            </h1>
+            <p className="home-hero-lead">
+              A privacy-preserving network of leading academic institutions and healthcare
+              systems, coordinated by Yale University, that turns structured and unstructured EHR
+              data into rigorous real-world evidence to improve cancer care.
+            </p>
+            <HeroActions />
           </div>
         </div>
       </section>
