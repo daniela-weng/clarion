@@ -4,7 +4,7 @@ import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react
 import * as THREE from "three";
 
 const networkNodes = [
-  { short: "Y", label: "Yale University", note: "Coordinating center", vector: [0, 0, 1], side: "right", yale: true },
+  { short: "YALE", label: "Yale University", note: "Coordinating center", vector: [0, 0, 1], side: "right", yale: true },
   { short: "UMN", label: "University of Minnesota", note: "", vector: [-0.55, 0.72, 0.35], side: "left", yale: false },
   { short: "IU", label: "Indiana University", note: "", vector: [-0.92, 0.05, 0.22], side: "left", yale: false },
   { short: "UCI", label: "University of California, Irvine", note: "", vector: [-0.52, -0.75, 0.4], side: "left", yale: false },
@@ -14,7 +14,7 @@ const networkNodes = [
 ] as const;
 
 type FlowParticle = {
-  curve: THREE.QuadraticBezierCurve3;
+  curve: THREE.Curve<THREE.Vector3>;
   mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
   offset: number;
   speed: number;
@@ -117,62 +117,67 @@ export function HeroNetwork() {
     const sphereRadius = 2.08;
     const innerSphere = new THREE.Mesh(
       new THREE.SphereGeometry(sphereRadius * 0.985, 36, 24),
-      new THREE.MeshBasicMaterial({ color: 0x102637, transparent: true, opacity: 0.13, depthWrite: false }),
+      new THREE.MeshBasicMaterial({ color: 0x102637, transparent: true, opacity: 0.055, depthWrite: false }),
     );
     globe.add(innerSphere);
 
-    const flowColors = [0x72e1e4, 0x5aa8df, 0x90ccd2, 0xc0ece9];
+    const flowColors = [0x69e0e4, 0x4d9ee0, 0x77c9d5, 0xb7eeea];
     const flowParticles: FlowParticle[] = [];
-    for (let index = 0; index < 48; index += 1) {
-      const startAzimuth = seeded(index, 1) * Math.PI * 2;
-      const startPolar = 0.16 + seeded(index, 2) * (Math.PI - 0.32);
-      const direction = index % 2 === 0 ? 1 : -1;
-      const endAzimuth = startAzimuth + direction * (0.86 + seeded(index, 3) * 1.38);
-      const endPolar = THREE.MathUtils.clamp(startPolar + (seeded(index, 4) - 0.5) * 1.08, 0.14, Math.PI - 0.14);
+    const flowAnchors = [
+      { azimuth: 2.34, polar: 0.62 },
+      { azimuth: 0.72, polar: 2.46 },
+    ];
+    for (let index = 0; index < 62; index += 1) {
+      const anchor = flowAnchors[index < 43 ? 0 : 1];
+      const startAzimuth = anchor.azimuth + (seeded(index, 1) - 0.5) * 0.16;
+      const startPolar = anchor.polar + (seeded(index, 2) - 0.5) * 0.13;
+      const endAzimuth = seeded(index, 3) * Math.PI * 2;
+      const endPolar = 0.24 + seeded(index, 4) * (Math.PI - 0.48);
       const start = pointOnSphere(sphereRadius, startAzimuth, startPolar);
       const end = pointOnSphere(sphereRadius, endAzimuth, endPolar);
-      const control = start.clone().add(end).normalize().multiplyScalar(sphereRadius * (1.12 + seeded(index, 5) * 0.12));
-      const curve = new THREE.QuadraticBezierCurve3(start, control, end);
-      const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(56));
+      const controlOne = start.clone().lerp(end, 0.3).normalize().multiplyScalar(sphereRadius * (1.2 + seeded(index, 5) * 0.13));
+      const controlTwo = start.clone().lerp(end, 0.72).normalize().multiplyScalar(sphereRadius * (1.12 + seeded(index, 10) * 0.1));
+      const curve = new THREE.CubicBezierCurve3(start, controlOne, controlTwo, end);
+      const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(68));
       const material = new THREE.LineBasicMaterial({
         color: flowColors[index % flowColors.length],
         transparent: true,
-        opacity: 0.24 + seeded(index, 6) * 0.28,
+        opacity: 0.16 + seeded(index, 6) * 0.24,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
       globe.add(new THREE.Line(geometry, material));
 
-      if (index % 5 === 0) {
-        const glowGeometry = new THREE.TubeGeometry(curve, 52, 0.022, 5, false);
+      if (index % 6 === 0) {
+        const glowGeometry = new THREE.TubeGeometry(curve, 64, 0.025, 5, false);
         const glowMaterial = new THREE.MeshBasicMaterial({
           color: flowColors[index % flowColors.length],
           transparent: true,
-          opacity: 0.055,
+          opacity: 0.065,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
         });
         globe.add(new THREE.Mesh(glowGeometry, glowMaterial));
 
-        const emphasisGeometry = new THREE.TubeGeometry(curve, 52, 0.0075, 5, false);
+        const emphasisGeometry = new THREE.TubeGeometry(curve, 64, 0.0065, 5, false);
         const emphasisMaterial = new THREE.MeshBasicMaterial({
           color: flowColors[index % flowColors.length],
           transparent: true,
-          opacity: 0.5,
+          opacity: 0.64,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
         });
         globe.add(new THREE.Mesh(emphasisGeometry, emphasisMaterial));
       }
 
-      if (index % 11 === 0) {
+      if (index % 10 === 0) {
         const particle = new THREE.Mesh(
           new THREE.SphereGeometry(index % 22 === 0 ? 0.028 : 0.02, 8, 8),
           new THREE.MeshBasicMaterial({ color: 0xcaf4f3, transparent: true, opacity: 0.8 }),
         );
         particle.position.copy(start);
         globe.add(particle);
-        flowParticles.push({ curve, mesh: particle, offset: seeded(index, 7), speed: 0.025 + seeded(index, 8) * 0.022 });
+        flowParticles.push({ curve, mesh: particle, offset: seeded(index, 7), speed: 0.02 + seeded(index, 8) * 0.018 });
       }
     }
 
@@ -330,11 +335,7 @@ export function HeroNetwork() {
             key={entry.short}
             ref={(element) => { labelRefs.current[index] = element; }}
           >
-            {entry.yale ? (
-              <><strong>{entry.label}</strong><small>{entry.note}</small></>
-            ) : (
-              <><b>{entry.short}</b><span>{entry.label}</span></>
-            )}
+            {entry.yale ? <strong>{entry.short}</strong> : <b>{entry.short}</b>}
           </div>
         ))}
       </div>

@@ -1064,14 +1064,14 @@ footer .footer-nav a { font-size:.72rem; }
 
 /* Federated data sphere: abstract data paths, with institutions embedded on the surface. */
 .hero-network-sphere::before {
-  inset:0 -4% 2%;
-  background:
-    radial-gradient(circle at 50% 48%,rgba(62,145,165,.25),transparent 39%),
-    radial-gradient(ellipse at 50% 79%,rgba(2,8,15,.4),transparent 42%);
+  display:none;
 }
 .hero-network-sphere .hero-network-field { height:430px; min-height:430px; }
 .hero-network-sphere .hero-network-field::after {
-  display:none;
+  content:none;
+  display:none !important;
+  background:none !important;
+  filter:none !important;
 }
 .hero-network-sphere .hero-network-label {
   --network-label-opacity:.7;
@@ -1090,18 +1090,7 @@ footer .footer-nav a { font-size:.72rem; }
   text-shadow:0 0 10px rgba(129,205,214,.52);
 }
 .hero-network-sphere .hero-network-label span {
-  position:absolute;
-  top:50%;
-  width:max-content;
-  max-width:150px;
-  color:#D7E4E4;
-  font-size:.52rem;
-  font-weight:520;
-  line-height:1.16;
-  white-space:normal;
-  opacity:.82;
-  transform:translateY(-50%);
-  transition:opacity .2s ease;
+  display:none;
 }
 .hero-network-sphere .hero-network-label[data-side="right"] span { left:calc(100% + .45rem); }
 .hero-network-sphere .hero-network-label[data-side="left"] span { right:calc(100% + .45rem); transform:translateY(-50%); text-align:right; }
@@ -1110,21 +1099,21 @@ footer .footer-nav a { font-size:.72rem; }
 .hero-network-sphere .hero-network-label:hover span,
 .hero-network-sphere .hero-network-label:focus-within span { opacity:1; }
 .hero-network-sphere .hero-network-label-yale {
-  gap:.22rem;
-  transform:translate(17px,17px);
+  display:flex;
+  transform:translate(16px,-50%);
   opacity:1;
   text-align:left;
   justify-items:start;
 }
-.hero-network-sphere .hero-network-label-yale strong { font-size:.7rem; text-shadow:0 0 12px rgba(164,222,223,.25); }
+.hero-network-sphere .hero-network-label-yale strong { color:#F0F8F5; font-family:var(--font-sans); font-size:.55rem; font-weight:760; letter-spacing:.14em; text-shadow:0 0 12px rgba(164,222,223,.32); }
 .hero-network-sphere .hero-network-label-yale small { font-size:.39rem; }
 
 @media (max-width:760px) {
   .hero-network-sphere .hero-network-field { height:335px; min-height:335px; }
   .hero-network-sphere .hero-network-label[data-side="left"] { transform:translate(calc(-100% - 8px),-50%); }
   .hero-network-sphere .hero-network-label[data-side="right"] { transform:translate(8px,-50%); }
-  .hero-network-sphere .hero-network-label span { display:block; max-width:82px; font-size:.38rem; line-height:1.12; }
-  .hero-network-sphere .hero-network-label-yale { transform:translate(11px,14px); }
+  .hero-network-sphere .hero-network-label span { display:none; }
+  .hero-network-sphere .hero-network-label-yale { transform:translate(10px,-50%); }
   .hero-network-sphere .hero-network-label-yale strong { font-size:.57rem; }
   .hero-network-sphere .hero-network-label-yale small { display:block; font-size:.34rem; }
 }
