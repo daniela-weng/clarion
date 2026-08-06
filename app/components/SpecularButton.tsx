@@ -184,6 +184,8 @@ const SpecularButton = ({
     let proximityT = 0;
     const onPointerMove = (e: PointerEvent) => {
       const rect = btn.getBoundingClientRect();
+      const pointerX = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      btn.style.setProperty("--pro-mx", `${pointerX}%`);
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       const dx = Math.max(rect.left - e.clientX, 0, e.clientX - rect.right);
@@ -263,6 +265,7 @@ const SpecularButton = ({
           "--sb-tint-opacity": tintOpacity,
           "--sb-blur": `${blur}px`,
           "--sb-text-color": textColor,
+          "--pro-mx": "50%",
         } as CSSProperties
       }
       {...rest}
