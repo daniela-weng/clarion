@@ -33,6 +33,52 @@ function pointOnSphere(radius: number, azimuth: number, polar: number) {
   );
 }
 
+function createMarkerTexture(isYale: boolean) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 128;
+  canvas.height = 128;
+  const context = canvas.getContext("2d");
+  if (!context) return new THREE.CanvasTexture(canvas);
+
+  context.translate(64, 64);
+  context.strokeStyle = isYale ? "rgba(224, 251, 247, .98)" : "rgba(137, 216, 225, .94)";
+  context.fillStyle = isYale ? "rgba(224, 251, 247, .9)" : "rgba(137, 216, 225, .78)";
+  context.lineWidth = isYale ? 2.2 : 1.8;
+  context.shadowColor = isYale ? "rgba(167, 240, 235, .95)" : "rgba(98, 200, 215, .85)";
+  context.shadowBlur = isYale ? 15 : 11;
+
+  const diamond = (radius: number) => {
+    context.beginPath();
+    context.moveTo(0, -radius);
+    context.lineTo(radius, 0);
+    context.lineTo(0, radius);
+    context.lineTo(-radius, 0);
+    context.closePath();
+    context.stroke();
+  };
+
+  diamond(isYale ? 27 : 21);
+  if (isYale) diamond(18);
+  const tickStart = isYale ? 32 : 26;
+  const tickEnd = isYale ? 40 : 33;
+  context.beginPath();
+  context.moveTo(0, -tickStart); context.lineTo(0, -tickEnd);
+  context.moveTo(tickStart, 0); context.lineTo(tickEnd, 0);
+  context.moveTo(0, tickStart); context.lineTo(0, tickEnd);
+  context.moveTo(-tickStart, 0); context.lineTo(-tickEnd, 0);
+  context.stroke();
+  context.rotate(Math.PI / 4);
+  const coreSize = isYale ? 7 : 5;
+  context.fillRect(-coreSize / 2, -coreSize / 2, coreSize, coreSize);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 export function HeroNetwork() {
   const fieldRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -91,11 +137,23 @@ export function HeroNetwork() {
       const material = new THREE.LineBasicMaterial({
         color: flowColors[index % flowColors.length],
         transparent: true,
-        opacity: 0.11 + seeded(index, 6) * 0.2,
+        opacity: 0.18 + seeded(index, 6) * 0.27,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
       globe.add(new THREE.Line(geometry, material));
+
+      if (index % 7 === 0) {
+        const emphasisGeometry = new THREE.TubeGeometry(curve, 42, 0.007, 4, false);
+        const emphasisMaterial = new THREE.MeshBasicMaterial({
+          color: flowColors[index % flowColors.length],
+          transparent: true,
+          opacity: 0.22,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+        globe.add(new THREE.Mesh(emphasisGeometry, emphasisMaterial));
+      }
 
       if (index % 11 === 0) {
         const particle = new THREE.Mesh(
@@ -120,39 +178,38 @@ export function HeroNetwork() {
     dustGeometry.setAttribute("position", new THREE.Float32BufferAttribute(dustPositions, 3));
     const dust = new THREE.Points(
       dustGeometry,
-      new THREE.PointsMaterial({ color: 0xb4dfe2, size: 0.023, transparent: true, opacity: 0.38, depthWrite: false }),
+      new THREE.PointsMaterial({ color: 0xb4dfe2, size: 0.025, transparent: true, opacity: 0.46, depthWrite: false }),
     );
     globe.add(dust);
 
-    const nodeMeshes: THREE.Mesh[] = [];
+    const memberMarkerTexture = createMarkerTexture(false);
+    const yaleMarkerTexture = createMarkerTexture(true);
+    const memberMarkerMaterial = new THREE.SpriteMaterial({
+      map: memberMarkerTexture,
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const yaleMarkerMaterial = new THREE.SpriteMaterial({
+      map: yaleMarkerTexture,
+      color: 0xffffff,
+      transparent: true,
+      opacity: 1,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const nodeMarkers: THREE.Sprite[] = [];
     networkNodes.forEach((entry, index) => {
-      const radius = entry.yale ? 0.17 : 0.115;
-      const geometry = new THREE.IcosahedronGeometry(radius, 1);
-      const material = new THREE.MeshStandardMaterial({
-        color: entry.yale ? 0xe2f2ef : 0x6eb3c0,
-        emissive: entry.yale ? 0x3d7982 : 0x163b47,
-        emissiveIntensity: entry.yale ? 0.62 : 0.36,
-        flatShading: true,
-        metalness: 0.08,
-        roughness: 0.34,
-      });
-      const node = new THREE.Mesh(geometry, material);
-      node.position.copy(new THREE.Vector3(...entry.vector).normalize().multiplyScalar(sphereRadius * 1.015));
-      node.rotation.set(index * 0.31, index * 0.47, index * 0.19);
-      globe.add(node);
-
-      const halo = new THREE.Mesh(
-        new THREE.SphereGeometry(radius * (entry.yale ? 1.9 : 1.65), 14, 10),
-        new THREE.MeshBasicMaterial({
-          color: entry.yale ? 0xc7eeea : 0x6fc0cc,
-          transparent: true,
-          opacity: entry.yale ? 0.11 : 0.045,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        }),
-      );
-      node.add(halo);
-      nodeMeshes.push(node);
+      const marker = new THREE.Sprite(entry.yale ? yaleMarkerMaterial : memberMarkerMaterial);
+      marker.position.copy(new THREE.Vector3(...entry.vector).normalize().multiplyScalar(sphereRadius * 1.018));
+      const scale = entry.yale ? 0.62 : 0.4;
+      marker.scale.set(scale, scale, 1);
+      marker.userData.baseScale = scale;
+      marker.userData.phase = index * 0.9;
+      globe.add(marker);
+      nodeMarkers.push(marker);
     });
 
     let width = 1;
@@ -181,9 +238,10 @@ export function HeroNetwork() {
       globe.rotation.x += (targetX - globe.rotation.x) * 0.028;
 
       if (!reducedMotion) {
-        nodeMeshes.forEach((node, index) => {
-          node.rotation.y += 0.0013 + index * 0.00005;
-          node.rotation.x += 0.00055;
+        nodeMarkers.forEach((marker) => {
+          const pulse = 1 + Math.sin(seconds * 0.72 + marker.userData.phase) * 0.025;
+          const scale = marker.userData.baseScale * pulse;
+          marker.scale.set(scale, scale, 1);
         });
         flowParticles.forEach((particle) => {
           const progress = (seconds * particle.speed + particle.offset) % 1;
@@ -194,7 +252,7 @@ export function HeroNetwork() {
       }
 
       scene.updateMatrixWorld(true);
-      nodeMeshes.forEach((node, index) => placeLabel(labelRefs.current[index], node, Boolean(networkNodes[index].yale)));
+      nodeMarkers.forEach((node, index) => placeLabel(labelRefs.current[index], node, Boolean(networkNodes[index].yale)));
       renderer.render(scene, camera);
       if (!reducedMotion) frame = requestAnimationFrame(render);
     };
@@ -225,6 +283,8 @@ export function HeroNetwork() {
         const materials = Array.isArray(mesh.material) ? mesh.material : mesh.material ? [mesh.material] : [];
         materials.forEach((material) => material.dispose());
       });
+      memberMarkerTexture.dispose();
+      yaleMarkerTexture.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
     };
