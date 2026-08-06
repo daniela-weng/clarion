@@ -4,19 +4,13 @@ import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react
 import * as THREE from "three";
 
 const institutions = [
-  { short: "UMN", label: "Minnesota", position: [-2.65, 1.75, -0.65], side: "left" },
-  { short: "IU", label: "Indiana", position: [-3.05, 0.18, 0.32], side: "left" },
-  { short: "UCI", label: "UC Irvine", position: [-2.45, -1.72, -0.12], side: "left" },
-  { short: "COL", label: "Columbia", position: [2.58, 1.62, -0.28], side: "right" },
-  { short: "COR", label: "Cornell", position: [3.02, 0.1, 0.52], side: "right" },
-  { short: "UF", label: "Florida", position: [2.38, -1.75, -0.58], side: "right" },
+  { short: "UMN", label: "Minnesota", position: [-2.2, 1.56, -0.72], side: "left" },
+  { short: "IU", label: "Indiana", position: [-2.78, 0.12, 0.34], side: "left" },
+  { short: "UCI", label: "UC Irvine", position: [-2.08, -1.5, -0.08], side: "left" },
+  { short: "COL", label: "Columbia", position: [2.12, 1.48, -0.3], side: "right" },
+  { short: "COR", label: "Cornell", position: [2.72, 0.02, 0.58], side: "right" },
+  { short: "UF", label: "Florida", position: [2.0, -1.58, -0.62], side: "right" },
 ] as const;
-
-type Route = {
-  curve: THREE.QuadraticBezierCurve3;
-  particle?: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
-  offset: number;
-};
 
 export function HeroNetwork() {
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -53,7 +47,7 @@ export function HeroNetwork() {
     rimLight.position.set(4, -1.5, 4);
     scene.add(rimLight);
 
-    const hubGeometry = new THREE.IcosahedronGeometry(0.72, 2);
+    const hubGeometry = new THREE.IcosahedronGeometry(0.82, 2);
     const hubMaterial = new THREE.MeshStandardMaterial({
       color: 0x8fc6cf,
       emissive: 0x123744,
@@ -73,13 +67,13 @@ export function HeroNetwork() {
     hub.add(hubEdges);
 
     const halo = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.94, 2),
+      new THREE.IcosahedronGeometry(1.06, 2),
       new THREE.MeshBasicMaterial({ color: 0x7fc4d0, wireframe: true, transparent: true, opacity: 0.065, depthWrite: false }),
     );
     halo.position.copy(hub.position);
     network.add(halo);
 
-    const satelliteGeometry = new THREE.IcosahedronGeometry(0.23, 1);
+    const satelliteGeometry = new THREE.IcosahedronGeometry(0.27, 1);
     const satelliteMaterial = new THREE.MeshStandardMaterial({
       color: 0x4f8e9d,
       emissive: 0x102f3a,
@@ -89,7 +83,7 @@ export function HeroNetwork() {
       roughness: 0.43,
     });
     const nodeMeshes: THREE.Mesh[] = [];
-    const routes: Route[] = [];
+    const basePositions: THREE.Vector3[] = [];
 
     institutions.forEach((institution, index) => {
       const position = new THREE.Vector3(...institution.position);
@@ -98,35 +92,7 @@ export function HeroNetwork() {
       node.rotation.set(index * 0.38, index * 0.52, index * 0.19);
       network.add(node);
       nodeMeshes.push(node);
-
-      const direction = position.clone().sub(hub.position).normalize();
-      const start = hub.position.clone().add(direction.clone().multiplyScalar(0.72));
-      const end = position.clone().sub(direction.clone().multiplyScalar(0.23));
-      const control = start.clone().lerp(end, 0.5);
-      control.z += index % 2 === 0 ? 0.48 : -0.34;
-      control.y += index < 3 ? 0.1 : -0.08;
-      const curve = new THREE.QuadraticBezierCurve3(start, control, end);
-
-      const routeGeometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(64));
-      const routeMaterial = new THREE.LineBasicMaterial({
-        color: index === 1 || index === 4 ? 0xa1d8df : 0x73aeba,
-        transparent: true,
-        opacity: index === 1 || index === 4 ? 0.68 : 0.4,
-        depthWrite: false,
-      });
-      const line = new THREE.Line(routeGeometry, routeMaterial);
-      network.add(line);
-
-      let particle: Route["particle"];
-      if (index === 1 || index === 4) {
-        particle = new THREE.Mesh(
-          new THREE.SphereGeometry(0.045, 12, 12),
-          new THREE.MeshBasicMaterial({ color: 0xdaf8f7, transparent: true, opacity: 0.92 }),
-        );
-        particle.position.copy(start);
-        network.add(particle);
-      }
-      routes.push({ curve, particle, offset: index === 4 ? 0.48 : 0 });
+      basePositions.push(position.clone());
     });
 
     const dustPositions: number[] = [];
@@ -182,13 +148,8 @@ export function HeroNetwork() {
         nodeMeshes.forEach((node, index) => {
           node.rotation.y += 0.0015 + index * 0.00008;
           node.rotation.x += 0.0007;
-        });
-        routes.forEach((route) => {
-          if (!route.particle) return;
-          const progress = (seconds * 0.065 + route.offset) % 1;
-          route.particle.position.copy(route.curve.getPoint(progress));
-          const pulse = 0.78 + Math.sin(seconds * 2.2) * 0.14;
-          route.particle.scale.setScalar(pulse);
+          node.position.x = basePositions[index].x + Math.cos(seconds * 0.22 + index * 1.31) * 0.018;
+          node.position.y = basePositions[index].y + Math.sin(seconds * 0.27 + index * 1.17) * 0.035;
         });
       }
 
@@ -234,7 +195,7 @@ export function HeroNetwork() {
     <div
       className="hero-network hero-network-3d"
       role="img"
-      aria-label="Six participating academic institutions connected to Yale University, the Clarion coordinating center"
+      aria-label="Six participating academic institutions arranged around Yale University, the Clarion coordinating center"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
     >
@@ -256,7 +217,6 @@ export function HeroNetwork() {
           <small>Coordinating center</small>
         </div>
       </div>
-      <p className="hero-network-key"><span /> Approved analyses <i /> Authorized aggregate results</p>
     </div>
   );
 }
