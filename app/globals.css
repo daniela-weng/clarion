@@ -463,20 +463,22 @@ footer p,footer span { color:#D6DBD9; }
 /* Network lattice — faint teal grid, masked to concentrate on the right */
 .home-hero-mesh { position:absolute; inset:0; z-index:0; pointer-events:none;
   background-image:
-    linear-gradient(rgba(143,176,184,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(143,176,184,.07) 1px, transparent 1px);
+    linear-gradient(rgba(143,176,184,.095) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143,176,184,.095) 1px, transparent 1px);
   background-size:56px 56px;
   -webkit-mask-image:radial-gradient(ellipse 70% 90% at 82% 40%, #000 0%, transparent 72%);
           mask-image:radial-gradient(ellipse 70% 90% at 82% 40%, #000 0%, transparent 72%); }
 /* PixelBlast WebGL layer — grainy dither, faded toward the centered text on the left */
 .home-hero-pixels { position:absolute; inset:0; z-index:0;
+  opacity:.94;
+  filter:contrast(1.12);
   -webkit-mask-image:
-    linear-gradient(90deg, transparent 19%, #000 56%),
-    radial-gradient(ellipse 44% 50% at 50% 48%, transparent 0%, transparent 40%, #000 100%);
+    linear-gradient(90deg, transparent 12%, #000 50%),
+    radial-gradient(ellipse 42% 48% at 47% 48%, transparent 0%, transparent 34%, #000 92%);
   -webkit-mask-composite:source-in;              /* Safari / old WebKit */
           mask-image:
-    linear-gradient(90deg, transparent 19%, #000 56%),
-    radial-gradient(ellipse 44% 50% at 50% 48%, transparent 0%, transparent 40%, #000 100%);
+    linear-gradient(90deg, transparent 12%, #000 50%),
+    radial-gradient(ellipse 42% 48% at 47% 48%, transparent 0%, transparent 34%, #000 92%);
           mask-composite:intersect; }            /* Chrome / Firefox (standard) */
 .home-hero-pixels .pixel-blast-container { width:100%; height:100%; }
 /* Soft teal glow, top-right */
@@ -492,8 +494,8 @@ footer p,footer span { color:#D6DBD9; }
 .color-bends-container { position:relative; width:100%; height:100%; overflow:hidden; }
 .home-hero-overlay { position:absolute; inset:0; z-index:0; pointer-events:none;
   background:
-    radial-gradient(70% 62% at 50% 47%, rgba(9,15,21,.82) 0%, rgba(9,15,21,.48) 55%, rgba(9,15,21,0) 100%),
-    linear-gradient(180deg, rgba(9,15,21,.32) 0%, rgba(9,15,21,0) 30%, rgba(9,15,21,.22) 100%); }
+    radial-gradient(66% 60% at 42% 47%, rgba(9,15,21,.82) 0%, rgba(9,15,21,.42) 54%, rgba(9,15,21,0) 100%),
+    linear-gradient(180deg, rgba(9,15,21,.28) 0%, rgba(9,15,21,0) 30%, rgba(9,15,21,.18) 100%); }
 .home-hero .home-shell { position:relative; z-index:1; }
 
 /* Hero content — left-aligned editorial */
@@ -540,14 +542,14 @@ footer p,footer span { color:#D6DBD9; }
 .specular-button__fx canvas { display:block; width:100%; height:100%; }
 .specular-button__label { position:relative; z-index:2; }
 
-/* Elegant glass CTA: translucent fill + hairline border + blur, with the specular rim on top */
-.home-hero .specular-button { background:linear-gradient(135deg, #0E7490 0%, #22D3EE 100%); color:#FFFCF6; font-weight:700; letter-spacing:.03em;
-  text-shadow:0 1px 2px rgba(4,20,26,.4);
-  border:1px solid rgba(224,250,255,.4);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 5px 14px rgba(6,12,18,.35), 0 3px 12px rgba(34,211,238,.25);
-  transition:transform .25s cubic-bezier(.22,.61,.36,1), box-shadow .25s ease, filter .25s ease; }
-.home-hero .specular-button:hover { transform:translateY(-2px); filter:brightness(1.04); border-color:rgba(224,250,255,.6);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 9px 20px rgba(6,12,18,.4), 0 5px 18px rgba(34,211,238,.38); }
+/* Institutional CTA: matte, high-contrast, and deliberately free of neon effects. */
+.home-hero .specular-button { background:#EEEAE2; color:#162330; font-weight:700; letter-spacing:.015em;
+  text-shadow:none;
+  border:1px solid rgba(255,255,255,.52);
+  box-shadow:0 7px 20px rgba(6,12,18,.25);
+  transition:transform .2s cubic-bezier(.22,.61,.36,1), background-color .2s ease, box-shadow .2s ease; }
+.home-hero .specular-button:hover { transform:translateY(-1px); filter:none; background:#FAF7F0; border-color:rgba(255,255,255,.72);
+  box-shadow:0 10px 24px rgba(6,12,18,.3); }
 
 /* Secondary link: animated hairline underline */
 .home-hero .home-text-link { position:relative; letter-spacing:.02em; }

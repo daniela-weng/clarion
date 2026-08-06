@@ -10,11 +10,11 @@ export function HeroActions() {
     <div className="home-actions">
       <SpecularButton
         size="lg"
-        radius={10}
-        textColor="#FFFCF6"
-        lineColor="#CFEDE8"
-        baseColor="#0E2A33"
-        intensity={0.85}
+        radius={6}
+        textColor="#162330"
+        lineColor="#FFFDF8"
+        baseColor="#D8D2C7"
+        intensity={0.22}
         shineSize={12}
         shineFade={46}
         thickness={0.85}
