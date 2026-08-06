@@ -63,10 +63,10 @@ export default function Home() {
         <div className="home-hero-pixels" aria-hidden="true">
           <PixelBlast
             variant="square"
-            pixelSize={3.8}
-            color="#B8DDE3"
+            pixelSize={2.8}
+            color="#AFCFD6"
             patternScale={2.4}
-            patternDensity={1.18}
+            patternDensity={0.9}
             pixelSizeJitter={0}
             enableRipples
             rippleSpeed={0.4}
@@ -74,7 +74,7 @@ export default function Home() {
             rippleIntensityScale={1.5}
             liquid={false}
             speed={0.5}
-            edgeFade={0.18}
+            edgeFade={0.3}
             transparent
           />
         </div>
