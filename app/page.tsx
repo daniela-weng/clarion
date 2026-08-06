@@ -111,12 +111,11 @@ export default function Home() {
         <div className="home-hero-overlay" aria-hidden="true" />
         <div className="home-shell home-hero-layout">
           <div className="home-hero-content">
-            <p className="home-kicker">Collaborative oncology research network</p>
             <h1>
               <BlurText text="Oncology evidence," />
               <span className="hero-line-2"><BlurText text="connected without centralizing patient data." delay={0.14} /></span>
             </h1>
-            <p className="home-hero-lead">A federated research network that allows participating institutions to run approved analyses locally and return only authorized aggregate results.</p>
+            <p className="home-hero-lead">Participating institutions run approved analyses locally and return only authorized aggregate results.</p>
             <HeroActions />
           </div>
           <HeroNetwork />
