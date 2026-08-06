@@ -886,3 +886,87 @@ footer .footer-nav a { font-size:.72rem; }
 .hero-network-canvas { position:absolute; inset:0; z-index:2; width:100%; height:100%; pointer-events:none; }
 .hero-node i { background:radial-gradient(circle at 34% 28%,#3B596A 0%,#263E4D 48%,#1B2D3A 100%); box-shadow:0 0 0 4px rgba(109,157,168,.055),0 0 16px rgba(116,181,193,.08); }
 .hero-node-yale i { background:radial-gradient(circle at 34% 27%,#F4F7F3 0%,#D8E8E6 46%,#9EC3CA 100%); box-shadow:0 0 0 9px rgba(112,164,175,.11),0 0 34px rgba(132,187,198,.24); }
+
+/* Restrained 2.5D depth: one shared plane keeps the canvas routes precisely aligned. */
+.hero-network {
+  perspective:1100px;
+  --network-tilt-x:0deg;
+  --network-tilt-y:0deg;
+  --network-shift-x:0px;
+  --network-shift-y:0px;
+}
+.hero-network-field {
+  transform:
+    translate3d(var(--network-shift-x),var(--network-shift-y),0)
+    rotateX(var(--network-tilt-x))
+    rotateY(var(--network-tilt-y));
+  transform-style:preserve-3d;
+  transform-origin:50% 50%;
+  transition:transform .38s cubic-bezier(.2,.75,.25,1);
+  will-change:transform;
+}
+.hero-network-field::before {
+  transform:translateZ(-18px) scale(1.025);
+  filter:blur(.2px);
+}
+.hero-node i {
+  overflow:hidden;
+  background:radial-gradient(circle at 31% 24%,#6B909B 0%,#385B69 27%,#263F4D 53%,#172A36 100%);
+  box-shadow:
+    inset 2px 2px 4px rgba(236,249,249,.14),
+    inset -4px -5px 8px rgba(3,13,21,.36),
+    0 7px 15px rgba(2,10,17,.27),
+    0 0 17px rgba(118,180,192,.11);
+}
+.hero-node i::before {
+  content:"";
+  position:absolute;
+  inset:2px;
+  border-radius:50%;
+  background:linear-gradient(145deg,rgba(255,255,255,.14),transparent 38%);
+  pointer-events:none;
+}
+.hero-node-yale::before,
+.hero-node-yale::after {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:50%;
+  top:50%;
+  width:102px;
+  height:62px;
+  border:1px solid rgba(151,199,208,.17);
+  border-radius:50%;
+  transform:translate(-50%,-50%) rotate(-19deg);
+  box-shadow:0 0 18px rgba(114,176,188,.055);
+  pointer-events:none;
+}
+.hero-node-yale::after {
+  width:82px;
+  height:96px;
+  opacity:.56;
+  transform:translate(-50%,-50%) rotate(31deg);
+}
+.hero-node-yale i {
+  overflow:visible;
+  background:radial-gradient(circle at 31% 25%,#FFFFFF 0%,#E5F0EE 33%,#C1D9D9 66%,#8EB7BF 100%);
+  box-shadow:
+    inset 3px 3px 7px rgba(255,255,255,.78),
+    inset -5px -7px 11px rgba(40,91,103,.19),
+    0 12px 24px rgba(2,10,17,.34),
+    0 0 0 9px rgba(112,164,175,.1),
+    0 0 36px rgba(132,187,198,.25);
+}
+.hero-node-yale i::before {
+  inset:4px;
+  background:linear-gradient(145deg,rgba(255,255,255,.45),transparent 42%);
+}
+
+@media (hover:none) {
+  .hero-network-field { will-change:auto; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .hero-network-field { transform:none !important; transition:none; will-change:auto; }
+  .hero-node-yale::before,.hero-node-yale::after { animation:none; }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react";
 
 const nodes = [
   { short: "UMN", label: "Minnesota", className: "node-minnesota" },
@@ -147,8 +147,33 @@ export function HeroNetwork() {
     };
   }, []);
 
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+    event.currentTarget.style.setProperty("--network-tilt-x", `${vertical * -1.2}deg`);
+    event.currentTarget.style.setProperty("--network-tilt-y", `${horizontal * 1.6}deg`);
+    event.currentTarget.style.setProperty("--network-shift-x", `${horizontal * 3}px`);
+    event.currentTarget.style.setProperty("--network-shift-y", `${vertical * 3}px`);
+  };
+
+  const handlePointerLeave = (event: ReactPointerEvent<HTMLDivElement>) => {
+    event.currentTarget.style.setProperty("--network-tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--network-tilt-y", "0deg");
+    event.currentTarget.style.setProperty("--network-shift-x", "0px");
+    event.currentTarget.style.setProperty("--network-shift-y", "0px");
+  };
+
   return (
-    <div className="hero-network" role="img" aria-label="Seven academic institutions connected through Yale University as the Clarion coordinating center">
+    <div
+      className="hero-network"
+      role="img"
+      aria-label="Seven academic institutions connected through Yale University as the Clarion coordinating center"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
       <div className="hero-network-field" ref={fieldRef} aria-hidden="true">
         <canvas ref={canvasRef} className="hero-network-canvas" />
         {nodes.map((node, index) => (
