@@ -4,13 +4,13 @@ import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react
 import * as THREE from "three";
 
 const networkNodes = [
-  { short: "Y", label: "Yale University", note: "Coordinating center", vector: [0.32, -0.02, 1], side: "right", yale: true },
-  { short: "UMN", label: "Minnesota", note: "", vector: [-0.55, 0.72, 0.35], side: "left", yale: false },
-  { short: "IU", label: "Indiana", note: "", vector: [-0.92, 0.05, 0.22], side: "left", yale: false },
-  { short: "UCI", label: "UC Irvine", note: "", vector: [-0.52, -0.75, 0.4], side: "left", yale: false },
-  { short: "COL", label: "Columbia", note: "", vector: [0.52, 0.73, 0.43], side: "right", yale: false },
-  { short: "COR", label: "Cornell", note: "", vector: [0.92, 0.08, 0.23], side: "right", yale: false },
-  { short: "UF", label: "Florida", note: "", vector: [0.46, -0.76, 0.45], side: "right", yale: false },
+  { short: "Y", label: "Yale University", note: "Coordinating center", vector: [0, 0, 1], side: "right", yale: true },
+  { short: "UMN", label: "University of Minnesota", note: "", vector: [-0.55, 0.72, 0.35], side: "left", yale: false },
+  { short: "IU", label: "Indiana University", note: "", vector: [-0.92, 0.05, 0.22], side: "left", yale: false },
+  { short: "UCI", label: "University of California, Irvine", note: "", vector: [-0.52, -0.75, 0.4], side: "left", yale: false },
+  { short: "COL", label: "Columbia University", note: "", vector: [0.52, 0.73, 0.43], side: "right", yale: false },
+  { short: "COR", label: "Cornell University", note: "", vector: [0.92, 0.08, 0.23], side: "right", yale: false },
+  { short: "UF", label: "University of Florida", note: "", vector: [0.46, -0.76, 0.45], side: "right", yale: false },
 ] as const;
 
 type FlowParticle = {
@@ -121,34 +121,44 @@ export function HeroNetwork() {
     );
     globe.add(innerSphere);
 
-    const flowColors = [0x61c9da, 0x428fc8, 0x7ab6c0, 0x92d8df];
+    const flowColors = [0x72e1e4, 0x5aa8df, 0x90ccd2, 0xc0ece9];
     const flowParticles: FlowParticle[] = [];
-    for (let index = 0; index < 68; index += 1) {
+    for (let index = 0; index < 48; index += 1) {
       const startAzimuth = seeded(index, 1) * Math.PI * 2;
       const startPolar = 0.16 + seeded(index, 2) * (Math.PI - 0.32);
       const direction = index % 2 === 0 ? 1 : -1;
-      const endAzimuth = startAzimuth + direction * (0.38 + seeded(index, 3) * 1.02);
-      const endPolar = THREE.MathUtils.clamp(startPolar + (seeded(index, 4) - 0.5) * 0.92, 0.14, Math.PI - 0.14);
+      const endAzimuth = startAzimuth + direction * (0.86 + seeded(index, 3) * 1.38);
+      const endPolar = THREE.MathUtils.clamp(startPolar + (seeded(index, 4) - 0.5) * 1.08, 0.14, Math.PI - 0.14);
       const start = pointOnSphere(sphereRadius, startAzimuth, startPolar);
       const end = pointOnSphere(sphereRadius, endAzimuth, endPolar);
-      const control = start.clone().add(end).normalize().multiplyScalar(sphereRadius * (1.07 + seeded(index, 5) * 0.1));
+      const control = start.clone().add(end).normalize().multiplyScalar(sphereRadius * (1.12 + seeded(index, 5) * 0.12));
       const curve = new THREE.QuadraticBezierCurve3(start, control, end);
-      const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(42));
+      const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(56));
       const material = new THREE.LineBasicMaterial({
         color: flowColors[index % flowColors.length],
         transparent: true,
-        opacity: 0.18 + seeded(index, 6) * 0.27,
+        opacity: 0.24 + seeded(index, 6) * 0.28,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
       globe.add(new THREE.Line(geometry, material));
 
-      if (index % 7 === 0) {
-        const emphasisGeometry = new THREE.TubeGeometry(curve, 42, 0.007, 4, false);
+      if (index % 5 === 0) {
+        const glowGeometry = new THREE.TubeGeometry(curve, 52, 0.022, 5, false);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+          color: flowColors[index % flowColors.length],
+          transparent: true,
+          opacity: 0.055,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+        globe.add(new THREE.Mesh(glowGeometry, glowMaterial));
+
+        const emphasisGeometry = new THREE.TubeGeometry(curve, 52, 0.0075, 5, false);
         const emphasisMaterial = new THREE.MeshBasicMaterial({
           color: flowColors[index % flowColors.length],
           transparent: true,
-          opacity: 0.22,
+          opacity: 0.5,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
         });

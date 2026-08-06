@@ -1071,11 +1071,7 @@ footer .footer-nav a { font-size:.72rem; }
 }
 .hero-network-sphere .hero-network-field { height:430px; min-height:430px; }
 .hero-network-sphere .hero-network-field::after {
-  left:24%;
-  right:24%;
-  bottom:6%;
-  height:10%;
-  opacity:.7;
+  display:none;
 }
 .hero-network-sphere .hero-network-label {
   --network-label-opacity:.7;
@@ -1097,21 +1093,25 @@ footer .footer-nav a { font-size:.72rem; }
   position:absolute;
   top:50%;
   width:max-content;
-  color:#D7E2E2;
-  font-size:.55rem;
-  opacity:0;
-  transform:translateY(-50%) translateX(-3px);
-  transition:opacity .2s ease,transform .2s ease;
+  max-width:150px;
+  color:#D7E4E4;
+  font-size:.52rem;
+  font-weight:520;
+  line-height:1.16;
+  white-space:normal;
+  opacity:.82;
+  transform:translateY(-50%);
+  transition:opacity .2s ease;
 }
 .hero-network-sphere .hero-network-label[data-side="right"] span { left:calc(100% + .45rem); }
-.hero-network-sphere .hero-network-label[data-side="left"] span { right:calc(100% + .45rem); transform:translateY(-50%) translateX(3px); }
+.hero-network-sphere .hero-network-label[data-side="left"] span { right:calc(100% + .45rem); transform:translateY(-50%); text-align:right; }
 .hero-network-sphere .hero-network-label:hover,
 .hero-network-sphere .hero-network-label:focus-within { filter:brightness(1.28); }
 .hero-network-sphere .hero-network-label:hover span,
-.hero-network-sphere .hero-network-label:focus-within span { opacity:1; transform:translateY(-50%) translateX(0); }
+.hero-network-sphere .hero-network-label:focus-within span { opacity:1; }
 .hero-network-sphere .hero-network-label-yale {
   gap:.22rem;
-  transform:translate(15px,18px);
+  transform:translate(17px,17px);
   opacity:1;
   text-align:left;
   justify-items:start;
@@ -1123,7 +1123,7 @@ footer .footer-nav a { font-size:.72rem; }
   .hero-network-sphere .hero-network-field { height:335px; min-height:335px; }
   .hero-network-sphere .hero-network-label[data-side="left"] { transform:translate(calc(-100% - 8px),-50%); }
   .hero-network-sphere .hero-network-label[data-side="right"] { transform:translate(8px,-50%); }
-  .hero-network-sphere .hero-network-label span { display:none; }
+  .hero-network-sphere .hero-network-label span { display:block; max-width:82px; font-size:.38rem; line-height:1.12; }
   .hero-network-sphere .hero-network-label-yale { transform:translate(11px,14px); }
   .hero-network-sphere .hero-network-label-yale strong { font-size:.57rem; }
   .hero-network-sphere .hero-network-label-yale small { display:block; font-size:.34rem; }
