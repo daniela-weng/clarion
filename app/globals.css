@@ -970,3 +970,112 @@ footer .footer-nav a { font-size:.72rem; }
   .hero-network-field { transform:none !important; transition:none; will-change:auto; }
   .hero-node-yale::before,.hero-node-yale::after { animation:none; }
 }
+
+/* Genuine WebGL network: faceted institutional nodes with calm scientific motion. */
+.home-hero-pixels { opacity:.18; }
+.hero-network-3d { min-height:440px; cursor:default; perspective:none; }
+.hero-network-3d::before {
+  inset:3% -2% 4%;
+  background:
+    radial-gradient(circle at 50% 48%,rgba(96,165,179,.18),transparent 31%),
+    radial-gradient(ellipse at 50% 72%,rgba(4,10,18,.32),transparent 44%);
+}
+.hero-network-3d .hero-network-field {
+  height:410px;
+  min-height:410px;
+  overflow:visible;
+  transform:none;
+  transition:none;
+  transform-style:flat;
+  will-change:auto;
+}
+.hero-network-3d .hero-network-field::before { display:none; }
+.hero-network-3d .hero-network-field::after {
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:25%;
+  right:20%;
+  bottom:11%;
+  height:12%;
+  border-radius:50%;
+  background:rgba(2,9,16,.32);
+  filter:blur(18px);
+  pointer-events:none;
+}
+.hero-network-3d .hero-network-canvas { z-index:1; }
+.hero-network-label {
+  position:absolute;
+  z-index:3;
+  display:flex;
+  align-items:center;
+  gap:.42rem;
+  color:#C9D7D9;
+  font-family:var(--font-sans);
+  font-size:.6rem;
+  line-height:1;
+  letter-spacing:.01em;
+  white-space:nowrap;
+  pointer-events:none;
+  transition:opacity .3s ease;
+}
+.hero-network-label[data-side="left"] { transform:translate(calc(-100% - 19px),-50%); }
+.hero-network-label[data-side="right"] { transform:translate(19px,-50%); }
+.hero-network-label b {
+  min-width:2rem;
+  color:#B9DDE2;
+  font-size:.51rem;
+  font-weight:760;
+  letter-spacing:.09em;
+}
+.hero-network-label span { color:#C2D0D2; font-weight:520; }
+.hero-network-label-yale {
+  display:grid;
+  justify-items:center;
+  gap:.28rem;
+  transform:translate(-50%,47px);
+  text-align:center;
+}
+.hero-network-label-yale strong {
+  color:#F0F4F1;
+  font-family:var(--font-fraunces),Georgia,serif;
+  font-size:.76rem;
+  font-weight:550;
+  letter-spacing:.005em;
+}
+.hero-network-label-yale small {
+  color:#8FAEB4;
+  font-size:.43rem;
+  font-weight:720;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.hero-network-key {
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.5rem;
+  margin:-.2rem 0 0;
+  color:#829BA0;
+  font-size:.49rem;
+  font-weight:650;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.hero-network-key span { width:17px; height:1px; background:#77AEB8; }
+.hero-network-key i { width:3px; height:3px; margin-left:.45rem; border-radius:50%; background:#D7F1F1; box-shadow:0 0 7px rgba(188,228,231,.65); }
+
+@media (max-width:760px) {
+  .hero-network-3d { min-height:350px; }
+  .hero-network-3d .hero-network-field { height:320px; min-height:320px; overflow:hidden; }
+  .hero-network-label { gap:.25rem; font-size:.48rem; }
+  .hero-network-label b { min-width:1.55rem; font-size:.42rem; }
+  .hero-network-label[data-side="left"] { transform:translate(calc(-100% - 11px),-50%); }
+  .hero-network-label[data-side="right"] { transform:translate(11px,-50%); }
+  .hero-network-label-yale { transform:translate(-50%,38px); }
+  .hero-network-label-yale strong { font-size:.62rem; }
+  .hero-network-label-yale small { font-size:.36rem; }
+  .hero-network-key { margin-top:.25rem; font-size:.41rem; letter-spacing:.06em; }
+}
