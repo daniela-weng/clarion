@@ -781,3 +781,36 @@ footer .footer-nav a { font-size:.72rem; }
   .hero-network { min-height:325px; }
   .hero-network-field { height:270px; }
 }
+
+/* Network geometry refinement: keep the animated radial concept, align every spoke. */
+.hero-network-field::before { opacity:.09; }
+.hero-node i::after { animation:clarion-node-breathe 4.8s ease-in-out infinite; }
+.hero-node:nth-of-type(2n) i::after { animation-delay:-2.4s; }
+.hero-node-yale { display:grid; place-items:center; gap:0; }
+.hero-node-yale>span { display:none; }
+.hero-node-yale small { left:50%; top:calc(100% + .65rem); transform:translateX(-50%); width:max-content; color:#AFC5CA; font-family:var(--font-sans); font-size:.5rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+.network-route { background:linear-gradient(90deg,rgba(164,202,210,.66),rgba(164,202,210,.4)); opacity:.62; }
+.network-route::after { width:4px; height:4px; background:#C4E0E4; box-shadow:0 0 7px rgba(196,224,228,.62); animation-duration:6.4s; }
+/* Right-side institutions: Columbia, Cornell, Florida. */
+.route-a { width:38%; transform:rotate(-32deg); }
+.route-b { width:29%; transform:rotate(-14deg); }
+.route-c { width:40%; transform:rotate(38deg); }
+/* Left-side institutions: UC Irvine, Indiana, Minnesota. */
+.route-d { width:47%; transform:rotate(156deg); }
+.route-e { width:32%; transform:rotate(189deg); }
+.route-f { width:36%; transform:rotate(222deg); }
+@keyframes clarion-node-breathe { 0%,100% { opacity:.28; transform:scale(.96); } 50% { opacity:.72; transform:scale(1.08); } }
+
+@media (max-width:760px) {
+  .hero-node-yale small { display:block; top:calc(100% + .45rem); font-size:.43rem; }
+  .route-a { width:36%; transform:rotate(-39deg); }
+  .route-b { width:27%; transform:rotate(-18deg); }
+  .route-c { width:38%; transform:rotate(47deg); }
+  .route-d { width:45%; transform:rotate(146deg); }
+  .route-e { width:30%; transform:rotate(192deg); }
+  .route-f { width:34%; transform:rotate(215deg); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .hero-node i::after { animation:none; }
+}
