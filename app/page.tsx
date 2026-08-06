@@ -91,8 +91,8 @@ function HeroNetwork() {
   return (
     <div className="hero-network" role="img" aria-label="Seven academic institutions connected through Yale University as the Clarion coordinating center">
       <div className="hero-network-caption">
-        <span>7 academic institutions</span>
-        <span>Federated network</span>
+        <span>Clarion federated network</span>
+        <span>Yale coordinates</span>
       </div>
       <div className="hero-network-field" aria-hidden="true">
         <span className="network-route route-a" />
@@ -113,7 +113,6 @@ function HeroNetwork() {
           <small>Coordinating center</small>
         </div>
       </div>
-      <p className="hero-network-note">Approved analyses move through the network. Patient-level data remain local by default.</p>
     </div>
   );
 }

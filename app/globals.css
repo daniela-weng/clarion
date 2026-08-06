@@ -735,3 +735,49 @@ footer .footer-nav a { font-size:.72rem; }
   .network-route::after { animation:none; }
   .framework-module,.framework-cta svg,.study-primary svg { transition:none; }
 }
+
+/* Hero balance pass: preserve the approved title, simplify everything around it. */
+.home-hero { min-height:630px; padding:clamp(3.9rem,5.5vw,5rem) 0; }
+.home-hero-layout { grid-template-columns:minmax(0,1.16fr) minmax(380px,.84fr); gap:clamp(2.5rem,4vw,4.5rem); }
+.home-hero-content { max-width:760px; }
+.home-hero-content h1 { max-width:750px; font-size:clamp(3rem,4.35vw,4.65rem); line-height:1; letter-spacing:-.03em; }
+.home-hero-lead { max-width:610px; margin-top:1.35rem; font-size:clamp(.98rem,1.15vw,1.08rem); line-height:1.58; }
+.home-hero .home-actions { margin-top:2rem; gap:.9rem 1.35rem; }
+.home-hero .specular-button--lg { padding:15px 28px; font-size:1rem; }
+.home-hero .home-text-link { font-size:.88rem; }
+.home-hero-pixels { opacity:.42; filter:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 37%,#000 72%);
+          mask-image:linear-gradient(90deg,transparent 37%,#000 72%); }
+.home-hero-mesh { opacity:.65;
+  -webkit-mask-image:radial-gradient(ellipse 58% 82% at 84% 46%,#000 0%,transparent 73%);
+          mask-image:radial-gradient(ellipse 58% 82% at 84% 46%,#000 0%,transparent 73%); }
+.home-hero-overlay { background:
+  linear-gradient(90deg,rgba(9,15,21,.76) 0%,rgba(9,15,21,.56) 41%,rgba(9,15,21,.12) 68%,rgba(9,15,21,0) 100%),
+  linear-gradient(180deg,rgba(9,15,21,.2),rgba(9,15,21,0) 40%,rgba(9,15,21,.16)); }
+.hero-network { min-height:395px; align-self:center; }
+.hero-network::before { inset:2.1rem 0 1rem; }
+.hero-network-caption { padding:.65rem 0; }
+.hero-network-field { height:330px; }
+.hero-network-field::before { inset:12% 7%; opacity:.2; background-size:20px 20px; }
+.hero-node { font-size:.61rem; }
+.hero-node i { width:27px; height:27px; }
+.hero-node-yale i { width:44px; height:44px; }
+.hero-node small { left:44px; top:1rem; font-size:.48rem; }
+.node-columbia { right:2%; top:19%; }.node-cornell { right:7%; top:38%; }.node-florida { right:3%; bottom:12%; }
+.node-irvine { left:2%; bottom:19%; }.node-indiana { left:13%; top:40%; }.node-minnesota { left:18%; top:15%; }
+.network-route { width:39%; opacity:.72; }
+
+@media (max-width:980px) {
+  .home-hero { padding:4rem 0; }
+  .home-hero-layout { gap:2.6rem; }
+  .home-hero-content h1 { max-width:760px; }
+  .hero-network { max-width:650px; min-height:370px; }
+}
+
+@media (max-width:760px) {
+  .home-hero { padding:3.4rem 0; }
+  .home-hero-content h1 { font-size:clamp(2.65rem,10.8vw,3.5rem); line-height:1.01; }
+  .home-hero .home-actions { gap:1rem; }
+  .hero-network { min-height:325px; }
+  .hero-network-field { height:270px; }
+}
