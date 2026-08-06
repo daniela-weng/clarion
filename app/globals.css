@@ -545,10 +545,11 @@ footer p,footer span { color:#D6DBD9; }
 /* Institutional CTA: matte, high-contrast, and deliberately free of neon effects. */
 .home-hero .specular-button { background:#EEEAE2; color:#162330; font-weight:700; letter-spacing:.015em;
   text-shadow:none;
-  border:1px solid rgba(255,255,255,.52);
-  box-shadow:0 7px 20px rgba(6,12,18,.25);
+  border:none;
+  box-shadow:0 6px 18px rgba(6,12,18,.22);
   transition:transform .2s cubic-bezier(.22,.61,.36,1), background-color .2s ease, box-shadow .2s ease; }
-.home-hero .specular-button:hover { transform:translateY(-1px); filter:none; background:#FAF7F0; border-color:rgba(255,255,255,.72);
+.home-hero .specular-button__fx { display:none; }
+.home-hero .specular-button:hover { transform:translateY(-1px); filter:none; background:#FAF7F0;
   box-shadow:0 10px 24px rgba(6,12,18,.3); }
 
 /* Secondary link: animated hairline underline */
