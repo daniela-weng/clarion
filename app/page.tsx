@@ -3,13 +3,6 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { BlurText } from "./components/BlurText";
 import { HeroActions } from "./components/HeroActions";
 import PixelBlast from "./components/PixelBlast";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { academicMembers } from "./content";
 
 const researchAreas = [
@@ -17,22 +10,22 @@ const researchAreas = [
     href: "/network",
     number: "01",
     label: "The network",
-    teaser:
-      "Participating institutions, defined member roles, and Yale’s coordinating responsibilities.",
+    cta: "Explore the network",
+    teaser: "Participating institutions, defined member roles, and Yale’s coordinating responsibilities.",
   },
   {
     href: "/governance",
     number: "02",
     label: "Governance & data",
-    teaser:
-      "Shared oversight, privacy protections, and policies for responsible multi-institutional research.",
+    cta: "Review governance",
+    teaser: "Shared oversight, privacy protections, and policies for responsible multi-institutional research.",
   },
   {
     href: "/sponsored-research",
     number: "03",
     label: "Sponsored research",
-    teaser:
-      "Proposal review, feasibility assessment, and coordinated execution across approved member sites.",
+    cta: "Plan a study",
+    teaser: "Proposal review, feasibility assessment, and coordinated execution across approved member sites.",
   },
 ];
 
@@ -41,18 +34,108 @@ const modelSteps = [
     number: "01",
     title: "Data remain local",
     text: "Structured and unstructured EHR data stay within each institution’s secure environment.",
+    label: "Local data",
   },
   {
     number: "02",
     title: "Analyses run on site",
     text: "Approved, standards-conforming workflows execute under local institutional oversight.",
+    label: "On-site analysis",
   },
   {
     number: "03",
     title: "Results are synthesized",
     text: "Only approved aggregate outputs return to the Coordinating Center for synthesis.",
+    label: "Aggregate results",
   },
 ];
+
+const principles = [
+  {
+    number: "01",
+    title: "Multi-institutional reach",
+    text: "Coordinate oncology research across participating academic health systems.",
+  },
+  {
+    number: "02",
+    title: "Privacy by architecture",
+    text: "Patient-level data remain within participating institutions by default.",
+  },
+  {
+    number: "03",
+    title: "Shared research standards",
+    text: "Approved workflows, common analysis methods, and coordinated institutional oversight support consistent research execution.",
+  },
+];
+
+const heroNodes = [
+  { short: "COL", label: "Columbia", className: "node-columbia" },
+  { short: "COR", label: "Cornell", className: "node-cornell" },
+  { short: "UF", label: "Florida", className: "node-florida" },
+  { short: "UCI", label: "UC Irvine", className: "node-irvine" },
+  { short: "IU", label: "Indiana", className: "node-indiana" },
+  { short: "UMN", label: "Minnesota", className: "node-minnesota" },
+];
+
+function SectionIntro({ eyebrow, title, description, id }: { eyebrow: string; title: string; description?: string; id: string }) {
+  return (
+    <div className="story-heading">
+      <p className="home-kicker">{eyebrow}</p>
+      <h2 id={id}>{title}</h2>
+      {description && <p>{description}</p>}
+    </div>
+  );
+}
+
+function HeroNetwork() {
+  return (
+    <div className="hero-network" role="img" aria-label="Seven academic institutions connected through Yale University as the Clarion coordinating center">
+      <div className="hero-network-caption">
+        <span>7 academic institutions</span>
+        <span>Federated network</span>
+      </div>
+      <div className="hero-network-field" aria-hidden="true">
+        <span className="network-route route-a" />
+        <span className="network-route route-b" />
+        <span className="network-route route-c" />
+        <span className="network-route route-d" />
+        <span className="network-route route-e" />
+        <span className="network-route route-f" />
+        {heroNodes.map((node) => (
+          <div className={`hero-node ${node.className}`} key={node.label}>
+            <i>{node.short}</i>
+            <span>{node.label}</span>
+          </div>
+        ))}
+        <div className="hero-node hero-node-yale">
+          <i>Y</i>
+          <span>Yale</span>
+          <small>Coordinating center</small>
+        </div>
+      </div>
+      <p className="hero-network-note">Approved analyses move through the network. Patient-level data remain local by default.</p>
+    </div>
+  );
+}
+
+function MemberNetwork() {
+  return (
+    <div className="member-network" aria-label="Initial Clarion academic member network">
+      <div className="member-hub">
+        <span>Coordinating center</span>
+        <strong>Yale University</strong>
+      </div>
+      <ul>
+        {academicMembers.filter((institution) => institution !== "Yale University").map((institution, index) => (
+          <li key={institution}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{institution}</strong>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -61,143 +144,99 @@ export default function Home() {
         <div className="home-hero-gradient" aria-hidden="true" />
         <div className="home-hero-mesh" aria-hidden="true" />
         <div className="home-hero-pixels" aria-hidden="true">
-          <PixelBlast
-            variant="square"
-            pixelSize={2.8}
-            color="#AFCFD6"
-            patternScale={2.4}
-            patternDensity={0.9}
-            pixelSizeJitter={0}
-            enableRipples
-            rippleSpeed={0.4}
-            rippleThickness={0.12}
-            rippleIntensityScale={1.5}
-            liquid={false}
-            speed={0.5}
-            edgeFade={0.3}
-            transparent
-          />
+          <PixelBlast variant="square" pixelSize={2.6} color="#AFCFD6" patternScale={2.4} patternDensity={0.75} pixelSizeJitter={0} enableRipples rippleSpeed={0.35} rippleThickness={0.1} rippleIntensityScale={1.15} liquid={false} speed={0.4} edgeFade={0.34} transparent />
         </div>
         <div className="home-hero-glow" aria-hidden="true" />
         <div className="home-hero-overlay" aria-hidden="true" />
-        <div className="home-shell">
+        <div className="home-shell home-hero-layout">
           <div className="home-hero-content">
             <p className="home-kicker">Collaborative oncology research network</p>
             <h1>
-              <BlurText text="Real-world evidence" />
-              <span className="hero-line-2">
-                <BlurText text="in oncology." delay={0.14} />
-              </span>
+              <BlurText text="Advancing oncology research" />
+              <span className="hero-line-2"><BlurText text="through federated evidence." delay={0.14} /></span>
             </h1>
-            <p className="home-hero-lead">
-              A privacy-preserving network of leading academic institutions and healthcare
-              systems, coordinated by Yale University, that turns structured and unstructured EHR
-              data into rigorous real-world evidence to improve cancer care.
-            </p>
+            <p className="home-hero-lead">Clarion connects leading academic institutions to conduct rigorous, privacy-preserving oncology research—without centralizing patient-level data.</p>
             <HeroActions />
           </div>
+          <HeroNetwork />
         </div>
       </section>
 
-      <section className="home-summary-band">
-        <div className="home-shell">
-          <aside className="home-summary" aria-label="Clarion network summary">
-            <div className="home-summary-heading">
-              <p className="home-kicker">Network at a glance</p>
-              <span>Current charter</span>
-            </div>
-            <dl>
-              <div>
-                <dt>Coordinating center</dt>
-                <dd>Yale University</dd>
-              </div>
-              <div>
-                <dt>Initial academic members</dt>
-                <dd>7 institutions</dd>
-              </div>
-              <div>
-                <dt>Analysis model</dt>
-                <dd>Federated / on-site</dd>
-              </div>
-              <div>
-                <dt>Patient-level data sharing</dt>
-                <dd>None by default</dd>
-              </div>
-            </dl>
-          </aside>
+      <section className="home-summary-band" aria-labelledby="summary-title">
+        <div className="home-shell home-summary">
+          <div className="home-summary-heading">
+            <p className="home-kicker" id="summary-title">Current network</p>
+            <span>Charter overview</span>
+          </div>
+          <dl>
+            <div><dd>7</dd><dt>Academic institutions</dt></div>
+            <div><dd>Yale University</dd><dt>Coordinating center</dt></div>
+            <div><dd>Federated / on-site</dd><dt>Analysis model</dt></div>
+            <div><dd>Local by default</dd><dt>Patient-level data</dt></div>
+          </dl>
         </div>
       </section>
 
       <section className="home-members" aria-labelledby="members-title">
-        <div className="home-shell">
-          <div className="home-members-heading">
-            <div>
-              <p className="home-kicker">Initial academic members</p>
-              <h2 id="members-title">A multi-institutional network.</h2>
-            </div>
-            <Link href="/network">
-              Network overview <ArrowUpRight aria-hidden="true" />
-            </Link>
+        <div className="home-shell story-split">
+          <div className="member-copy">
+            <SectionIntro eyebrow="Initial academic members" id="members-title" title="Seven institutions. One coordinated research network." description="Clarion brings together leading academic health systems through a shared framework for privacy-preserving oncology research." />
+            <Link className="home-text-link" href="/network">View the network <ArrowRight aria-hidden="true" /></Link>
           </div>
-          <ul className="home-institution-list">
-            {academicMembers.map((institution) => (
-              <li key={institution}>{institution}</li>
+          <MemberNetwork />
+        </div>
+      </section>
+
+      <section className="home-why" aria-labelledby="why-title">
+        <div className="home-shell story-split story-split-wide">
+          <div className="why-statement">
+            <p className="home-kicker">Why Clarion</p>
+            <h2 id="why-title">Research across institutions, <em>without centralizing patient data.</em></h2>
+            <div className="why-signal" aria-hidden="true"><span /><span /><span /><span /></div>
+          </div>
+          <div className="why-principles">
+            {principles.map((principle) => (
+              <article key={principle.number}>
+                <span>{principle.number}</span>
+                <div><h3>{principle.title}</h3><p>{principle.text}</p></div>
+              </article>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
       <section className="home-model" aria-labelledby="model-title">
         <div className="home-shell">
-          <div className="home-section-heading home-section-heading-split">
-            <div>
-              <p className="home-kicker">Research model</p>
-              <h2 id="model-title">Federated by design.</h2>
-            </div>
-            <p>
-              Clarion supports multi-institutional analysis while preserving local control
-              of patient-level data and institutional oversight.
-            </p>
-          </div>
-          <ol className="home-model-steps">
+          <SectionIntro eyebrow="Research model" id="model-title" title="Federated by design." description="Clarion supports multi-institutional analysis while preserving local control of patient-level data and institutional oversight." />
+          <ol className="model-flow">
             {modelSteps.map((step, index) => (
               <li key={step.number}>
-                <div className="home-step-meta">
-                  <span>{step.number}</span>
-                  {index < modelSteps.length - 1 && <ArrowRight aria-hidden="true" />}
-                </div>
+                <div className="flow-node"><span>{step.number}</span></div>
+                {index < modelSteps.length - 1 && <ArrowRight className="flow-arrow" aria-hidden="true" />}
+                <small>{step.label}</small>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
               </li>
             ))}
           </ol>
-          <Link className="home-text-link home-model-link" href="/governance">
-            Review governance and data protections <ArrowRight aria-hidden="true" />
-          </Link>
+          <div className="model-principle">
+            <span>Network principle</span>
+            <strong>Patient-level data do not leave participating institutions by default.</strong>
+          </div>
+          <Link className="home-text-link home-model-link" href="/governance">Review governance and data protections <ArrowRight aria-hidden="true" /></Link>
         </div>
       </section>
 
       <section className="home-areas" aria-labelledby="areas-title">
         <div className="home-shell">
-          <div className="home-section-heading">
-            <p className="home-kicker">Explore Clarion</p>
-            <h2 id="areas-title">The network’s operating framework.</h2>
-          </div>
-          <div className="home-area-grid">
+          <SectionIntro eyebrow="Explore Clarion" id="areas-title" title="The network’s operating framework." />
+          <div className="framework-list">
             {researchAreas.map((area) => (
-              <Card key={area.href} className="home-area-card">
-                <CardHeader>
-                  <span className="home-card-number">{area.number}</span>
-                  <CardTitle>
-                    <Link href={area.href}>
-                      {area.label} <ArrowUpRight aria-hidden="true" />
-                    </Link>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{area.teaser}</CardDescription>
-                </CardContent>
-              </Card>
+              <Link href={area.href} className="framework-module" key={area.href}>
+                <span className="framework-number">{area.number}</span>
+                <div><h3>{area.label}</h3><p>{area.teaser}</p></div>
+                <span className="framework-cta">{area.cta} <ArrowUpRight aria-hidden="true" /></span>
+              </Link>
             ))}
           </div>
         </div>
@@ -210,43 +249,26 @@ export default function Home() {
             <h2 id="assurance-title">Research with institutional control.</h2>
           </div>
           <div className="home-assurance-points">
-            <article>
-              <span>01</span>
-              <h3>Local oversight</h3>
-              <p>Each institution maintains its own regulatory and operational oversight.</p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3>Privacy by default</h3>
-              <p>Patient-level data are not transferred as part of standard network operations.</p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3>Coordinated review</h3>
-              <p>Projects follow common review, approval, analysis, and publication processes.</p>
-            </article>
+            <article><span>01</span><h3>Local oversight</h3><p>Each institution maintains its own regulatory and operational oversight.</p></article>
+            <article><span>02</span><h3>Privacy by default</h3><p>Patient-level data are not transferred as part of standard network operations.</p></article>
+            <article><span>03</span><h3>Coordinated review</h3><p>Projects follow common review, approval, analysis, and publication processes.</p></article>
           </div>
         </div>
       </section>
 
-      <section className="home-contact" aria-labelledby="contact-title">
-        <div className="home-shell home-contact-grid">
+      <section className="home-study-cta" aria-labelledby="study-cta-title">
+        <div className="study-pattern" aria-hidden="true" />
+        <div className="home-shell study-cta-layout">
           <div>
-            <p className="home-kicker">Contact</p>
-            <h2 id="contact-title">Research collaboration inquiries.</h2>
+            <p className="home-kicker">Engage with Clarion</p>
+            <h2 id="study-cta-title">Planning a multi-institutional oncology study?</h2>
           </div>
-          <div className="home-contact-people">
-            <p>For membership information, sponsored projects, or research collaboration:</p>
-            <address>
-              <a href="mailto:vipina.kuttichikeloth@yale.edu">
-                <strong>Vipina K. Keloth, PhD</strong>
-                <span>vipina.kuttichikeloth@yale.edu</span>
-              </a>
-              <a href="mailto:hua.xu@yale.edu">
-                <strong>Hua Xu, PhD</strong>
-                <span>hua.xu@yale.edu</span>
-              </a>
-            </address>
+          <div>
+            <p>Clarion provides a coordinated framework for privacy-preserving feasibility assessment, research governance, and multi-site study execution.</p>
+            <div className="study-actions">
+              <Link className="study-primary" href="/sponsored-research">Discuss a study <ArrowRight aria-hidden="true" /></Link>
+              <Link className="study-secondary" href="/contact">Contact the coordinating center</Link>
+            </div>
           </div>
         </div>
       </section>

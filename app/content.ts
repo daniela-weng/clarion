@@ -2,7 +2,7 @@ export const academicMembers = [
   "Columbia University",
   "Cornell University",
   "University of Florida",
-  "UC Irvine",
+  "University of California, Irvine",
   "Indiana University",
   "University of Minnesota",
   "Yale University",

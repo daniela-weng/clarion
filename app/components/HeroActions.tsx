@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import SpecularButton from "./SpecularButton";
+import { ArrowRight } from "lucide-react";
 
 export function HeroActions() {
   const router = useRouter();
@@ -22,11 +24,14 @@ export function HeroActions() {
         followMouse
         proximity={280}
         tintOpacity={0}
-        aria-label="About Clarion"
-        onClick={() => router.push("/about")}
+        aria-label="Explore the Clarion network"
+        onClick={() => router.push("/network")}
       >
-        About Clarion
+        Explore the network
       </SpecularButton>
+      <Link className="home-text-link" href="/governance">
+        How federated research works <ArrowRight aria-hidden="true" />
+      </Link>
     </div>
   );
 }
