@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { BlurText } from "./components/BlurText";
 import { HeroActions } from "./components/HeroActions";
+import { HeroNetwork } from "./components/HeroNetwork";
 import PixelBlast from "./components/PixelBlast";
 import { academicMembers } from "./content";
 
@@ -68,47 +69,12 @@ const principles = [
   },
 ];
 
-const heroNodes = [
-  { short: "COL", label: "Columbia", className: "node-columbia" },
-  { short: "COR", label: "Cornell", className: "node-cornell" },
-  { short: "UF", label: "Florida", className: "node-florida" },
-  { short: "UCI", label: "UC Irvine", className: "node-irvine" },
-  { short: "IU", label: "Indiana", className: "node-indiana" },
-  { short: "UMN", label: "Minnesota", className: "node-minnesota" },
-];
-
 function SectionIntro({ eyebrow, title, description, id }: { eyebrow: string; title: string; description?: string; id: string }) {
   return (
     <div className="story-heading">
       <p className="home-kicker">{eyebrow}</p>
       <h2 id={id}>{title}</h2>
       {description && <p>{description}</p>}
-    </div>
-  );
-}
-
-function HeroNetwork() {
-  return (
-    <div className="hero-network" role="img" aria-label="Seven academic institutions connected through Yale University as the Clarion coordinating center">
-      <div className="hero-network-field" aria-hidden="true">
-        <span className="network-route route-a" />
-        <span className="network-route route-b" />
-        <span className="network-route route-c" />
-        <span className="network-route route-d" />
-        <span className="network-route route-e" />
-        <span className="network-route route-f" />
-        {heroNodes.map((node) => (
-          <div className={`hero-node ${node.className}`} key={node.label}>
-            <i>{node.short}</i>
-            <span>{node.label}</span>
-          </div>
-        ))}
-        <div className="hero-node hero-node-yale">
-          <i>Y</i>
-          <span>Yale</span>
-          <small>Coordinating center</small>
-        </div>
-      </div>
     </div>
   );
 }
