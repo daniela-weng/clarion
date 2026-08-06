@@ -123,32 +123,18 @@ export function HeroNetwork() {
 
     const flowColors = [0x69e0e4, 0x4d9ee0, 0x77c9d5, 0xb7eeea];
     const flowParticles: FlowParticle[] = [];
-    const flowAnchors = [
-      { azimuth: 2.34, polar: 0.62 },
-      { azimuth: 0.72, polar: 2.46 },
-    ];
-    for (let index = 0; index < 62; index += 1) {
-      const anchor = flowAnchors[index < 43 ? 0 : 1];
-      const startAzimuth = anchor.azimuth + (seeded(index, 1) - 0.5) * 0.16;
-      const startPolar = anchor.polar + (seeded(index, 2) - 0.5) * 0.13;
-      const endAzimuth = seeded(index, 3) * Math.PI * 2;
-      const endPolar = 0.24 + seeded(index, 4) * (Math.PI - 0.48);
-      const start = pointOnSphere(sphereRadius, startAzimuth, startPolar);
-      const end = pointOnSphere(sphereRadius, endAzimuth, endPolar);
-      const controlOne = start.clone().lerp(end, 0.3).normalize().multiplyScalar(sphereRadius * (1.2 + seeded(index, 5) * 0.13));
-      const controlTwo = start.clone().lerp(end, 0.72).normalize().multiplyScalar(sphereRadius * (1.12 + seeded(index, 10) * 0.1));
-      const curve = new THREE.CubicBezierCurve3(start, controlOne, controlTwo, end);
-      const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(68));
+    const addFlow = (curve: THREE.Curve<THREE.Vector3>, index: number, emphasized: boolean, opacityScale = 1) => {
+      const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(64));
       const material = new THREE.LineBasicMaterial({
         color: flowColors[index % flowColors.length],
         transparent: true,
-        opacity: 0.16 + seeded(index, 6) * 0.24,
+        opacity: (0.17 + seeded(index, 6) * 0.25) * opacityScale,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
       globe.add(new THREE.Line(geometry, material));
 
-      if (index % 6 === 0) {
+      if (emphasized) {
         const glowGeometry = new THREE.TubeGeometry(curve, 64, 0.025, 5, false);
         const glowMaterial = new THREE.MeshBasicMaterial({
           color: flowColors[index % flowColors.length],
@@ -179,6 +165,38 @@ export function HeroNetwork() {
         globe.add(particle);
         flowParticles.push({ curve, mesh: particle, offset: seeded(index, 7), speed: 0.02 + seeded(index, 8) * 0.018 });
       }
+    };
+
+    /* Free-crossing surface routes create the expressive, random globe silhouette. */
+    for (let index = 0; index < 44; index += 1) {
+      const startAzimuth = seeded(index, 1) * Math.PI * 2;
+      const startPolar = 0.15 + seeded(index, 2) * (Math.PI - 0.3);
+      const direction = index % 2 === 0 ? 1 : -1;
+      const endAzimuth = startAzimuth + direction * (0.72 + seeded(index, 3) * 1.72);
+      const endPolar = THREE.MathUtils.clamp(startPolar + (seeded(index, 4) - 0.5) * 1.35, 0.12, Math.PI - 0.12);
+      const start = pointOnSphere(sphereRadius, startAzimuth, startPolar);
+      const end = pointOnSphere(sphereRadius, endAzimuth, endPolar);
+      const control = start.clone().add(end).normalize().multiplyScalar(sphereRadius * (1.1 + seeded(index, 5) * 0.16));
+      addFlow(new THREE.QuadraticBezierCurve3(start, control, end), index, index % 7 === 0, 1.08);
+    }
+
+    /* A quieter directional layer keeps the random crossings wrapped to the sphere. */
+    const flowAnchors = [
+      { azimuth: 2.34, polar: 0.62 },
+      { azimuth: 0.72, polar: 2.46 },
+    ];
+    for (let localIndex = 0; localIndex < 18; localIndex += 1) {
+      const index = localIndex + 44;
+      const anchor = flowAnchors[localIndex < 12 ? 0 : 1];
+      const startAzimuth = anchor.azimuth + (seeded(index, 1) - 0.5) * 0.17;
+      const startPolar = anchor.polar + (seeded(index, 2) - 0.5) * 0.14;
+      const endAzimuth = seeded(index, 3) * Math.PI * 2;
+      const endPolar = 0.24 + seeded(index, 4) * (Math.PI - 0.48);
+      const start = pointOnSphere(sphereRadius, startAzimuth, startPolar);
+      const end = pointOnSphere(sphereRadius, endAzimuth, endPolar);
+      const controlOne = start.clone().lerp(end, 0.3).normalize().multiplyScalar(sphereRadius * (1.19 + seeded(index, 5) * 0.12));
+      const controlTwo = start.clone().lerp(end, 0.72).normalize().multiplyScalar(sphereRadius * (1.11 + seeded(index, 10) * 0.1));
+      addFlow(new THREE.CubicBezierCurve3(start, controlOne, controlTwo, end), index, localIndex % 6 === 0, 0.82);
     }
 
     const dustPositions: number[] = [];
