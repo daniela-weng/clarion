@@ -328,12 +328,14 @@ footer p,footer span { color:#D6DBD9; }
 .home-clarion-node div { display:grid; gap:.2rem; }
 .home-clarion-node strong { font-family:Georgia,serif; font-size:1rem; letter-spacing:.1em; }
 .home-clarion-node span { color:var(--slate); font-size:.61rem; }
-.home-summary-band { padding:0 0 4.5rem; background:var(--white); }
-.home-summary { margin-top:0; border-top:3px solid var(--amber); background:transparent; }
-.home-summary-heading { display:flex; justify-content:space-between; gap:1rem; padding:1.35rem 0 .35rem; }
+.home-summary-band { padding:2.4rem 0 4.5rem; background:linear-gradient(180deg,#F4F7F6 0%,#EEF2F1 100%); border-bottom:1px solid #D8E0DF; }
+.home-summary { margin-top:0; background:transparent; }
+.home-summary-heading { display:flex; justify-content:space-between; gap:1rem; padding:0 0 1rem; border-bottom:1px solid #CBD7D6; }
 .home-summary-heading span { color:var(--slate); font-size:.68rem; }
-.home-summary dl { display:grid; grid-template-columns:repeat(4,1fr); margin:0; border-left:1px solid var(--line); }
-.home-summary dl>div { display:grid; gap:.8rem; align-content:start; padding:1rem 1.2rem 1.2rem; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+.home-summary dl { display:grid; grid-template-columns:repeat(4,1fr); margin:0; }
+.home-summary dl>div { display:grid; gap:.8rem; align-content:start; padding:1.35rem 1.2rem 1.1rem 0; border-right:1px solid #D2DCDB; }
+.home-summary dl>div+div { padding-left:1.2rem; }
+.home-summary dl>div:last-child { border-right:0; }
 .home-summary dt { color:var(--slate); font-size:.78rem; line-height:1.4; }
 .home-summary dd { margin:0; color:var(--ink); font-family:Georgia,serif; font-size:1.02rem; line-height:1.25; text-align:left; }
 .home-members { padding:4.5rem 0; background:var(--white); border-bottom:1px solid var(--line); }
@@ -390,6 +392,8 @@ footer p,footer span { color:#D6DBD9; }
   .home-hero-grid { grid-template-columns:1fr; gap:3.5rem; }
   .home-federated-visual { min-height:410px; }
   .home-summary dl { grid-template-columns:repeat(2,1fr); }
+  .home-summary dl>div:nth-child(2n) { border-right:0; }
+  .home-summary dl>div:nth-child(n+3) { border-top:1px solid #D2DCDB; }
   .home-institution-list { grid-template-columns:repeat(2,1fr); }
   .home-section-heading-split,.home-assurance .home-shell,.home-contact-grid { grid-template-columns:1fr; gap:2.5rem; }
   .home-area-grid { grid-template-columns:1fr; }
