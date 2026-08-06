@@ -90,10 +90,6 @@ function SectionIntro({ eyebrow, title, description, id }: { eyebrow: string; ti
 function HeroNetwork() {
   return (
     <div className="hero-network" role="img" aria-label="Seven academic institutions connected through Yale University as the Clarion coordinating center">
-      <div className="hero-network-caption">
-        <span>Clarion federated network</span>
-        <span>Yale coordinates</span>
-      </div>
       <div className="hero-network-field" aria-hidden="true">
         <span className="network-route route-a" />
         <span className="network-route route-b" />
@@ -151,10 +147,10 @@ export default function Home() {
           <div className="home-hero-content">
             <p className="home-kicker">Collaborative oncology research network</p>
             <h1>
-              <BlurText text="Advancing oncology research" />
-              <span className="hero-line-2"><BlurText text="through federated evidence." delay={0.14} /></span>
+              <BlurText text="Oncology evidence," />
+              <span className="hero-line-2"><BlurText text="connected without centralizing patient data." delay={0.14} /></span>
             </h1>
-            <p className="home-hero-lead">Clarion connects leading academic institutions to conduct rigorous, privacy-preserving oncology research—without centralizing patient-level data.</p>
+            <p className="home-hero-lead">A federated research network that allows participating institutions to run approved analyses locally and return only authorized aggregate results.</p>
             <HeroActions />
           </div>
           <HeroNetwork />
