@@ -9448,11 +9448,16 @@ footer .footer-meta {
 .governance-page .governance-hero-glow,
 .governance-page .governance-hero::after { display: none !important; }
 .governance-page .governance-hero-inner {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(310px, 420px) !important;
-  gap: clamp(4rem, 8vw, 8rem) !important;
+  display: block !important;
   align-items: center !important;
 }
+.governance-page .governance-hero-inner > div { max-width: 820px; }
+.governance-page .governance-hero h1 > span {
+  display: block;
+  white-space: nowrap;
+  color: var(--ui-paper) !important;
+}
+.governance-page .governance-hero h1 > span .hero-accent { color: var(--ui-teal-light) !important; }
 .governance-page .governance-hero-protocol {
   align-self: end;
   margin-bottom: .35rem;
@@ -9515,10 +9520,19 @@ footer .footer-meta {
 }
 .governance-page .oversight-card::before { display: none !important; }
 .governance-page .oversight-card-featured {
-  width: min(720px, 68%) !important;
-  padding: 1.7rem 2rem !important;
-  border-left: 3px solid var(--ui-teal) !important;
-  background: var(--ui-mist) !important;
+  width: min(700px, 68%) !important;
+  padding: 0 !important;
+  background: transparent !important;
+  text-align: center;
+}
+.governance-page .oversight-card-featured .oversight-card-heading {
+  justify-content: center;
+}
+.governance-page .oversight-card-featured > p {
+  max-width: 660px;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: center;
 }
 .governance-page .oversight-children { gap: clamp(2.5rem, 5vw, 5rem) !important; margin-top: 3.5rem; }
 .governance-page .oversight-children .oversight-card { position: relative; }
@@ -9586,9 +9600,7 @@ footer .footer-meta {
 .governance-page .governance-policies .policy-list article:first-child { padding-top: 0 !important; }
 .governance-page .governance-policies .policy-list article:last-child { border-bottom: 0 !important; }
 @media (max-width: 900px) {
-  .governance-page .governance-hero-inner,
   .governance-page .governance-oversight > .governance-section-heading { grid-template-columns: 1fr !important; }
-  .governance-page .governance-hero-protocol { display: none; }
   .governance-page .oversight-card-featured { width: 100% !important; }
 }
 @media (max-width: 760px) {
@@ -9596,6 +9608,7 @@ footer .footer-meta {
     background-image: linear-gradient(0deg, rgba(14, 27, 40, .98) 5%, rgba(14, 27, 40, .82) 58%, rgba(14, 27, 40, .34) 100%), url("/images/about-network-field-v2.png") !important;
     background-position: center, 68% center !important;
   }
+  .governance-page .governance-hero h1 { font-size: clamp(2.25rem, 10vw, 3.2rem) !important; }
   .governance-page .oversight-children { margin-top: 2rem; }
   .governance-page .governance-protections .protection-grid { grid-template-columns: 1fr !important; }
 }

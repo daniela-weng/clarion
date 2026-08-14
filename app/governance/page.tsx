@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { BarChart3, BookOpen, ClipboardCheck, Database, FileText, LockKeyhole, Network, Scale, ShieldCheck, Users } from "lucide-react";
 import { OversightDiagram } from "../components/OversightDiagram";
 import { RevealController } from "../components/RevealController";
-import { ClosingCta } from "../components/ClosingCta";
 
 export const metadata: Metadata = {
   title: "Governance & Data",
@@ -31,18 +30,11 @@ const policies = [
 
 export default function GovernancePage() {
   return <main id="main-content" className="content-page governance-page">
-    <section className="governance-hero"><div className="governance-hero-gradient" aria-hidden="true" /><div className="governance-hero-mesh" aria-hidden="true" /><div className="governance-hero-glow" aria-hidden="true" /><div className="governance-hero-inner"><div><p className="section-label">Governance &amp; data protection</p><h1>Local stewardship and<br />controlled analysis<span className="hero-accent">.</span></h1><p>Clarion combines shared Network governance with local institutional stewardship. Dedicated committees oversee research priorities, project review, data use, privacy, and compliance across participating institutions.</p></div><aside className="governance-hero-protocol" aria-label="Governance protocol"><p>Governance protocol</p><dl><div><dt>Patient-level data</dt><dd>Remain local</dd></div><div><dt>Network outputs</dt><dd>Approved aggregates</dd></div><div><dt>Research activity</dt><dd>Committee reviewed</dd></div></dl></aside></div></section>
+    <section className="governance-hero"><div className="governance-hero-gradient" aria-hidden="true" /><div className="governance-hero-mesh" aria-hidden="true" /><div className="governance-hero-glow" aria-hidden="true" /><div className="governance-hero-inner"><div><p className="section-label">Governance &amp; data protection</p><h1><span>Local stewardship and</span><span>controlled analysis<span className="hero-accent">.</span></span></h1><p>Clarion combines shared Network governance with local institutional stewardship. Dedicated committees oversee research priorities, project review, data use, privacy, and compliance across participating institutions.</p></div></div></section>
     <section className="governance-oversight"><div className="governance-section-heading reveal"><div><p className="section-label">Governance structure</p><h2>Network oversight<br />and review.</h2></div><p>A committee-led structure separates strategic direction, scientific guidance, project approval, and data governance while preserving institutional accountability.</p></div><OversightDiagram><div className="oversight-layout"><article data-oversight-parent className="oversight-card oversight-card-featured"><div className="oversight-card-heading"><span className="governance-icon" aria-hidden="true"><Users size={25} strokeWidth={1.6} /></span><h3>{oversight[0].title}</h3></div><p>{oversight[0].text}</p></article><div className="oversight-children">{oversight.slice(1).map(({ title, icon: Icon, text }, index) => <article data-oversight-child className="oversight-card" key={title}><span className="oversight-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><div className="oversight-card-heading"><span className="governance-icon" aria-hidden="true"><Icon size={25} strokeWidth={1.6} /></span><h3>{title}</h3></div><p>{text}</p></article>)}</div></div></OversightDiagram></section>
     <section className="governance-protections"><div className="governance-section-heading reveal"><p className="section-label">Data governance, privacy, and security</p><h2>How data are protected<span>.</span></h2></div><div className="protection-grid">{protections.map(({ title, icon: Icon, text }, index) => <article className="reveal" key={title}><span className="protection-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><span className="protection-icon" aria-hidden="true"><Icon size={25} strokeWidth={1.6} /></span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
     <section className="governance-policies"><div className="governance-section-heading reveal"><p className="section-label">Network policies</p><h2>Publication, funding,<br />and review<span>.</span></h2></div><div className="policy-list">{policies.map(([title, Icon, text], index) => <article className="reveal" key={title}><span className="policy-number">{String(index + 1).padStart(2, "0")}</span><span className="policy-icon" aria-hidden="true"><Icon size={22} strokeWidth={1.6} /></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
 
-    <ClosingCta
-      eyebrow="Sponsored research"
-      title="Research with institutional control."
-      body="Clarion's governed pathway keeps patient-level data local while coordinating review, approval, analysis, and publication across member institutions."
-      primaryLabel="Discuss a study"
-      secondaryLabel="Contact the coordinating center"
-    />
     <RevealController />
   </main>;
 }
