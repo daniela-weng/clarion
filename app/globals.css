@@ -9783,3 +9783,144 @@ footer .footer-meta {
     justify-content: flex-start !important;
   }
 }
+
+/* --- Sponsored research: editorial study path and governed data architecture --- */
+.sponsored-page .sponsored-workflow > .workflow-heading {
+  margin-bottom: clamp(2.75rem, 4vw, 3.5rem) !important;
+}
+.sponsored-page .sponsored-workflow .research-process {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: clamp(1.75rem, 3vw, 3.25rem) !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+.sponsored-page .sponsored-workflow .research-process::before {
+  content: none !important;
+  display: none !important;
+}
+.sponsored-page .sponsored-workflow .research-process li {
+  position: relative !important;
+  display: block !important;
+  min-width: 0 !important;
+  padding: 1.15rem 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(79, 130, 143, .42) !important;
+  text-align: left !important;
+}
+.sponsored-page .sponsored-workflow .research-process li::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 2.25rem;
+  height: 3px;
+  background: var(--ui-teal-dark);
+}
+.sponsored-page .sponsored-workflow .workflow-index {
+  display: block;
+  margin: 0 0 1.5rem;
+  color: var(--ui-teal-dark);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: .75rem;
+  font-weight: 750;
+  letter-spacing: .14em;
+  line-height: 1;
+}
+.sponsored-page .sponsored-workflow .process-copy {
+  display: block !important;
+}
+.sponsored-page .sponsored-workflow .process-copy h3 {
+  min-height: 3.2rem !important;
+  margin: 0 0 .8rem !important;
+  padding: 0 !important;
+  font-size: 1.28rem !important;
+  line-height: 1.22 !important;
+}
+.sponsored-page .sponsored-workflow .process-copy p {
+  max-width: 15rem;
+  margin: 0 !important;
+  font-size: 1rem !important;
+  line-height: 1.58 !important;
+}
+.sponsored-page .sponsored-local > .local-copy {
+  margin-bottom: 0 !important;
+}
+.sponsored-page .sponsored-local .local-flow {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(68px, .18fr) minmax(0, 1.12fr) minmax(68px, .18fr) minmax(0, 1fr) !important;
+  gap: clamp(.75rem, 1.5vw, 1.5rem) !important;
+  align-items: stretch !important;
+  margin: clamp(2.75rem, 4vw, 3.5rem) 0 0 !important;
+}
+.sponsored-page .sponsored-local .local-flow > .flow-stage {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  padding: clamp(1.75rem, 3vw, 2.5rem) 0 !important;
+}
+.sponsored-page .sponsored-local .local-flow > .flow-stage-analysis {
+  padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1.5rem, 2.5vw, 2.25rem) !important;
+  border: 1px solid rgba(79, 130, 143, .2) !important;
+  border-radius: 2px !important;
+  background: rgba(222, 234, 236, .46) !important;
+}
+.sponsored-page .sponsored-local .flow-stage-icon {
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+  margin-bottom: 1.35rem !important;
+  border: 0 !important;
+  border-radius: 2px !important;
+  background: transparent !important;
+}
+.sponsored-page .sponsored-local .flow-stage-analysis .flow-stage-icon {
+  background: rgba(143, 184, 194, .22) !important;
+}
+.sponsored-page .sponsored-local .flow-stage h3 {
+  max-width: 18rem;
+  margin-bottom: .8rem !important;
+}
+.sponsored-page .sponsored-local .flow-stage > p:last-of-type {
+  max-width: 18rem;
+}
+.sponsored-page .sponsored-local .flow-connector {
+  align-self: stretch !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+}
+.sponsored-page .sponsored-local .flow-connector span {
+  max-width: 6.5rem !important;
+  line-height: 1.3 !important;
+}
+@media (max-width: 1000px) {
+  .sponsored-page .sponsored-workflow .research-process {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.5rem 2rem !important;
+    max-width: 760px !important;
+  }
+  .sponsored-page .sponsored-workflow .process-copy h3 {
+    min-height: 0 !important;
+  }
+  .sponsored-page .sponsored-local .local-flow {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+    max-width: 760px !important;
+  }
+  .sponsored-page .sponsored-local .flow-connector {
+    align-self: start !important;
+    padding-left: .35rem !important;
+  }
+  .sponsored-page .sponsored-local .flow-connector svg {
+    transform: rotate(90deg) !important;
+  }
+}
+@media (max-width: 620px) {
+  .sponsored-page .sponsored-workflow .research-process {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .sponsored-page .sponsored-workflow .process-copy p {
+    max-width: none;
+  }
+}
