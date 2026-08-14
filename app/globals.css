@@ -5659,6 +5659,13 @@ footer {
   font-size: 1.45rem;
   font-weight: 600;
 }
+.network-page .leadership-statement {
+  font-family: var(--font-fraunces), Georgia, serif !important;
+  font-size: var(--ui-type-card-title) !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+}
 .contact-route .contact-person a {
   min-height: 44px;
   display: inline-flex;
@@ -10134,6 +10141,163 @@ body::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;
+}
+
+/* ==========================================================================
+   Global type hierarchy — homepage-led and authoritative across every route.
+   ========================================================================== */
+:root {
+  --ui-type-hero: clamp(3.2rem, 4.45vw, 3.6rem);
+  --ui-type-section: clamp(2.75rem, 4vw, 3.2rem);
+  --ui-type-card-title: 1.35rem;
+  --ui-type-card-lead: 1.0625rem;
+  --ui-type-card-body: 1rem;
+  --ui-type-body: 1.125rem;
+  --ui-type-label: .875rem;
+  --ui-type-card-label: .8rem;
+}
+
+main h1 {
+  font-size: var(--ui-type-hero) !important;
+  font-weight: 600 !important;
+  line-height: 1.03 !important;
+  letter-spacing: -.035em !important;
+}
+main h2 {
+  font-size: var(--ui-type-section) !important;
+  font-weight: 500 !important;
+  line-height: 1.04 !important;
+  letter-spacing: -.035em !important;
+}
+#main-content h1 {
+  font-size: var(--ui-type-hero) !important;
+  line-height: 1.03 !important;
+}
+#main-content h2 {
+  font-size: var(--ui-type-section) !important;
+  line-height: 1.04 !important;
+}
+main .section-label,
+main .home-kicker {
+  font-size: var(--ui-type-label) !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  letter-spacing: .13em !important;
+}
+
+/* Every title serving the same card-level role uses one scale and rhythm. */
+.home-page .framework-module h3,
+.home-page .fed-stage h3,
+.about-page .mission-outcomes h3,
+.about-page .principles-rail h3,
+.network-page .membership-card h3,
+.governance-page .oversight-card h3,
+.governance-page .protection-grid h3,
+.governance-page .policy-list h3,
+.sponsored-page .eligibility-grid h3,
+.sponsored-page .research-process h3,
+.sponsored-page .fed-stage h3,
+.contact-route .contact-person strong {
+  font-family: var(--font-fraunces), Georgia, serif !important;
+  font-size: var(--ui-type-card-title) !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Resolve legacy page-specific specificity so these semantic roles stay exact. */
+main.home-page .home-areas .framework-module h3,
+main.sponsored-page .sponsored-workflow .research-process h3 {
+  font-size: var(--ui-type-card-title) !important;
+  line-height: 1.2 !important;
+}
+main.home-page .home-areas .framework-module p {
+  font-size: var(--ui-type-card-body) !important;
+  line-height: 1.62 !important;
+}
+main.content-page.about-page .section-label {
+  font-size: var(--ui-type-label) !important;
+  line-height: 1.35 !important;
+}
+main.network-page .membership-card .membership-label,
+main.network-page .network-leadership .membership-label {
+  font-size: var(--ui-type-card-label) !important;
+  line-height: 1.4 !important;
+}
+
+/* Card descriptions are deliberately one step below section-level prose. */
+.home-page .framework-module p,
+.home-page .fed-stage-text,
+.about-page .mission-outcomes article > p,
+.about-page .principles-rail article > p:not(.principle-definition),
+.network-page .membership-description,
+.governance-page .oversight-card > p,
+.governance-page .protection-grid article > p,
+.governance-page .policy-list article p,
+.sponsored-page .eligibility-grid article > p,
+.sponsored-page .research-process .process-copy p,
+.sponsored-page .fed-stage-text {
+  font-size: var(--ui-type-card-body) !important;
+  font-weight: 400 !important;
+  line-height: 1.62 !important;
+  letter-spacing: 0 !important;
+}
+.about-page .principle-definition {
+  font-size: var(--ui-type-card-lead) !important;
+  font-weight: 600 !important;
+  line-height: 1.58 !important;
+}
+
+/* Eyebrows, indices, and compact role labels share one supporting scale. */
+main .card-index,
+main .framework-index,
+main .principle-number,
+main .workflow-index,
+main .protection-number,
+main .policy-number,
+main .fed-stage-label,
+main .membership-label,
+main .fed-link-caption {
+  font-family: var(--font-sans), Arial, sans-serif !important;
+  font-size: var(--ui-type-card-label) !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  letter-spacing: .1em !important;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --ui-type-hero: clamp(2.75rem, 12vw, 3.2rem);
+    --ui-type-section: clamp(2.35rem, 10vw, 2.75rem);
+    --ui-type-card-title: 1.3rem;
+    --ui-type-body: 1.0625rem;
+  }
+  .governance-page .governance-hero h1 > span,
+  .sponsored-page .sponsored-hero h1 > span {
+    white-space: normal !important;
+  }
+}
+@media (max-width: 900px) {
+  .governance-page .oversight-children {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    margin-top: 2rem !important;
+  }
+  .governance-page .governance-oversight .oversight-card,
+  .governance-page .governance-oversight .oversight-card-featured {
+    width: 100% !important;
+    min-height: 0 !important;
+  }
+  .sponsored-page .sponsored-eligibility .eligibility-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+@media (max-width: 820px) {
+  .fed-flow .fed-stage {
+    flex: 0 0 auto !important;
+    height: auto !important;
+  }
 }
 @media (max-width: 820px) {
   .governance-page .governance-oversight .oversight-card,
