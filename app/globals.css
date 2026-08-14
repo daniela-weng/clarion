@@ -8207,6 +8207,12 @@ footer .footer-meta {
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
+.home-institutions .network-map {
+  max-width: 960px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.home-institutions .nm-canvas { max-width: 960px; }
 /* US network map */
 .network-map { margin-top: clamp(1rem, 2vw, 1.75rem); }
 .nm-canvas { position: relative; width: 100%; max-width: 1040px; aspect-ratio: 1095 / 545; }
