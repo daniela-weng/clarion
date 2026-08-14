@@ -10080,3 +10080,7 @@ footer .footer-meta {
 .governance-page .governance-oversight .oversight-svg path {
   animation: none !important;
 }
+.governance-page .governance-oversight > .governance-section-heading,
+.governance-page .governance-oversight .oversight-diagram {
+  pointer-events: none !important;
+}

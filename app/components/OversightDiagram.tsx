@@ -11,7 +11,9 @@ export function OversightDiagram({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+    let active = true;
     const measure = () => {
+      if (!active) return;
       const parent = root.querySelector<HTMLElement>("[data-oversight-parent]");
       const children = [...root.querySelectorAll<HTMLElement>("[data-oversight-child]")];
       if (!parent || children.length !== 3) return;
@@ -19,12 +21,9 @@ export function OversightDiagram({ children }: { children: React.ReactNode }) {
       const center = (element: HTMLElement, edge: "top" | "bottom") => { const rect = element.getBoundingClientRect(); return { x: rect.left - base.left + rect.width / 2, y: edge === "top" ? rect.top - base.top : rect.bottom - base.top }; };
       setPoints({ parent: center(parent, "bottom"), children: children.map((child) => center(child, "top")) });
     };
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(root);
-    root.querySelectorAll("[data-oversight-parent], [data-oversight-child]").forEach((element) => observer.observe(element));
+    document.fonts.ready.then(measure);
     window.addEventListener("resize", measure);
-    return () => { observer.disconnect(); window.removeEventListener("resize", measure); };
+    return () => { active = false; window.removeEventListener("resize", measure); };
   }, []);
 
   const branchY = points ? Math.min(...points.children.map((point) => point.y)) - 22 : 0;
