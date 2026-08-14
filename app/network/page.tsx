@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Database, Handshake, Landmark, UserRound, Users } from "lucide-react";
 import { NetworkMap } from "../components/NetworkMap";
 import { RevealController } from "../components/RevealController";
-import { ClosingCta } from "../components/ClosingCta";
 
 export const metadata: Metadata = {
   title: "Network",
@@ -51,11 +50,14 @@ export default function NetworkPage() {
             <div className="network-hero-rule" />
             <p>Clarion brings together academic institutions, research leaders, and funding partners within a coordinated network led by Yale University. Each participant operates under defined responsibilities for governance, project execution, and scientific collaboration.</p>
           </div>
-          <dl className="network-hero-facts" aria-label="Network at a glance">
-            <div><dt>07</dt><dd>Academic institutions</dd></div>
-            <div><dt>04</dt><dd>Membership roles</dd></div>
-            <div><dt>01</dt><dd>Coordinating center</dd></div>
-          </dl>
+          <aside className="network-hero-facts-panel" aria-label="Network at a glance">
+            <p>Network at a glance</p>
+            <dl className="network-hero-facts">
+              <div><dt>07</dt><dd>Academic institutions</dd></div>
+              <div><dt>04</dt><dd>Membership roles</dd></div>
+              <div><dt>01</dt><dd>Coordinating center</dd></div>
+            </dl>
+          </aside>
         </div>
       </section>
 
@@ -83,13 +85,6 @@ export default function NetworkPage() {
         </article>
       </section>
 
-      <ClosingCta
-        eyebrow="Sponsored research"
-        title="Planning a multi-institutional oncology study?"
-        body="Propose a study to the network and the Coordinating Center will assess feasibility, governance, and site participation across approved members."
-        primaryLabel="Discuss a study"
-        secondaryLabel="Contact the coordinating center"
-      />
       <RevealController />
     </main>
   );

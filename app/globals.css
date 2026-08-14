@@ -8786,59 +8786,72 @@ footer .footer-brand p.footer-coord span {
   align-items: center !important;
 }
 .network-page .network-hero-copy { max-width: 760px; }
-.network-page .network-hero-facts {
+.network-page .network-hero-facts-panel {
   align-self: end;
-  width: min(100%, 250px);
-  margin: 0 0 .4rem;
+  width: min(38vw, 440px);
+  margin: 0 0 .35rem;
   color: #f7f5ef;
 }
-.network-page .network-hero-facts > div {
+.network-page .network-hero-facts-panel > p {
+  margin: 0 0 .75rem;
+  color: #9fbec5;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.network-page .network-hero-facts {
   display: grid;
-  grid-template-columns: 3.4rem 1fr;
-  gap: 1rem;
-  align-items: baseline;
-  padding: .85rem 0;
-  border-top: 1px solid rgba(194, 219, 222, .24);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 1rem 0 .15rem;
+  border-top: 1px solid rgba(194, 219, 222, .34);
+}
+.network-page .network-hero-facts > div {
+  min-width: 0;
+  padding-right: 1.2rem;
 }
 .network-page .network-hero-facts dt {
   color: #b8d2d4;
   font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 1.55rem;
+  font-size: 1.8rem;
   line-height: 1;
 }
 .network-page .network-hero-facts dd {
-  margin: 0;
+  margin: .55rem 0 0;
   color: #dce6e4;
-  font-size: .78rem;
+  font-size: .68rem;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.45;
   letter-spacing: .11em;
   text-transform: uppercase;
 }
 .network-page .network-membership .network-section-intro { margin-bottom: clamp(3rem, 5vw, 4.25rem) !important; }
 .network-page .network-membership .membership-cards {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 0 clamp(3rem, 6vw, 6rem) !important;
+  gap: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 7vw, 7rem) !important;
 }
 .network-page .network-membership .membership-card {
   position: relative;
   display: block !important;
-  padding: 2rem 0 2.5rem !important;
+  padding: .3rem 0 0 !important;
   border: 0 !important;
-  border-top: 1px solid var(--ui-line-strong) !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   transform: none !important;
+  transition: none !important;
 }
 .network-page .network-membership .membership-card::before {
   content: "";
   position: absolute;
-  top: -1px;
-  left: 0;
-  width: 3.25rem;
-  height: 2px;
-  background: var(--ui-teal);
+  top: -.2rem;
+  left: -.45rem;
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(143, 184, 194, .16), rgba(143, 184, 194, 0) 72%);
+  pointer-events: none;
 }
 .network-page .network-membership .membership-card-heading { padding-right: 3.5rem; }
 .network-page .network-membership .membership-icon {
@@ -8848,9 +8861,13 @@ footer .footer-brand p.footer-coord span {
   color: var(--ui-teal-dark);
 }
 .network-page .network-membership .card-index {
-  top: 1.8rem;
+  top: .55rem;
   right: 0;
-  color: rgba(53, 106, 117, .25);
+  color: rgba(53, 106, 117, .42);
+  font-size: .82rem;
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: .13em;
 }
 .network-page .network-membership .membership-description { margin-top: 1.35rem; }
 .network-page .network-institutions .institution-heading.ui-section-heading {
@@ -8859,7 +8876,7 @@ footer .footer-brand p.footer-coord span {
   gap: clamp(3rem, 8vw, 8rem) !important;
   max-width: none !important;
   align-items: end !important;
-  margin-bottom: clamp(2rem, 3vw, 3rem) !important;
+  margin-bottom: clamp(3.5rem, 5vw, 5rem) !important;
 }
 .network-page .network-institutions .institution-heading > p:last-child {
   max-width: 480px !important;
@@ -8868,8 +8885,8 @@ footer .footer-brand p.footer-coord span {
   font-size: 1.125rem !important;
   line-height: 1.65 !important;
 }
-.network-page .network-map { margin-top: 0; }
-.network-page .nm-canvas { max-width: none; }
+.network-page .network-map { max-width: 960px; margin: 0 auto; }
+.network-page .nm-canvas { max-width: 960px; }
 .network-page .network-leadership .leadership-profile {
   padding: 0 !important;
   border-top: 0 !important;
@@ -8884,14 +8901,14 @@ footer .footer-brand p.footer-coord span {
   margin: 0 0 1.35rem;
   color: var(--ui-navy);
   font-family: var(--font-fraunces), Georgia, serif;
-  font-size: clamp(1.8rem, 2.7vw, 2.55rem);
-  font-weight: 500;
-  line-height: 1.22;
-  letter-spacing: -.025em;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.01em;
 }
 @media (max-width: 900px) {
   .network-page .network-hero-inner { grid-template-columns: 1fr !important; }
-  .network-page .network-hero-facts { display: none; }
+  .network-page .network-hero-facts-panel { display: none; }
   .network-page .network-institutions .institution-heading.ui-section-heading { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
 }
 @media (max-width: 760px) {
