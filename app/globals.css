@@ -9989,3 +9989,60 @@ footer .footer-meta {
     white-space: normal;
   }
 }
+
+/* Terminal light treatment: preserve the homepage model structure without its dark surface. */
+.sponsored-page .sponsored-federated-panel {
+  border-top: 1px solid rgba(79, 130, 143, .22);
+  border-bottom: 1px solid rgba(79, 130, 143, .22);
+  background:
+    radial-gradient(680px 340px at 88% 4%, rgba(143, 184, 194, .22), transparent 70%),
+    linear-gradient(145deg, rgba(238, 244, 243, .96), rgba(226, 237, 239, .78));
+}
+.sponsored-page .sponsored-federated-panel::after {
+  opacity: .16;
+  background-image: radial-gradient(circle, rgba(79, 130, 143, .72) 0 1px, transparent 1.4px);
+}
+.sponsored-page .sponsored-federated-panel .fed-stage {
+  border-color: rgba(79, 130, 143, .24);
+  background: rgba(250, 248, 243, .6);
+}
+.sponsored-page .sponsored-federated-panel .fed-stage-2 {
+  border-color: rgba(79, 130, 143, .42);
+  background: rgba(250, 248, 243, .92);
+}
+.sponsored-page .sponsored-federated-panel .fed-node {
+  background: rgba(143, 184, 194, .2);
+  color: var(--ui-teal-dark);
+}
+.sponsored-page .sponsored-federated-panel .fed-node-ring {
+  border-color: rgba(79, 130, 143, .34);
+  animation: none;
+}
+.sponsored-page .sponsored-federated-panel .fed-stage-label,
+.sponsored-page .sponsored-federated-panel .fed-link-caption {
+  color: var(--ui-teal-dark);
+}
+.sponsored-page .sponsored-federated-panel .fed-stage h3 { color: var(--ui-navy); }
+.sponsored-page .sponsored-federated-panel .fed-stage-text { color: var(--ui-slate); }
+.sponsored-page .sponsored-federated-panel .fed-link-svg { color: var(--ui-teal-dark); }
+
+/* The committee hierarchy is static information; hover must not imply interaction. */
+.governance-page .governance-oversight .oversight-card,
+.governance-page .governance-oversight .oversight-card:hover,
+.governance-page .governance-oversight .oversight-card:focus-within,
+.governance-page .governance-oversight .oversight-card *,
+.governance-page .governance-oversight .oversight-card:hover * {
+  transform: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+.governance-page .governance-oversight .oversight-card:hover {
+  border-color: transparent !important;
+  background: transparent !important;
+}
+.governance-page .governance-oversight .oversight-card::before,
+.governance-page .governance-oversight .oversight-card:hover::before {
+  display: none !important;
+  content: none !important;
+}
