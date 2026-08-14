@@ -30,9 +30,9 @@ const defaultStages: Stage[] = [
   },
 ];
 
-const connectorLabels = ["Approved code", "Authorized aggregate"];
+const defaultConnectorLabels = ["Approved code", "Authorized aggregate"];
 
-export function FederatedFlow({ stages = defaultStages }: { stages?: Stage[] }) {
+export function FederatedFlow({ stages = defaultStages, connectorLabels = defaultConnectorLabels }: { stages?: Stage[]; connectorLabels?: string[] }) {
   return (
     <div
       className="fed-flow reveal"
