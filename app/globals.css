@@ -10084,3 +10084,48 @@ footer .footer-meta {
 .governance-page .governance-oversight .oversight-diagram {
   pointer-events: none !important;
 }
+
+/* Individual editorial frames: clarify each governance body without card-like interaction. */
+.governance-page .governance-oversight .oversight-card,
+.governance-page .governance-oversight .oversight-card:hover,
+.governance-page .governance-oversight .oversight-card:focus-within {
+  overflow: hidden !important;
+  min-height: 245px !important;
+  padding: clamp(1.5rem, 2.4vw, 2rem) !important;
+  border: 1px solid rgba(54, 82, 92, .18) !important;
+  border-radius: 2px !important;
+  background: rgba(250, 248, 243, .78) !important;
+  box-shadow: none !important;
+}
+.governance-page .governance-oversight .oversight-card-featured,
+.governance-page .governance-oversight .oversight-card-featured:hover {
+  min-height: 185px !important;
+  padding: clamp(1.6rem, 2.6vw, 2.2rem) !important;
+  border-color: rgba(46, 106, 117, .24) !important;
+  background: rgba(250, 248, 243, .94) !important;
+}
+
+/* The local-data model is three equal, independent steps on the existing ivory surface. */
+.sponsored-page .sponsored-federated-panel .fed-stage,
+.sponsored-page .sponsored-federated-panel .fed-stage:hover,
+.sponsored-page .sponsored-federated-panel .fed-stage:focus-within {
+  min-height: 17rem;
+  padding: clamp(1.5rem, 2.4vw, 2rem);
+  border: 1px solid rgba(54, 82, 92, .18);
+  border-radius: 2px;
+  background: rgba(250, 248, 243, .78);
+  box-shadow: none;
+  transform: none;
+  transition: none;
+}
+.sponsored-page .sponsored-federated-panel .fed-stage-2 {
+  border-color: rgba(54, 82, 92, .18);
+  background: rgba(250, 248, 243, .78);
+}
+@media (max-width: 820px) {
+  .governance-page .governance-oversight .oversight-card,
+  .governance-page .governance-oversight .oversight-card-featured,
+  .sponsored-page .sponsored-federated-panel .fed-stage {
+    min-height: 0 !important;
+  }
+}
