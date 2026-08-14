@@ -5666,6 +5666,12 @@ footer {
   line-height: 1.2 !important;
   letter-spacing: 0 !important;
 }
+
+/* Governance hero: center the complete copy block within the viewport. */
+.governance-page .governance-hero-inner > div {
+  width: min(100%, 820px) !important;
+  margin-inline: auto !important;
+}
 .contact-route .contact-person a {
   min-height: 44px;
   display: inline-flex;
