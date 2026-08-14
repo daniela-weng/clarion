@@ -27,7 +27,20 @@ export function OversightDiagram({ children }: { children: React.ReactNode }) {
   }, []);
 
   const branchY = points ? Math.min(...points.children.map((point) => point.y)) - 22 : 0;
-  const path = points ? `M ${points.parent.x} ${points.parent.y} V ${branchY} M ${points.children[0].x} ${branchY} H ${points.children[2].x} M ${points.children[0].x} ${branchY} V ${points.children[0].y} M ${points.children[1].x} ${branchY} V ${points.children[1].y} M ${points.children[2].x} ${branchY} V ${points.children[2].y}` : "";
+  let path = "";
+  let nodes: Point[] = [];
+  if (points) {
+    const { parent, children } = points;
+    const [c0, c1, c2] = children;
+    const bar = branchY;
+    const r = Math.max(0, Math.min(16, (c2.x - c0.x) / 2 - 1));
+    path = [
+      `M ${parent.x} ${parent.y} V ${bar}`,
+      `M ${c0.x} ${c0.y} V ${bar + r} Q ${c0.x} ${bar} ${c0.x + r} ${bar} H ${c2.x - r} Q ${c2.x} ${bar} ${c2.x} ${bar + r} V ${c2.y}`,
+      `M ${c1.x} ${bar} V ${c1.y}`,
+    ].join(" ");
+    nodes = [{ x: parent.x, y: parent.y }, c0, c1, c2];
+  }
 
-  return <div ref={rootRef} className="oversight-diagram"><svg className="oversight-svg" aria-hidden="true"><path d={path} /></svg>{children}</div>;
+  return <div ref={rootRef} className="oversight-diagram"><svg className="oversight-svg" aria-hidden="true"><path d={path} />{nodes.map((node, i) => <circle key={i} className="oversight-node" cx={node.x} cy={node.y} r="4.5" />)}</svg>{children}</div>;
 }

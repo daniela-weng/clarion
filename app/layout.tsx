@@ -14,6 +14,10 @@ export const metadata: Metadata = {
     template: "%s | Clarion",
   },
   description: "A collaborative network supporting rigorous, privacy-preserving real-world evidence generation in oncology.",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    shortcut: "/favicon.svg",
+  },
   openGraph: { title: "Clarion", description: "Real-world evidence generation in oncology.", images: ["/og.png"] },
   twitter: { card: "summary_large_image", title: "Clarion", description: "Real-world evidence generation in oncology.", images: ["/og.png"] },
 };

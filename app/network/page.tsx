@@ -46,7 +46,7 @@ export default function NetworkPage() {
         <div className="network-hero-inner">
           <div className="network-hero-copy">
             <p className="section-label">The Clarion network</p>
-            <h1><span>Participating roles and</span><span>institutions.</span></h1>
+            <h1><span>Participating roles and</span><span>institutions<span className="hero-accent">.</span></span></h1>
             <div className="network-hero-rule" />
             <p>Clarion brings together academic institutions, research leaders, and funding partners within a coordinated network led by Yale University. Each participant operates under defined responsibilities for governance, project execution, and scientific collaboration.</p>
           </div>

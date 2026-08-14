@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { navLinks } from "../content";
 
 export function SiteFooter() {
@@ -6,7 +7,16 @@ export function SiteFooter() {
     <footer>
       <div className="site-footer-inner">
         <div className="footer-brand">
-          <Link className="wordmark" href="/">CLARION</Link>
+          <Link className="wordmark" href="/" aria-label="Clarion home">
+            <Image
+              className="brand-mark"
+              src="/images/clarion-mark.svg"
+              alt=""
+              width="36"
+              height="36"
+            />
+            <span>CLARION</span>
+          </Link>
           <p className="footer-statement">
             <span>A collaborative network supporting rigorous, privacy-preserving</span>{" "}
             <span>real-world evidence generation in oncology.</span>

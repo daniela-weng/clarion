@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -24,6 +25,13 @@ export function SiteHeader() {
     <header className="site-header" data-scrolled={isScrolled}>
       <div className="site-header-inner">
         <Link className="wordmark" href="/" aria-label="Clarion home">
+          <Image
+            className="brand-mark"
+            src="/images/clarion-mark.svg"
+            alt=""
+            width="40"
+            height="40"
+          />
           <span>CLARION</span>
         </Link>
         <button

@@ -41,24 +41,6 @@ export default function AboutPage() {
             collaboration among academic institutions, healthcare systems, researchers, and industry partners.
           </p>
         </div>
-        <div className="mission-outcomes reveal" aria-label="Mission outcomes">
-          <p className="section-label mission-outcomes-label">Mission outcomes</p>
-          <article>
-            <span>01</span>
-            <h3>Clinical outcomes</h3>
-            <p>Evidence that informs treatment decisions and advances cancer science.</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Reproducibility</h3>
-            <p>Standardized, interoperable data and consistent execution across sites.</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Collaboration</h3>
-            <p>Shared research across institutions, health systems, researchers, and partners.</p>
-          </article>
-        </div>
       </section>
 
       <section className="charter-section about-values about-principles ui-section">
