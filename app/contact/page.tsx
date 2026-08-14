@@ -11,6 +11,7 @@ export default function ContactPage() {
   return (
     <main id="main-content" className="content-page contact-route">
       <section className="page-hero">
+        <div className="contact-hero-field" aria-hidden="true" />
         <p className="section-label">Contact</p>
         <h1>Clarion coordinating team.</h1>
         <p className="page-hero-copy">
@@ -20,25 +21,27 @@ export default function ContactPage() {
       </section>
 
       <section className="contact contact-page">
-        <div>
+        <div className="contact-layout">
           <div className="ui-section-heading reveal">
             <p className="section-label">Coordinating team</p>
-            <h2>Research and network inquiries.</h2>
-            <p>Contact the Yale-based coordinating team to discuss collaboration, participation, or a sponsored study.</p>
+            <h2><span>Research and</span><span>network inquiries.</span></h2>
           </div>
-          <div className="contact-person reveal">
-            <article className="reveal">
-              <span className="contact-mark" aria-hidden="true"><Mail size={20} strokeWidth={1.7} /></span>
-              <strong>Vipina K. Keloth, PhD</strong>
-              <span className="contact-role">Coordinating team · Yale University</span>
-              <a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a>
-            </article>
-            <article className="reveal">
-              <span className="contact-mark" aria-hidden="true"><Mail size={20} strokeWidth={1.7} /></span>
-              <strong>Hua Xu, PhD</strong>
-              <span className="contact-role">Coordinating team · Yale University</span>
-              <a href="mailto:hua.xu@yale.edu">hua.xu@yale.edu</a>
-            </article>
+          <div className="contact-directory reveal">
+            <p className="contact-directory-intro">Contact the Yale-based coordinating team to discuss collaboration, participation, or a sponsored study.</p>
+            <div className="contact-person">
+              <article className="reveal">
+                <span className="contact-mark" aria-hidden="true"><Mail size={20} strokeWidth={1.7} /></span>
+                <strong>Vipina K. Keloth, PhD</strong>
+                <span className="contact-role">Coordinating team · Yale University</span>
+                <a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a>
+              </article>
+              <article className="reveal">
+                <span className="contact-mark" aria-hidden="true"><Mail size={20} strokeWidth={1.7} /></span>
+                <strong>Hua Xu, PhD</strong>
+                <span className="contact-role">Coordinating team · Yale University</span>
+                <a href="mailto:hua.xu@yale.edu">hua.xu@yale.edu</a>
+              </article>
+            </div>
           </div>
         </div>
       </section>

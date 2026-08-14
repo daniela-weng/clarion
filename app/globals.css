@@ -9612,3 +9612,145 @@ footer .footer-meta {
   .governance-page .oversight-children { margin-top: 2rem; }
   .governance-page .governance-protections .protection-grid { grid-template-columns: 1fr !important; }
 }
+
+/* --- Sponsored research and contact: open editorial treatment --- */
+.sponsored-page .sponsored-hero-gradient,
+.content-page.contact-route .page-hero {
+  background-image: linear-gradient(90deg, rgba(14, 27, 40, .98) 0%, rgba(14, 27, 40, .92) 49%, rgba(14, 27, 40, .34) 79%, rgba(14, 27, 40, .2) 100%), url("/images/about-network-field-v2.png") !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+}
+.sponsored-page .sponsored-hero-mesh,
+.sponsored-page .sponsored-hero-glow,
+.sponsored-page .sponsored-hero::after,
+.content-page.contact-route .page-hero::after { display: none !important; }
+.sponsored-page .sponsored-hero h1 > span {
+  display: block;
+  white-space: nowrap;
+  color: var(--ui-paper) !important;
+}
+.sponsored-page .sponsored-hero h1 > span .hero-accent { color: var(--ui-teal-light) !important; }
+.sponsored-page .sponsored-eligibility > .sponsored-section-heading {
+  margin-bottom: clamp(3.5rem, 5vw, 5rem) !important;
+}
+.sponsored-page .sponsored-eligibility .eligibility-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(3rem, 6vw, 6rem) !important;
+}
+.sponsored-page .sponsored-eligibility .eligibility-grid article,
+.sponsored-page .sponsored-eligibility .eligibility-grid article:hover {
+  position: relative !important;
+  overflow: visible !important;
+  padding: .25rem 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+.sponsored-page .sponsored-eligibility .eligibility-grid article::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute;
+  top: -.35rem;
+  left: -.5rem;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(143, 184, 194, .17), transparent 72%);
+  transform: none !important;
+}
+.sponsored-page .sponsored-eligibility .card-index {
+  top: .45rem;
+  right: 0;
+  color: rgba(53, 106, 117, .44);
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+}
+.sponsored-page .sponsored-eligibility .sponsored-icon {
+  background: rgba(143, 184, 194, .22) !important;
+  color: var(--ui-teal-dark) !important;
+}
+.sponsored-page .sponsored-workflow .research-process::before {
+  background: var(--ui-line-strong) !important;
+  animation: none !important;
+}
+.sponsored-page .sponsored-workflow .research-process li { text-align: left !important; }
+.sponsored-page .sponsored-workflow .research-process .workflow-icon {
+  margin-left: 0 !important;
+  background: var(--ui-mist) !important;
+}
+.sponsored-page .sponsored-workflow .process-copy h3 { min-height: 3.1rem !important; }
+.sponsored-page .sponsored-workflow .process-copy p { text-align: left !important; }
+.sponsored-page .sponsored-local .site-pills { display: none !important; }
+.sponsored-page .sponsored-local .flow-stage-icon {
+  background: rgba(143, 184, 194, .18) !important;
+  border-color: rgba(79, 130, 143, .3) !important;
+}
+.contact-route .page-hero { position: relative; }
+.contact-route .page-hero > :not(.contact-hero-field) { position: relative; z-index: 1; }
+.contact-route .page-hero h1 { white-space: nowrap; }
+.contact-route .contact-page > .contact-layout {
+  display: grid;
+  grid-template-columns: minmax(460px, .88fr) minmax(0, 1.12fr);
+  gap: clamp(3.5rem, 8vw, 8rem);
+  width: 100% !important;
+  max-width: var(--ui-frame) !important;
+  align-items: start;
+}
+.contact-route .contact-page .ui-section-heading { margin: 0 !important; }
+.contact-route .contact-page .ui-section-heading h2 > span { display: block; white-space: nowrap; }
+.contact-route .contact-directory-intro {
+  max-width: 600px;
+  margin: 0 0 2.5rem;
+  color: var(--ui-slate);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+.contact-route .contact-person {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 2.25rem !important;
+  margin: 0 !important;
+}
+.contact-route .contact-person article,
+.contact-route .contact-person article:hover {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: .35rem 1.1rem;
+  overflow: visible;
+  padding: 0 0 2.25rem !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+.contact-route .contact-person article::before { display: none !important; }
+.contact-route .contact-person .contact-mark {
+  grid-row: 1 / span 3;
+  margin: 0;
+}
+.contact-route .contact-person strong,
+.contact-route .contact-person .contact-role,
+.contact-route .contact-person a { grid-column: 2; }
+.contact-route .contact-person a { width: fit-content; min-height: 40px; }
+@media (max-width: 900px) {
+  .contact-route .contact-page > .contact-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+  .contact-route .contact-page .ui-section-heading h2 > span { white-space: normal; }
+}
+@media (max-width: 760px) {
+  .sponsored-page .sponsored-hero-gradient,
+  .content-page.contact-route .page-hero {
+    background-image: linear-gradient(0deg, rgba(14, 27, 40, .98) 5%, rgba(14, 27, 40, .82) 58%, rgba(14, 27, 40, .34) 100%), url("/images/about-network-field-v2.png") !important;
+    background-position: center, 68% center !important;
+  }
+  .sponsored-page .sponsored-hero h1 { font-size: clamp(2.15rem, 9vw, 3.15rem) !important; }
+  .sponsored-page .sponsored-eligibility .eligibility-grid { grid-template-columns: 1fr !important; }
+  .contact-route .page-hero h1 { white-space: normal; }
+}
