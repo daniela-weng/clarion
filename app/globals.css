@@ -10093,8 +10093,8 @@ footer .footer-meta {
   min-height: 245px !important;
   padding: clamp(1.5rem, 2.4vw, 2rem) !important;
   border: 1px solid rgba(54, 82, 92, .18) !important;
-  border-radius: 2px !important;
-  background: rgba(250, 248, 243, .78) !important;
+  border-radius: var(--ui-card-radius) !important;
+  background: rgba(255, 255, 255, .34) !important;
   box-shadow: none !important;
 }
 .governance-page .governance-oversight .oversight-card-featured,
@@ -10102,7 +10102,7 @@ footer .footer-meta {
   min-height: 185px !important;
   padding: clamp(1.6rem, 2.6vw, 2.2rem) !important;
   border-color: rgba(46, 106, 117, .24) !important;
-  background: rgba(250, 248, 243, .94) !important;
+  background: rgba(255, 255, 255, .48) !important;
 }
 
 /* The local-data model is three equal, independent steps on the existing ivory surface. */
@@ -10112,15 +10112,28 @@ footer .footer-meta {
   min-height: 17rem;
   padding: clamp(1.5rem, 2.4vw, 2rem);
   border: 1px solid rgba(54, 82, 92, .18);
-  border-radius: 2px;
-  background: rgba(250, 248, 243, .78);
+  border-radius: var(--ui-card-radius);
+  background: rgba(255, 255, 255, .34);
   box-shadow: none;
   transform: none;
   transition: none;
 }
 .sponsored-page .sponsored-federated-panel .fed-stage-2 {
   border-color: rgba(54, 82, 92, .18);
-  background: rgba(250, 248, 243, .78);
+  background: rgba(255, 255, 255, .34);
+}
+
+/* Keep scrolling available while removing the persistent browser chrome. */
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 @media (max-width: 820px) {
   .governance-page .governance-oversight .oversight-card,
