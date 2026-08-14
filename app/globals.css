@@ -5667,15 +5667,6 @@ footer {
   letter-spacing: 0 !important;
 }
 
-/* Governance hero: keep the editorial left edge and center the copy vertically. */
-.governance-page .governance-hero-inner {
-  display: flex !important;
-  align-items: center !important;
-}
-.governance-page .governance-hero-inner > div {
-  width: min(100%, 820px) !important;
-  margin-inline: 0 !important;
-}
 .contact-route .contact-person a {
   min-height: 44px;
   display: inline-flex;
@@ -10314,5 +10305,23 @@ main .fed-link-caption {
   .governance-page .governance-oversight .oversight-card-featured,
   .sponsored-page .sponsored-federated-panel .fed-stage {
     min-height: 0 !important;
+  }
+}
+
+/* Final governance hero alignment: equal visual space above and below the copy. */
+.governance-page .governance-hero-inner {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 520px !important;
+  height: 520px !important;
+}
+.governance-page .governance-hero-inner > div {
+  width: min(100%, 820px) !important;
+  margin-inline: 0 !important;
+}
+@media (max-width: 760px) {
+  .governance-page .governance-hero-inner {
+    min-height: 610px !important;
+    height: 610px !important;
   }
 }
