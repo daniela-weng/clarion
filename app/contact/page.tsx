@@ -25,9 +25,9 @@ export default function ContactPage() {
           <div className="ui-section-heading reveal">
             <p className="section-label">Coordinating team</p>
             <h2><span>Research and</span><span>network inquiries.</span></h2>
+            <p>Contact the Yale-based coordinating team to discuss collaboration, participation, or a sponsored study.</p>
           </div>
           <div className="contact-directory reveal">
-            <p className="contact-directory-intro">Contact the Yale-based coordinating team to discuss collaboration, participation, or a sponsored study.</p>
             <div className="contact-person">
               <article className="reveal">
                 <span className="contact-mark" aria-hidden="true"><Mail size={20} strokeWidth={1.7} /></span>
