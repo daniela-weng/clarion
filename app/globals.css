@@ -9437,3 +9437,165 @@ footer .footer-meta {
     transition: none;
   }
 }
+
+/* --- Governance page: precise, open institutional hierarchy --- */
+.governance-page .governance-hero-gradient {
+  background-image: linear-gradient(90deg, rgba(14, 27, 40, .98) 0%, rgba(14, 27, 40, .92) 49%, rgba(14, 27, 40, .36) 79%, rgba(14, 27, 40, .22) 100%), url("/images/about-network-field-v2.png") !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+}
+.governance-page .governance-hero-mesh,
+.governance-page .governance-hero-glow,
+.governance-page .governance-hero::after { display: none !important; }
+.governance-page .governance-hero-inner {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(310px, 420px) !important;
+  gap: clamp(4rem, 8vw, 8rem) !important;
+  align-items: center !important;
+}
+.governance-page .governance-hero-protocol {
+  align-self: end;
+  margin-bottom: .35rem;
+}
+.governance-page .governance-hero-protocol > p {
+  margin: 0 0 .75rem;
+  color: #9fbec5;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.governance-page .governance-hero-protocol dl {
+  margin: 0;
+  border-top: 1px solid rgba(194, 219, 222, .34);
+}
+.governance-page .governance-hero-protocol dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  padding: .85rem 0;
+  border-bottom: 1px solid rgba(194, 219, 222, .18);
+}
+.governance-page .governance-hero-protocol dt,
+.governance-page .governance-hero-protocol dd {
+  margin: 0;
+  font-size: .73rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.governance-page .governance-hero-protocol dt { color: #a8bcc1; }
+.governance-page .governance-hero-protocol dd { color: #edf2ef; text-align: right; }
+.governance-page .governance-oversight > .governance-section-heading {
+  display: grid !important;
+  grid-template-columns: minmax(0, .9fr) minmax(320px, .66fr) !important;
+  gap: clamp(3rem, 8vw, 8rem) !important;
+  max-width: none !important;
+  align-items: end !important;
+}
+.governance-page .governance-oversight > .governance-section-heading > p:last-child {
+  max-width: 500px;
+  margin: 0 0 .3rem;
+  color: var(--ui-slate);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+.governance-page .oversight-diagram { max-width: 1120px; margin: 0 auto; }
+.governance-page .oversight-card,
+.governance-page .oversight-card:hover {
+  overflow: visible !important;
+  padding: 1.35rem 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+.governance-page .oversight-card::before { display: none !important; }
+.governance-page .oversight-card-featured {
+  width: min(720px, 68%) !important;
+  padding: 1.7rem 2rem !important;
+  border-left: 3px solid var(--ui-teal) !important;
+  background: var(--ui-mist) !important;
+}
+.governance-page .oversight-children { gap: clamp(2.5rem, 5vw, 5rem) !important; margin-top: 3.5rem; }
+.governance-page .oversight-children .oversight-card { position: relative; }
+.governance-page .oversight-index {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--ui-teal-dark);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+}
+.governance-page .oversight-svg path {
+  stroke: rgba(79, 130, 143, .45) !important;
+  stroke-dasharray: none !important;
+  animation: none !important;
+}
+.governance-page .governance-protections {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse 60% 80% at 95% 10%, rgba(79, 130, 143, .18), transparent 70%), var(--ui-navy) !important;
+}
+.governance-page .governance-protections .protection-grid {
+  gap: clamp(3rem, 5vw, 4.75rem) clamp(3.5rem, 7vw, 7rem) !important;
+  max-width: 1180px !important;
+}
+.governance-page .governance-protections .protection-grid article,
+.governance-page .governance-protections .protection-grid article:nth-child(3),
+.governance-page .governance-protections .protection-grid article:hover {
+  position: relative;
+  display: grid !important;
+  grid-template-columns: 2.75rem minmax(0, 1fr) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+.governance-page .governance-protections .protection-grid article::before { display: none !important; }
+.governance-page .protection-number {
+  position: absolute;
+  top: .1rem;
+  right: 0;
+  color: rgba(180, 211, 215, .48);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+}
+.governance-page .governance-protections .protection-icon {
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+  grid-row: 1 !important;
+  background: rgba(143, 184, 194, .17) !important;
+  color: #b8d2d4 !important;
+}
+.governance-page .governance-protections .protection-grid h3 {
+  min-height: 0 !important;
+  margin: .45rem 2.5rem 1rem 0 !important;
+}
+.governance-page .governance-protections .protection-grid p {
+  grid-column: 2 !important;
+}
+.governance-page .governance-policies .policy-list { border-top: 0 !important; }
+.governance-page .governance-policies .policy-list article:first-child { padding-top: 0 !important; }
+.governance-page .governance-policies .policy-list article:last-child { border-bottom: 0 !important; }
+@media (max-width: 900px) {
+  .governance-page .governance-hero-inner,
+  .governance-page .governance-oversight > .governance-section-heading { grid-template-columns: 1fr !important; }
+  .governance-page .governance-hero-protocol { display: none; }
+  .governance-page .oversight-card-featured { width: 100% !important; }
+}
+@media (max-width: 760px) {
+  .governance-page .governance-hero-gradient {
+    background-image: linear-gradient(0deg, rgba(14, 27, 40, .98) 5%, rgba(14, 27, 40, .82) 58%, rgba(14, 27, 40, .34) 100%), url("/images/about-network-field-v2.png") !important;
+    background-position: center, 68% center !important;
+  }
+  .governance-page .oversight-children { margin-top: 2rem; }
+  .governance-page .governance-protections .protection-grid { grid-template-columns: 1fr !important; }
+}
