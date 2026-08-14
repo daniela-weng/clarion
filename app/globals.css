@@ -9726,11 +9726,10 @@ footer .footer-meta {
 }
 .contact-route .contact-person article::before { display: none !important; }
 .contact-route .contact-person .contact-mark {
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 2;
   margin: 0;
 }
 .contact-route .contact-person strong,
-.contact-route .contact-person .contact-role,
 .contact-route .contact-person a { grid-column: 2; }
 .contact-route .contact-person a { width: fit-content; min-height: 40px; }
 @media (max-width: 900px) {
