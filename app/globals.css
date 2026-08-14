@@ -5667,10 +5667,14 @@ footer {
   letter-spacing: 0 !important;
 }
 
-/* Governance hero: center the complete copy block within the viewport. */
+/* Governance hero: keep the editorial left edge and center the copy vertically. */
+.governance-page .governance-hero-inner {
+  display: flex !important;
+  align-items: center !important;
+}
 .governance-page .governance-hero-inner > div {
   width: min(100%, 820px) !important;
-  margin-inline: auto !important;
+  margin-inline: 0 !important;
 }
 .contact-route .contact-person a {
   min-height: 44px;
