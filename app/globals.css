@@ -10325,3 +10325,21 @@ main .fed-link-caption {
     height: 610px !important;
   }
 }
+
+/* Interior dark heroes share the homepage's exact 1180px left alignment. */
+.network-page .network-hero-inner,
+.governance-page .governance-hero-inner,
+.sponsored-page .sponsored-hero-inner {
+  width: min(calc(100% - (2 * var(--ui-gutter))), var(--ui-frame)) !important;
+  max-width: var(--ui-frame) !important;
+  margin-inline: auto !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+@media (max-width: 640px) {
+  .network-page .network-hero-inner,
+  .governance-page .governance-hero-inner,
+  .sponsored-page .sponsored-hero-inner {
+    width: calc(100% - 2.5rem) !important;
+  }
+}
