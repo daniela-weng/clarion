@@ -10067,3 +10067,16 @@ footer .footer-meta {
   display: none !important;
   content: none !important;
 }
+.governance-page .governance-oversight > .governance-section-heading,
+.governance-page .governance-oversight > .governance-section-heading:hover,
+.governance-page .governance-oversight .oversight-diagram,
+.governance-page .governance-oversight .oversight-layout,
+.governance-page .governance-oversight .oversight-svg {
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  will-change: auto !important;
+}
+.governance-page .governance-oversight .oversight-svg path {
+  animation: none !important;
+}
