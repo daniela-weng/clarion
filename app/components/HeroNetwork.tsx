@@ -74,6 +74,29 @@ function createMarkerTexture(isYale: boolean) {
   return texture;
 }
 
+function createPulseTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 128;
+  canvas.height = 128;
+  const context = canvas.getContext("2d");
+  if (!context) return new THREE.CanvasTexture(canvas);
+
+  const halo = context.createRadialGradient(64, 64, 1, 64, 64, 46);
+  halo.addColorStop(0, "rgba(255,240,205,.78)");
+  halo.addColorStop(.18, "rgba(255,208,137,.52)");
+  halo.addColorStop(.52, "rgba(222,163,91,.2)");
+  halo.addColorStop(1, "rgba(204,139,67,0)");
+  context.fillStyle = halo;
+  context.fillRect(0, 0, 128, 128);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 export function HeroNetwork() {
   const fieldRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -311,6 +334,7 @@ export function HeroNetwork() {
 
     const memberMarkerTexture = createMarkerTexture(false);
     const yaleMarkerTexture = createMarkerTexture(true);
+    const pulseTexture = createPulseTexture();
     const memberMarkerMaterial = new THREE.SpriteMaterial({
       map: memberMarkerTexture,
       color: 0xffffff,
@@ -327,15 +351,38 @@ export function HeroNetwork() {
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
+    const pulseMaterial = new THREE.SpriteMaterial({
+      map: pulseTexture,
+      color: 0xffe0a8,
+      transparent: true,
+      opacity: 0.1,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
     const nodeMarkers: THREE.Sprite[] = [];
+    const haloMarkers: THREE.Sprite[] = [];
     networkNodes.forEach((entry, index) => {
-      const marker = new THREE.Sprite(entry.yale ? yaleMarkerMaterial : memberMarkerMaterial);
+      const markerMaterial = (entry.yale ? yaleMarkerMaterial : memberMarkerMaterial).clone();
+      markerMaterial.opacity = entry.yale ? 1 : 0.82;
+      const marker = new THREE.Sprite(markerMaterial);
       marker.position.copy(new THREE.Vector3(...entry.vector).normalize().multiplyScalar(surfaceRadius));
       const scale = entry.yale ? 0.47 : 0.38;
       marker.scale.set(scale, scale, 1);
       marker.userData.baseScale = scale;
-      marker.userData.phase = index * 0.9;
+      marker.userData.phase = index * 1.17;
+      marker.userData.yale = entry.yale;
+
+      const halo = new THREE.Sprite(pulseMaterial.clone());
+      halo.position.copy(marker.position);
+      halo.scale.set(scale * (entry.yale ? 1.2 : 1.1), scale * (entry.yale ? 1.2 : 1.1), 1);
+      halo.userData.baseScale = scale;
+      halo.userData.phase = index * 1.17;
+      halo.userData.yale = entry.yale;
+      halo.renderOrder = 1;
+      marker.renderOrder = 2;
+      globe.add(halo);
       globe.add(marker);
+      haloMarkers.push(halo);
       nodeMarkers.push(marker);
     });
 
@@ -368,10 +415,20 @@ export function HeroNetwork() {
           const progress = (dataPoint.offset + seconds * dataPoint.speed) % 1;
           dataPoint.marker.position.copy(dataPoint.curve.getPoint(progress));
         });
-        nodeMarkers.forEach((marker) => {
-          const pulse = 1 + Math.sin(seconds * 0.62 + marker.userData.phase) * 0.018;
+        nodeMarkers.forEach((marker, index) => {
+          const isYale = Boolean(marker.userData.yale);
+          const speed = isYale ? 1.58 : 2.05;
+          const wave = Math.pow((Math.sin(seconds * speed + marker.userData.phase) + 1) * 0.5, isYale ? 1.15 : 1.35);
+          const pulse = isYale ? 0.96 + wave * 0.16 : 0.92 + wave * 0.18;
           const scale = marker.userData.baseScale * pulse;
           marker.scale.set(scale, scale, 1);
+          const material = marker.material as THREE.SpriteMaterial;
+          material.opacity = isYale ? 0.7 + wave * 0.3 : 0.56 + wave * 0.44;
+
+          const halo = haloMarkers[index];
+          const haloScale = marker.userData.baseScale * (isYale ? 1.12 + wave * 0.92 : 1.02 + wave * 0.78);
+          halo.scale.set(haloScale, haloScale, 1);
+          (halo.material as THREE.SpriteMaterial).opacity = isYale ? 0.06 + wave * 0.78 : 0.04 + wave * 0.72;
         });
       }
 
@@ -409,6 +466,10 @@ export function HeroNetwork() {
       });
       memberMarkerTexture.dispose();
       yaleMarkerTexture.dispose();
+      pulseTexture.dispose();
+      memberMarkerMaterial.dispose();
+      yaleMarkerMaterial.dispose();
+      pulseMaterial.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
     };

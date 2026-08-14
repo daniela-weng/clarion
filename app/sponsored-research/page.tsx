@@ -1,38 +1,36 @@
 import type { Metadata } from "next";
+import { ArrowRight, BarChart3, Building2, ClipboardCheck, Code2, FileText, Handshake, Landmark, ShieldCheck, Users } from "lucide-react";
+import { RevealController } from "../components/RevealController";
+import { ClosingCta } from "../components/ClosingCta";
 
-export const metadata: Metadata = {
-  title: "Sponsored Research",
-  description: "How Clarion accepts sponsored project proposals, its no-patient-level-data-sharing policy, approved sponsor outputs, and the distributed federated analysis workflow.",
-};
+export const metadata: Metadata = { title: "Sponsored Research", description: "Project proposals, data sharing, and distributed execution through the Clarion network." };
+
+const eligibility = [
+  ["Who may submit", FileText, "Clarion accepts proposals from pharmaceutical, biotechnology, medical device, diagnostics, health technology, AI/ML, academic, government, foundation, nonprofit, and similar research organizations."],
+  ["Project eligibility", ShieldCheck, "Proposals must align with the Network’s oncology research mission, demonstrate scientific and operational feasibility, and meet applicable privacy, ethical, regulatory, and institutional requirements."],
+  ["Sponsor deliverables", BarChart3, "Sponsors may receive pre-approved, non-identifiable deliverables such as aggregate results, summary statistics, model-performance metrics, derived insights, and cross-site analyses. Patient-level datasets are not provided under standard operations."],
+] as const;
+const steps = [
+  ["Sponsor engagement", Handshake, "The proposal, scientific aims, and Network-wide feasibility are assessed before Steering Committee approval."],
+  ["Protocol and analysis plan", ClipboardCheck, "The Coordinating Center develops the analytic plan with participating sites and obtains required governance review."],
+  ["Distributed execution", Code2, "Approved code and pipelines are delivered to participating sites for controlled local execution."],
+  ["Multi-site synthesis", BarChart3, "The Coordinating Center harmonizes and validates authorized site outputs and prepares study deliverables."],
+  ["Site participation and agreements", Users, "Sites are selected for scientific and operational fit, then engaged through an approved participation plan and coordinated subcontracts."],
+] as const;
 
 export default function SponsoredResearchPage() {
-  return (
-    <main id="main-content">
-      <section className="page-hero">
-        <p className="section-label">Sponsored Research</p>
-        <h1>Project proposals, data sharing, and distributed execution.</h1>
-        <p className="page-hero-copy">
-          Clarion accepts sponsored project proposals that align with its mission, and executes them through a
-          distributed model in which analyses run locally and only approved aggregate results are returned.
-        </p>
-      </section>
-
-      <section className="sponsored-section">
-        <div className="section-heading"><p className="section-label">VII / Sponsored Projects</p><h2>Eligibility, data sharing, and outputs.</h2></div>
-        <div className="sponsored-grid">
-          <article><h3>Eligibility to submit projects</h3><p>Clarion accepts proposals from pharmaceutical and biotechnology companies; medical device and diagnostics companies; health technology and AI/ML companies; academic or government researchers; and foundations or nonprofit research organizations.</p><p>All proposals must align with the network&apos;s mission and comply with data privacy and ethical standards.</p></article>
-          <article><h3>Data-sharing policy</h3><p>By default, no patient-level structured or unstructured data leave member institutions. Data remain behind each institution&apos;s firewall and are accessed only through controlled, IRB-approved mechanisms. Sponsors do not receive raw, patient-level, or de-identified datasets as part of standard operations.</p><p>Exceptions require a fully executed Data Use Agreement or equivalent instrument, all required approvals, and voluntary agreement by the participating institution for a specific approved purpose.</p></article>
-          <article><h3>Approved sponsor outputs</h3><p>Under all conditions, sponsors receive pre-approved aggregated outputs, summary statistics, model coefficients or performance metrics, derived insights, cross-site pooled analyses, or other non-identifiable results approved by the Coordinating Center.</p></article>
-        </div>
-        <div className="workflow-heading"><p className="section-label">Distributed or Federated Analysis Model</p><p>Sponsored projects follow a structured, federated workflow:</p></div>
-        <ol className="workflow-list">
-          <li><strong>Sponsor Engagement</strong><span>Sponsor submits a proposal; the Coordinating Center refines scientific aims; feasibility is assessed across member sites; and the Steering Committee approves the project.</span></li>
-          <li><strong>Protocol &amp; Analysis Plan Development</strong><span>The Coordinating Center drafts the analytic plan; sites review local feasibility; and the Privacy &amp; Governance Committee signs off.</span></li>
-          <li><strong>Distributed Execution</strong><span>Code and pipeline are delivered to each site; sites run analyses locally and return only approved outputs.</span></li>
-          <li><strong>Multi-Site Synthesis</strong><span>The Coordinating Center aggregates, harmonizes, and validates results; generates sponsor-ready deliverables; and prepares manuscripts, reports, or regulatory briefs.</span></li>
-          <li><strong>Subcontracting and Site Participation</strong><span>The Coordinating Center recommends participating sites; the Steering Committee approves the participation plan; and subcontracts are issued by the Coordinating Center.</span></li>
-        </ol>
-      </section>
-    </main>
-  );
+  return <main id="main-content" className="sponsored-page">
+    <section className="sponsored-hero"><div className="sponsored-hero-gradient" aria-hidden="true" /><div className="sponsored-hero-mesh" aria-hidden="true" /><div className="sponsored-hero-glow" aria-hidden="true" /><div className="sponsored-hero-inner"><p className="section-label">Sponsored research</p><h1>Projects designed for<br />trusted, distributed research<span className="hero-accent">.</span></h1><p>Clarion provides a governed pathway for organizations to develop and conduct multi-institutional oncology studies across participating academic sites.</p></div></section>
+    <section className="sponsored-eligibility"><div className="sponsored-section-heading reveal"><p className="section-label">Sponsored projects</p><h2>Who can participate and what studies deliver.</h2></div><div className="eligibility-grid">{eligibility.map(([title, Icon, text], i) => <article className="reveal" key={title}><span className="card-index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span><span className="sponsored-icon" aria-hidden="true"><Icon size={24} strokeWidth={1.6} /></span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+    <section className="sponsored-workflow"><div className="workflow-heading reveal"><p className="section-label">Distributed or federated analysis model</p><h2>From proposal to approved output.</h2><p className="workflow-intro">Every sponsored study follows the same governed path from scientific review through local execution and cross-site synthesis.</p></div><ol className="research-process reveal">{steps.map(([title, Icon, text]) => <li key={title}><span className="workflow-icon" aria-hidden="true"><Icon size={24} strokeWidth={1.55} /></span><div className="process-copy"><h3>{title}</h3><p>{text}</p></div></li>)}</ol></section>
+    <section className="sponsored-local"><div className="local-copy reveal"><p className="section-label">How Clarion&apos;s federated model works</p><h2>Patient-level data remain local by default.</h2><p>Approved analyses ordinarily run within participating institutions. Only authorized, non-identifiable outputs return to the Coordinating Center for cross-site synthesis.</p></div><div className="local-flow" aria-label="Member institutions retain patient-level data, run approved analyses locally, and return authorized outputs to the Coordinating Center"><article className="flow-stage flow-stage-institutions"><span className="flow-stage-icon" aria-hidden="true"><Building2 size={25} strokeWidth={1.6} /></span><p className="flow-stage-label">Member institutions</p><h3>Data remain under local stewardship</h3><p>Patient-level data stay within each institution&apos;s secure environment by default.</p><div className="site-pills" aria-label="Example participating sites"><span>Site A</span><span>Site B</span><span>Site C</span></div></article><div className="flow-connector" aria-hidden="true"><span>Approved code</span><ArrowRight /></div><article className="flow-stage flow-stage-analysis"><span className="flow-stage-icon" aria-hidden="true"><Code2 size={25} strokeWidth={1.6} /></span><p className="flow-stage-label">Local analysis</p><h3>Approved analyses run on site</h3><p>Shared code executes inside each institution&apos;s governed environment.</p></article><div className="flow-connector" aria-hidden="true"><span>Authorized outputs</span><ArrowRight /></div><article className="flow-stage flow-stage-center"><span className="flow-stage-icon" aria-hidden="true"><Landmark size={25} strokeWidth={1.6} /></span><p className="flow-stage-label">Coordinating Center</p><h3>Results are synthesized across sites</h3><p>Non-identifiable outputs are validated, combined, and prepared for reporting.</p></article></div></section>
+    <ClosingCta
+      eyebrow="Start a project"
+      title="Bring your study to the network."
+      body="Submit a proposal and the Coordinating Center will assess Network-wide feasibility, develop the analytic plan, and coordinate distributed execution across approved sites."
+      primaryLabel="Discuss a study"
+      secondaryLabel="Contact the coordinating center"
+    />
+    <RevealController />
+  </main>;
 }

@@ -1,46 +1,96 @@
 import type { Metadata } from "next";
-import { academicMembers } from "../content";
+import { Database, Handshake, Landmark, UserRound, Users } from "lucide-react";
+import { NetworkMap } from "../components/NetworkMap";
+import { RevealController } from "../components/RevealController";
+import { ClosingCta } from "../components/ClosingCta";
 
 export const metadata: Metadata = {
   title: "Network",
-  description: "Participating roles and institutions in the Clarion network, and responsibilities across the coordinating center, academic members, industry members, and principal investigators.",
+  description: "Participating roles and institutions in the Clarion network.",
 };
+
+const memberships = [
+  {
+    title: "Coordinating Center",
+    label: "Yale University",
+    icon: Landmark,
+    description: "Yale University coordinates Network governance and operations. The Coordinating Center manages project intake and review, allocates participating sites and analytic resources, coordinates agreements, and oversees regulatory, data-security, publication, and dissemination requirements.",
+  },
+  {
+    title: "Academic Members",
+    label: "Data stewards and research partners",
+    icon: Database,
+    description: "Academic Members maintain structured and unstructured EHR data within their own secure environments. They provide local regulatory oversight, execute Network-approved analytic workflows, return only approved aggregate results, and contribute to scientific interpretation and dissemination.",
+  },
+  {
+    title: "Industry Members",
+    label: "Funding and research partners",
+    icon: Handshake,
+    description: "Industry Members support Network infrastructure and multi-institutional research through membership and sponsored projects. They may propose studies, participate in feasibility and study-design discussions, and contribute domain expertise, but do not receive patient-level data.",
+  },
+  {
+    title: "Affiliate or Observer Members",
+    label: "Limited participation",
+    icon: Users,
+    description: "Additional institutions or organizations may participate in a limited capacity to access approved aggregate results, join workshops or working groups, or contribute specialized expertise to Network activities.",
+  },
+];
 
 export default function NetworkPage() {
   return (
-    <main id="main-content">
-      <section className="page-hero">
-        <p className="section-label">Network</p>
-        <h1>Participating roles and institutions.</h1>
-        <p className="page-hero-copy">
-          Yale University serves as the Coordinating Center. Academic Members provide data and participate in
-          approved analyses. Industry Members serve as funding partners and may participate in sponsored research
-          under the network&apos;s governance framework.
-        </p>
+    <main id="main-content" className="network-page">
+      <section className="network-hero">
+        <div className="network-hero-gradient" aria-hidden="true" />
+        <div className="network-hero-mesh" aria-hidden="true" />
+        <div className="network-hero-glow" aria-hidden="true" />
+        <div className="network-hero-overlay" aria-hidden="true" />
+        <div className="network-hero-inner">
+          <div className="network-hero-copy">
+            <p className="section-label">The Clarion network</p>
+            <h1><span>Participating roles and</span><span>institutions.</span></h1>
+            <div className="network-hero-rule" />
+            <p>Clarion brings together academic institutions, research leaders, and funding partners within a coordinated network led by Yale University. Each participant operates under defined responsibilities for governance, project execution, and scientific collaboration.</p>
+          </div>
+          <dl className="network-hero-facts" aria-label="Network at a glance">
+            <div><dt>07</dt><dd>Academic institutions</dd></div>
+            <div><dt>04</dt><dd>Membership roles</dd></div>
+            <div><dt>01</dt><dd>Coordinating center</dd></div>
+          </dl>
+        </div>
       </section>
 
-      <section className="network-section">
-        <div><p className="section-label">III / Membership</p><h2>Membership categories.</h2></div>
-        <div className="network-copy"><p>Each member category carries defined responsibilities and access, ensuring consistent governance across the network.</p></div>
+      <section className="network-section network-membership ui-section ui-section-standard">
+        <div className="network-section-intro ui-section-heading reveal"><p className="section-label">Membership</p><h2>How members participate.</h2><p>Four membership categories define how organizations contribute to, govern, and engage with the Network.</p></div>
         <div className="membership-cards">
-          <article><h3>Coordinating Center</h3><p><strong>Yale University</strong></p><p>Provides network governance and oversight; manages sponsored project intake, review, and approval; allocates project resources; coordinates agreements with member institutions; and oversees compliance, publication, and dissemination governance.</p></article>
-          <article><h3>Academic Members</h3><p><strong>Data providers</strong></p><p>Maintain data locally, provide local regulatory oversight, execute approved analytic workflows in their secure environments, return only approved aggregate results to the Coordinating Center, and contribute to publication and dissemination activities.</p></article>
-          <article><h3>Industry Members</h3><p><strong>Funding partners</strong></p><p>Provide financial support, propose project concepts, participate in feasibility and study-design discussions, and receive only Network-approved aggregate information as part of standard operations. Detailed membership terms are available to prospective partners on request.</p></article>
-          <article><h3>Affiliate or Observer Members</h3><p>May participate in a limited capacity to access aggregated results, participate in workshops, or provide specialized expertise.</p></article>
+          {memberships.map((member, i) => { const Icon = member.icon; return <article key={member.title} className="membership-card reveal"><span className="card-index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span><div className="membership-card-heading"><span className="membership-icon" aria-hidden="true"><Icon size={22} strokeWidth={1.7} /></span><div><h3>{member.title}</h3><p className="membership-label">{member.label}</p></div></div><p className="membership-description">{member.description}</p></article>; })}
         </div>
-        <div className="member-heading"><p className="section-label">Initial academic members</p><p>The initial participating institutions identified in the charter are listed below.</p></div>
-        <div className="institution-grid">{academicMembers.map((institution) => <div key={institution}>{institution}</div>)}</div>
       </section>
 
-      <section className="roles-section">
-        <div className="section-heading"><p className="section-label">V / Roles and Responsibilities</p><h2>Responsibilities across the network.</h2></div>
-        <div className="role-table" role="table" aria-label="Network roles and responsibilities">
-          <div role="row"><strong role="cell">Coordinating Center (Yale University)</strong><span role="cell">Project intake and review; subcontracting; overall network management; data-format standardization; central analytics support; publication and dissemination governance.</span></div>
-          <div role="row"><strong role="cell">Academic Members (Data Providers)</strong><span role="cell">Data provision; local approvals; participation in projects; collaboration on analytics and interpretation; manuscript development, review, and transparent reporting.</span></div>
-          <div role="row"><strong role="cell">Industry Members (Funding Partners)</strong><span role="cell">Financial support; project proposals; collaboration on study design; domain expertise; compliance with data-sharing and publication guidelines.</span></div>
-          <div role="row"><strong role="cell">Principal Investigators</strong><span role="cell">Scientific aims; collaboration with the Coordinating Center and members; compliance with network policies; manuscript development, review, and transparent reporting.</span></div>
+      <section className="network-institutions ui-section ui-section-standard">
+        <div className="institution-heading ui-section-heading reveal">
+          <div><p className="section-label">Academic membership · 7 institutions</p><h2>Participating academic institutions.</h2></div>
+          <p>Seven academic institutions contribute local expertise and securely governed data, connected through a common research framework coordinated by Yale University.</p>
         </div>
+        <NetworkMap />
       </section>
+
+      <section className="roles-section network-roles network-leadership ui-section ui-section-standard">
+        <div className="section-heading ui-section-heading reveal"><p className="section-label">Project leadership</p><h2>Principal Investigators.</h2></div>
+        <article className="leadership-profile reveal">
+          <div className="leadership-profile-heading"><span className="membership-icon" aria-hidden="true"><UserRound size={22} strokeWidth={1.7} /></span><div><p className="membership-label">Role in each study</p></div></div>
+          <p className="leadership-statement">Scientific ownership stays with the investigators leading each study.</p>
+          <p className="membership-description">Principal Investigators propose projects, define scientific aims, and collaborate with the Coordinating Center and participating members. They ensure compliance with Network policies and contribute to manuscript development, review, and transparent reporting.</p>
+        </article>
+      </section>
+
+      <ClosingCta
+        eyebrow="Sponsored research"
+        title="Planning a multi-institutional oncology study?"
+        body="Propose a study to the network and the Coordinating Center will assess feasibility, governance, and site participation across approved members."
+        primaryLabel="Discuss a study"
+        secondaryLabel="Contact the coordinating center"
+      />
+      <RevealController />
     </main>
   );
 }
