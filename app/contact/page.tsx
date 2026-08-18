@@ -13,7 +13,7 @@ export default function ContactPage() {
       <section className="page-hero">
         <div className="contact-hero-field" aria-hidden="true" />
         <p className="section-label">Contact</p>
-        <h1>Clarion coordinating team.</h1>
+        <h1>Clarion coordinating team<span className="hero-accent">.</span></h1>
         <p className="page-hero-copy">
           For research collaboration inquiries, sponsored project discussions, or network information, contact
           the coordinating team at Yale University.

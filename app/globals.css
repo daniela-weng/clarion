@@ -4219,8 +4219,8 @@ footer { border-top:2px solid rgba(143,184,194,.44); }
     padding:.65rem 1.25rem 1rem;
     flex-direction:column;
     align-items:stretch;
-    gap:0;
-    background:rgba(248,246,240,.99);
+    gap:.4rem;
+    background:rgba(248,246,240,1)!important;
     border-top:1px solid rgba(79,130,143,.15);
     border-bottom:1px solid rgba(79,130,143,.22);
     box-shadow:0 18px 36px rgba(24,38,51,.09);
@@ -8294,6 +8294,12 @@ footer .footer-meta {
 @media (max-width: 880px) {
   .nm-desktop { display: none; }
   .nm-badge { display: grid; }
+  /* mobile: badges are the only markers — drop the SVG lines + dots (no mismatch) */
+  .network-map .nm-lines, .network-map .nm-nodes { display: none !important; }
+  /* fan the overlapping Northeast trio so numbers stay legible */
+  .network-map .nm-badge[data-num="5"] { left: 68% !important; top: 16% !important; }
+  .network-map .nm-badge[data-num="7"] { left: 84% !important; top: 24% !important; }
+  .network-map .nm-badge[data-num="6"] { left: 74% !important; top: 33% !important; }
   .network-map .nm-legend-list {
     position: static; width: auto; height: auto; margin: 1.5rem 0 0; clip: auto; overflow: visible;
     white-space: normal; display: grid; gap: 0.55rem; padding: 0;
@@ -10822,9 +10828,10 @@ main .fed-link-caption {
 /* modern nav: soft pill highlight on hover/active (no underline) */
 .site-header .primary-nav > a:not(.nav-contact) {
   text-decoration: none !important;
-  padding: 0.4rem 0.72rem !important;
-  border-radius: 8px !important;
   transition: background-color 0.18s ease, color 0.18s ease !important;
+}
+@media (min-width: 901px) {
+  .site-header .primary-nav > a:not(.nav-contact) { padding: 0.4rem 0.72rem !important; border-radius: 8px !important; }
 }
 .site-header .primary-nav > a:not(.nav-contact)::after { display: none !important; }
 @media (hover: hover) {
@@ -11008,4 +11015,63 @@ footer .wordmark .brand-mark {
     width: 2.125rem;
     height: 2.125rem;
   }
+}
+
+/* ==========================================================================
+   Mobile nav: every stacked link identical (incl. Contact — was center/padded)
+   ========================================================================== */
+@media (max-width: 760px) {
+  .site-header .primary-nav > a:not(.nav-contact),
+  .site-header .primary-nav .nav-contact {
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 0.9rem 0.75rem !important;
+    margin: 0 !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+    color: #334754 !important;
+    font-weight: 590 !important;
+    font-size: 1rem !important;
+  }
+  .site-header .primary-nav .nav-contact::after { content: none !important; display: none !important; }
+  .site-header .primary-nav > a[aria-current="page"] { color: var(--ui-navy) !important; }
+}
+
+/* ==========================================================================
+   Consistent hero top spacing — every hero's eyebrow starts at the same offset.
+   Top-align the content (not vertically centered) with one uniform top padding.
+   ========================================================================== */
+.content-page .page-hero {
+  justify-content: flex-start !important;
+  min-height: 470px !important;
+  padding-top: clamp(6rem, 8vw, 7.25rem) !important;
+  padding-bottom: clamp(3.5rem, 6vw, 5rem) !important;
+}
+.network-page .network-hero-inner,
+.governance-page .governance-hero-inner {
+  align-items: flex-start !important;
+  min-height: 470px !important;
+  padding-top: clamp(6rem, 8vw, 7.25rem) !important;
+  padding-bottom: clamp(3.5rem, 6vw, 5rem) !important;
+}
+.sponsored-page .sponsored-hero-inner {
+  justify-content: flex-start !important;
+  min-height: 470px !important;
+  padding-top: clamp(6rem, 8vw, 7.25rem) !important;
+  padding-bottom: clamp(3.5rem, 6vw, 5rem) !important;
+}
+
+/* homepage hero: no content max-width cap (per request) */
+.home-page .home-hero-content { max-width: none !important; }
+
+/* Contact link: give it the same hover/focus highlight as the other nav
+   links. Matches specificity of the old dead .nav-contact:hover rule
+   earlier in the file so it reliably wins the cascade at every width. */
+.site-header .primary-nav .nav-contact:hover,
+.site-header .primary-nav .nav-contact:focus-visible {
+  background: rgba(74, 136, 150, 0.12) !important;
+  color: var(--ui-navy) !important;
 }

@@ -63,8 +63,8 @@ export default function Home() {
         <div className="home-shell home-hero-layout">
           <div className="home-hero-content">
             <h1>
-              <BlurText text="Oncology evidence," />
-              <span className="hero-line-2"><BlurText text="connected without centralizing patient data." delay={0.14} /></span>
+              <BlurText text="Clarion Network for" />
+              <span className="hero-line-2"><BlurText text="AI-Driven Reproducible Real-World Evidence" delay={0.14} /></span>
             </h1>
             <p className="home-hero-lead">Clarion connects academic institutions to conduct coordinated, privacy-preserving oncology research.</p>
             <HeroActions />

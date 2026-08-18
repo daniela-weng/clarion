@@ -111,6 +111,7 @@ export function NetworkMap() {
           {sites.map((s) => (
             <span
               key={s.name}
+              data-num={s.num}
               className={s.hub ? "nm-badge nm-badge-hub" : "nm-badge"}
               style={{
                 left: `${pct(s.x, VIEWBOX_X, VIEWBOX_W)}%`,
