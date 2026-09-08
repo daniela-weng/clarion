@@ -103,33 +103,6 @@ function createPulseTexture() {
   return texture;
 }
 
-function createSatelliteTexture() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 128;
-  canvas.height = 128;
-  const context = canvas.getContext("2d");
-  if (!context) return new THREE.CanvasTexture(canvas);
-
-  const halo = context.createRadialGradient(64, 64, 0, 64, 64, 34);
-  halo.addColorStop(0, "rgba(232,255,255,1)");
-  halo.addColorStop(.18, "rgba(151,224,230,.9)");
-  halo.addColorStop(.52, "rgba(73,163,180,.3)");
-  halo.addColorStop(1, "rgba(41,112,132,0)");
-  context.fillStyle = halo;
-  context.fillRect(0, 0, 128, 128);
-  context.fillStyle = "rgba(219,252,252,1)";
-  context.beginPath();
-  context.arc(64, 64, 4.5, 0, Math.PI * 2);
-  context.fill();
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  texture.minFilter = THREE.LinearFilter;
-  texture.magFilter = THREE.LinearFilter;
-  texture.needsUpdate = true;
-  return texture;
-}
-
 export function HeroNetwork() {
   const fieldRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -164,11 +137,11 @@ export function HeroNetwork() {
     rimLight.position.set(3.6, -1.2, 4.5);
     scene.add(rimLight);
 
-    const sphereRadius = 2.18;
+    const sphereRadius = 2.08;
     const surfaceRadius = sphereRadius * 1.008;
     const innerSphere = new THREE.Mesh(
       new THREE.SphereGeometry(sphereRadius * 0.985, 36, 24),
-      new THREE.MeshBasicMaterial({ color: 0x102637, transparent: true, opacity: 0.17, depthWrite: false }),
+      new THREE.MeshBasicMaterial({ color: 0x102637, transparent: true, opacity: 0.13, depthWrite: false }),
     );
     globe.add(innerSphere);
 
@@ -375,7 +348,6 @@ export function HeroNetwork() {
     const memberMarkerTexture = createMarkerTexture(false);
     const yaleMarkerTexture = createMarkerTexture(true);
     const pulseTexture = createPulseTexture();
-    const satelliteTexture = createSatelliteTexture();
     const memberMarkerMaterial = new THREE.SpriteMaterial({
       map: memberMarkerTexture,
       color: 0xffffff,
@@ -426,117 +398,6 @@ export function HeroNetwork() {
       haloMarkers.push(halo);
       nodeMarkers.push(marker);
     });
-
-    // A loose constellation extends beyond the core globe so the network feels
-    // open, active, and capable of growing rather than visually self-contained.
-    const satelliteConfigs = [
-      { source: 1, position: [-2.88, 1.42, 0.18], inbound: true },
-      { source: 4, position: [2.92, 1.5, -0.12], inbound: false },
-      { source: 2, position: [-3.08, -0.38, -0.38], inbound: false },
-      { source: 6, position: [3.12, -0.82, 0.12], inbound: true },
-      { source: 7, position: [-0.42, 2.82, -0.52], inbound: true },
-      { source: 3, position: [-1.2, -2.73, -0.2], inbound: false },
-      { source: 12, position: [1.72, -2.56, -0.46], inbound: true },
-    ] as const;
-
-    satelliteConfigs.forEach((config, index) => {
-      const markerIndex = nodeMarkers.length;
-      const position = new THREE.Vector3(...config.position);
-      const scale = 0.2 + (index % 3) * 0.035;
-      const marker = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: satelliteTexture,
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.72,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      }));
-      marker.position.copy(position);
-      marker.scale.set(scale, scale, 1);
-      marker.userData.baseScale = scale;
-      marker.userData.phase = index * 1.41 + 0.6;
-      marker.userData.anchor = false;
-
-      const halo = new THREE.Sprite(pulseMaterial.clone());
-      halo.position.copy(position);
-      halo.scale.set(scale * 1.35, scale * 1.35, 1);
-      halo.userData.baseScale = scale;
-      halo.userData.phase = marker.userData.phase;
-      halo.userData.anchor = false;
-      globe.add(halo);
-      globe.add(marker);
-      haloMarkers.push(halo);
-      nodeMarkers.push(marker);
-
-      const surfacePoint = nodeMarkers[config.source].position.clone();
-      const start = config.inbound ? position : surfacePoint;
-      const end = config.inbound ? surfacePoint : position;
-      const midpoint = start.clone().lerp(end, 0.5);
-      midpoint.z += 0.38 + (index % 2) * 0.18;
-      midpoint.y += index % 2 === 0 ? 0.12 : -0.12;
-      const curve = new THREE.QuadraticBezierCurve3(start, midpoint, end);
-      const linkMaterial = new THREE.LineBasicMaterial({
-        color: index % 3 === 0 ? 0xc9f3f2 : 0x6bb2c0,
-        transparent: true,
-        opacity: 0.3,
-        depthWrite: false,
-      });
-      globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(34)), linkMaterial));
-      globe.add(new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 38, 0.007, 5, false),
-        new THREE.MeshBasicMaterial({
-          color: 0x78c2cc,
-          transparent: true,
-          opacity: 0.11,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        }),
-      ));
-
-      const signal = new THREE.Mesh(
-        new THREE.SphereGeometry(index % 3 === 0 ? 0.04 : 0.03, 12, 12),
-        new THREE.MeshBasicMaterial({
-          color: index % 3 === 0 ? 0xffdda4 : 0xdffeff,
-          transparent: true,
-          opacity: 0.96,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        }),
-      );
-      const offset = seeded(index, 72);
-      signal.position.copy(curve.getPoint(offset));
-      globe.add(signal);
-      activeFlows.push({
-        marker: signal,
-        curve,
-        offset,
-        speed: 0.065 + seeded(index, 73) * 0.025,
-        targetNode: config.inbound ? config.source : markerIndex,
-        linkMaterial,
-      });
-    });
-
-    const ambientPositions = new Float32Array(90 * 3);
-    for (let index = 0; index < 90; index += 1) {
-      const angle = seeded(index, 80) * Math.PI * 2;
-      const radius = 2.35 + seeded(index, 81) * 1.2;
-      ambientPositions[index * 3] = Math.cos(angle) * radius;
-      ambientPositions[index * 3 + 1] = Math.sin(angle) * radius * 0.76;
-      ambientPositions[index * 3 + 2] = -0.5 - seeded(index, 82) * 1.4;
-    }
-    const ambientGeometry = new THREE.BufferGeometry();
-    ambientGeometry.setAttribute("position", new THREE.BufferAttribute(ambientPositions, 3));
-    globe.add(new THREE.Points(
-      ambientGeometry,
-      new THREE.PointsMaterial({
-        color: 0x86cad2,
-        size: 0.025,
-        transparent: true,
-        opacity: 0.3,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-      }),
-    ));
 
     // A connected mesh makes the collaboration visible at a glance, while the
     // unlabeled nodes allow the network to grow without implying a fixed roster.
@@ -677,7 +538,6 @@ export function HeroNetwork() {
       memberMarkerTexture.dispose();
       yaleMarkerTexture.dispose();
       pulseTexture.dispose();
-      satelliteTexture.dispose();
       memberMarkerMaterial.dispose();
       yaleMarkerMaterial.dispose();
       pulseMaterial.dispose();
