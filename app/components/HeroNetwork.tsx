@@ -3,53 +3,103 @@
 import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react";
 import * as THREE from "three";
 
-type NetworkNode = {
-  cluster: number;
-  local: THREE.Vector3;
-  position: THREE.Vector3;
-  phase: number;
-  drift: number;
-  size: number;
-};
-
-type NetworkEdge = {
-  from: number;
-  to: number;
-  bridge: boolean;
-};
-
-const clusterSpecs = [
-  { center: [-1.18, 1.02, -0.3], radius: 0.75, count: 17, color: 0x76bcc7 },
-  { center: [0.08, 1.38, -0.65], radius: 0.64, count: 14, color: 0xa6d5d6 },
-  { center: [1.22, 0.9, -0.2], radius: 0.72, count: 18, color: 0x668fae },
-  { center: [-0.92, -0.15, 0.05], radius: 0.8, count: 20, color: 0x5fa8b5 },
-  { center: [0.36, 0.05, 0.45], radius: 0.94, count: 24, color: 0x91cbd0 },
-  { center: [1.2, -0.94, -0.05], radius: 0.68, count: 16, color: 0x6c9eab },
-  { center: [-0.3, -1.34, -0.45], radius: 0.72, count: 17, color: 0xc1dcda },
+const networkNodes = [
+  { vector: [0, 0, 1], anchor: true },
+  { vector: [-0.55, 0.72, 0.35], anchor: false },
+  { vector: [-0.92, 0.05, 0.22], anchor: false },
+  { vector: [-0.52, -0.75, 0.4], anchor: false },
+  { vector: [0.52, 0.73, 0.43], anchor: false },
+  { vector: [0.92, 0.08, 0.23], anchor: false },
+  { vector: [0.46, -0.76, 0.45], anchor: false },
+  { vector: [-0.24, 0.2, 0.96], anchor: false },
+  { vector: [0.27, -0.26, 0.92], anchor: false },
+  { vector: [-0.78, 0.48, -0.06], anchor: false },
+  { vector: [0.76, 0.46, -0.04], anchor: false },
+  { vector: [-0.68, -0.51, -0.08], anchor: false },
+  { vector: [0.68, -0.48, -0.12], anchor: false },
 ] as const;
-
-const bridgePairs = [[0, 1], [1, 2], [0, 3], [1, 4], [2, 4], [2, 5], [3, 4], [3, 6], [4, 5], [4, 6], [5, 6]] as const;
 
 function seeded(index: number, salt: number) {
   const value = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453;
   return value - Math.floor(value);
 }
 
-function makeGlowTexture() {
+function pointOnSphere(radius: number, azimuth: number, polar: number) {
+  return new THREE.Vector3(
+    radius * Math.sin(polar) * Math.cos(azimuth),
+    radius * Math.cos(polar),
+    radius * Math.sin(polar) * Math.sin(azimuth),
+  );
+}
+
+class OrbitalArcCurve extends THREE.Curve<THREE.Vector3> {
+  constructor(
+    private readonly center: THREE.Vector3,
+    private readonly basisU: THREE.Vector3,
+    private readonly basisV: THREE.Vector3,
+    private readonly centerAngle: number,
+    private readonly signedSpan: number,
+    private readonly radius: number,
+  ) {
+    super();
+  }
+
+  override getPoint(t: number, target = new THREE.Vector3()) {
+    const angle = this.centerAngle + (t - 0.5) * this.signedSpan;
+    return target.copy(this.center)
+      .addScaledVector(this.basisU, Math.cos(angle) * this.radius)
+      .addScaledVector(this.basisV, Math.sin(angle) * this.radius);
+  }
+}
+
+function createMarkerTexture(isYale: boolean) {
   const canvas = document.createElement("canvas");
   canvas.width = 128;
   canvas.height = 128;
   const context = canvas.getContext("2d");
   if (!context) return new THREE.CanvasTexture(canvas);
-  const glow = context.createRadialGradient(64, 64, 0, 64, 64, 58);
-  glow.addColorStop(0, "rgba(255,249,226,1)");
-  glow.addColorStop(.12, "rgba(255,220,163,.92)");
-  glow.addColorStop(.38, "rgba(164,216,218,.32)");
-  glow.addColorStop(1, "rgba(70,145,160,0)");
-  context.fillStyle = glow;
+
+  const halo = context.createRadialGradient(64, 64, 0, 64, 64, isYale ? 34 : 25);
+  halo.addColorStop(0, "rgba(255,248,226,1)");
+  halo.addColorStop(.18, "rgba(255,216,153,.88)");
+  halo.addColorStop(.48, "rgba(222,163,91,.28)");
+  halo.addColorStop(1, "rgba(204,139,67,0)");
+  context.fillStyle = halo;
   context.fillRect(0, 0, 128, 128);
+
+  context.fillStyle = "rgba(255,232,190,1)";
+  context.beginPath();
+  context.arc(64, 64, isYale ? 6 : 4.5, 0, Math.PI * 2);
+  context.fill();
+
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+function createPulseTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 128;
+  canvas.height = 128;
+  const context = canvas.getContext("2d");
+  if (!context) return new THREE.CanvasTexture(canvas);
+
+  const halo = context.createRadialGradient(64, 64, 1, 64, 64, 46);
+  halo.addColorStop(0, "rgba(255,240,205,.78)");
+  halo.addColorStop(.18, "rgba(255,208,137,.52)");
+  halo.addColorStop(.52, "rgba(222,163,91,.2)");
+  halo.addColorStop(1, "rgba(204,139,67,0)");
+  context.fillStyle = halo;
+  context.fillRect(0, 0, 128, 128);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.needsUpdate = true;
   return texture;
 }
 
@@ -67,241 +117,394 @@ export function HeroNetwork() {
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 30);
-    camera.position.set(0, 0, 7.7);
+    const camera = new THREE.PerspectiveCamera(39, 1, 0.1, 40);
+    camera.position.set(0, 0, 8.6);
     camera.lookAt(0, 0, 0);
 
-    const network = new THREE.Group();
-    network.rotation.x = -0.04;
-    network.rotation.z = -0.025;
-    scene.add(network);
+    const globe = new THREE.Group();
+    globe.rotation.x = -0.04;
+    scene.add(globe);
 
-    const nodes: NetworkNode[] = [];
-    const clusterNodeIndices: number[][] = [];
-    let nodeSeed = 0;
-    clusterSpecs.forEach((spec, clusterIndex) => {
-      const indices: number[] = [];
-      for (let index = 0; index < spec.count; index += 1) {
-        const angle = seeded(nodeSeed, 1) * Math.PI * 2;
-        const radial = Math.pow(seeded(nodeSeed, 2), 0.62) * spec.radius;
-        const local = new THREE.Vector3(
-          Math.cos(angle) * radial,
-          Math.sin(angle) * radial * (0.58 + seeded(nodeSeed, 3) * 0.35),
-          (seeded(nodeSeed, 4) - 0.5) * 0.75,
-        );
-        const center = new THREE.Vector3(...spec.center);
-        indices.push(nodes.length);
-        nodes.push({
-          cluster: clusterIndex,
-          local,
-          position: center.clone().add(local),
-          phase: seeded(nodeSeed, 5) * Math.PI * 2,
-          drift: 0.42 + seeded(nodeSeed, 6) * 0.75,
-          size: index === 0 ? 12 : 3.8 + seeded(nodeSeed, 7) * 5.8,
-        });
-        nodeSeed += 1;
-      }
-      clusterNodeIndices.push(indices);
-    });
+    scene.add(new THREE.HemisphereLight(0xd7f7f5, 0x06111d, 1.75));
+    const keyLight = new THREE.DirectionalLight(0xd9fbfa, 3.1);
+    keyLight.position.set(-3.2, 4.6, 6.5);
+    scene.add(keyLight);
+    const rimLight = new THREE.PointLight(0x4fb7cb, 10, 13, 2);
+    rimLight.position.set(3.6, -1.2, 4.5);
+    scene.add(rimLight);
 
-    const edges: NetworkEdge[] = [];
-    const edgeKeys = new Set<string>();
-    const addEdge = (from: number, to: number, bridge = false) => {
-      const key = from < to ? `${from}-${to}` : `${to}-${from}`;
-      if (from === to || edgeKeys.has(key)) return;
-      edgeKeys.add(key);
-      edges.push({ from, to, bridge });
-    };
+    const sphereRadius = 2.08;
+    const surfaceRadius = sphereRadius * 1.008;
+    const innerSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(sphereRadius * 0.985, 36, 24),
+      new THREE.MeshBasicMaterial({ color: 0x102637, transparent: true, opacity: 0.13, depthWrite: false }),
+    );
+    globe.add(innerSphere);
 
-    clusterNodeIndices.forEach((indices) => {
-      indices.forEach((nodeIndex, localIndex) => {
-        const nearest = indices
-          .filter((candidate) => candidate !== nodeIndex)
-          .map((candidate) => ({ candidate, distance: nodes[nodeIndex].position.distanceTo(nodes[candidate].position) }))
-          .sort((a, b) => a.distance - b.distance)
-          .slice(0, localIndex % 4 === 0 ? 3 : 2);
-        nearest.forEach(({ candidate }) => addEdge(nodeIndex, candidate));
-      });
-    });
+    const rimSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(sphereRadius * 1.012, 56, 36),
+      new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        vertexShader: `
+          varying float vFresnel;
+          void main() {
+            vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+            vec3 viewNormal = normalize(normalMatrix * normal);
+            vec3 viewDirection = normalize(-viewPosition.xyz);
+            vFresnel = pow(1.0 - abs(dot(viewNormal, viewDirection)), 3.3);
+            gl_Position = projectionMatrix * viewPosition;
+          }
+        `,
+        fragmentShader: `
+          varying float vFresnel;
+          void main() {
+            gl_FragColor = vec4(vec3(0.48, 0.73, 0.77), vFresnel * 0.13);
+          }
+        `,
+      }),
+    );
+    globe.add(rimSphere);
 
-    bridgePairs.forEach(([fromCluster, toCluster], bridgeIndex) => {
-      const fromNodes = clusterNodeIndices[fromCluster];
-      const toNodes = clusterNodeIndices[toCluster];
-      addEdge(fromNodes[bridgeIndex % Math.min(4, fromNodes.length)], toNodes[(bridgeIndex * 3) % Math.min(5, toNodes.length)], true);
-      if (bridgeIndex % 3 === 0) addEdge(fromNodes[0], toNodes[0], true);
-    });
+    const flowColors = [0x78b9c4, 0xa5d2d5];
+    const dataPoints: Array<{
+      marker: THREE.Mesh;
+      curve: THREE.Curve<THREE.Vector3>;
+      offset: number;
+      speed: number;
+    }> = [];
+    const activeFlows: Array<{
+      marker: THREE.Mesh;
+      curve: THREE.Curve<THREE.Vector3>;
+      offset: number;
+      speed: number;
+      targetNode: number;
+      linkMaterial: THREE.LineBasicMaterial;
+    }> = [];
 
-    const nodePositions = new Float32Array(nodes.length * 3);
-    const nodeColors = new Float32Array(nodes.length * 3);
-    const nodeSizes = new Float32Array(nodes.length);
-    nodes.forEach((node, index) => {
-      const color = new THREE.Color(clusterSpecs[node.cluster].color);
-      nodeColors[index * 3] = color.r;
-      nodeColors[index * 3 + 1] = color.g;
-      nodeColors[index * 3 + 2] = color.b;
-      nodeSizes[index] = node.size;
-    });
-    const nodeGeometry = new THREE.BufferGeometry();
-    nodeGeometry.setAttribute("position", new THREE.BufferAttribute(nodePositions, 3));
-    nodeGeometry.setAttribute("color", new THREE.BufferAttribute(nodeColors, 3));
-    nodeGeometry.setAttribute("aSize", new THREE.BufferAttribute(nodeSizes, 1));
-    const nodeMaterial = new THREE.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      vertexColors: true,
-      vertexShader: `
-        attribute float aSize;
-        varying vec3 vColor;
-        void main() {
-          vColor = color;
-          vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = aSize * (5.5 / max(1.0, -viewPosition.z));
-          gl_Position = projectionMatrix * viewPosition;
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vColor;
-        void main() {
-          float distanceToCenter = distance(gl_PointCoord, vec2(.5));
-          float core = smoothstep(.28, 0.0, distanceToCenter);
-          float halo = smoothstep(.5, .08, distanceToCenter) * .48;
-          float alpha = core + halo;
-          if (alpha < .015) discard;
-          gl_FragColor = vec4(mix(vColor, vec3(.92, 1.0, .99), core * .65), alpha);
-        }
-      `,
-    });
-    network.add(new THREE.Points(nodeGeometry, nodeMaterial));
-
-    const linePositions = new Float32Array(edges.length * 6);
-    const lineColors = new Float32Array(edges.length * 6);
-    edges.forEach((edge, index) => {
-      const fromColor = new THREE.Color(clusterSpecs[nodes[edge.from].cluster].color);
-      const toColor = new THREE.Color(clusterSpecs[nodes[edge.to].cluster].color);
-      const strength = edge.bridge ? 0.95 : 0.68;
-      lineColors.set([fromColor.r * strength, fromColor.g * strength, fromColor.b * strength], index * 6);
-      lineColors.set([toColor.r * strength, toColor.g * strength, toColor.b * strength], index * 6 + 3);
-    });
-    const lineGeometry = new THREE.BufferGeometry();
-    lineGeometry.setAttribute("position", new THREE.BufferAttribute(linePositions, 3));
-    lineGeometry.setAttribute("color", new THREE.BufferAttribute(lineColors, 3));
-    const lineMaterial = new THREE.LineBasicMaterial({
-      vertexColors: true,
+    // One intentional surface route passes directly through Yale so the
+    // coordinating node reads as part of the network rather than floating over it.
+    const yaleSurfacePoint = new THREE.Vector3(0, 0, surfaceRadius);
+    const yaleRouteNormal = new THREE.Vector3(0.68, -0.4, 0.61).normalize();
+    const yalePlaneOffset = yaleRouteNormal.dot(yaleSurfacePoint);
+    const yaleRouteCenter = yaleRouteNormal.clone().multiplyScalar(yalePlaneOffset);
+    const yaleRouteRadius = Math.sqrt(surfaceRadius * surfaceRadius - yalePlaneOffset * yalePlaneOffset);
+    const yaleRouteU = yaleSurfacePoint.clone().sub(yaleRouteCenter).normalize();
+    const yaleRouteV = new THREE.Vector3().crossVectors(yaleRouteNormal, yaleRouteU).normalize();
+    const yaleRoute = new OrbitalArcCurve(
+      yaleRouteCenter,
+      yaleRouteU,
+      yaleRouteV,
+      0,
+      Math.PI * 1.34,
+      yaleRouteRadius,
+    );
+    const yaleRouteGeometry = new THREE.TubeGeometry(yaleRoute, 64, 0.0065, 5, false);
+    const yaleRouteMaterial = new THREE.MeshBasicMaterial({
+      color: 0x9bcbd0,
       transparent: true,
       opacity: 0.28,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.NormalBlending,
       depthWrite: false,
     });
-    network.add(new THREE.LineSegments(lineGeometry, lineMaterial));
+    globe.add(new THREE.Mesh(yaleRouteGeometry, yaleRouteMaterial));
 
-    const glowTexture = makeGlowTexture();
-    const hubs: THREE.Sprite[] = [];
-    clusterNodeIndices.forEach((indices, index) => {
-      const hub = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: glowTexture,
-        color: index % 3 === 0 ? 0xffd9a0 : clusterSpecs[index].color,
+    for (let index = 0; index < 22; index += 1) {
+      const layer = index < 4 ? "foreground" : index < 15 ? "midground" : "background";
+      const emphasized = layer === "foreground";
+      const normalAzimuth = seeded(index, 1) * Math.PI * 2;
+      const normalSign = seeded(index, 4) > 0.5 ? 1 : -1;
+      const normalZ = normalSign * (0.24 + seeded(index, 5) * 0.54);
+      const normalRadial = Math.sqrt(1 - normalZ * normalZ);
+      const planeNormal = new THREE.Vector3(
+        Math.cos(normalAzimuth) * normalRadial,
+        Math.sin(normalAzimuth) * normalRadial,
+        normalZ,
+      ).normalize();
+      const helper = Math.abs(planeNormal.y) > 0.88
+        ? new THREE.Vector3(1, 0, 0)
+        : new THREE.Vector3(0, 1, 0);
+      const basisU = new THREE.Vector3().crossVectors(planeNormal, helper).normalize();
+      const basisV = new THREE.Vector3().crossVectors(planeNormal, basisU).normalize();
+      const frontAngle = Math.atan2(basisV.z, basisU.z);
+      const planeOffset = (seeded(index, 8) - 0.5) * surfaceRadius * 1.18;
+      const orbitRadius = Math.sqrt(surfaceRadius * surfaceRadius - planeOffset * planeOffset);
+      const orbitCenter = planeNormal.clone().multiplyScalar(planeOffset);
+      const span = Math.PI * (1.02 + seeded(index, 3) * 0.27);
+      const direction = index % 2 === 0 ? 1 : -1;
+      const curve: THREE.Curve<THREE.Vector3> = new OrbitalArcCurve(
+        orbitCenter,
+        basisU,
+        basisV,
+        frontAngle,
+        span * direction,
+        orbitRadius,
+      );
+      const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(56));
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          uColor: { value: new THREE.Color(flowColors[index % flowColors.length]) },
+          uOpacity: { value: layer === "foreground"
+            ? 0.24 + seeded(index, 6) * 0.09
+            : layer === "midground"
+              ? 0.105 + seeded(index, 6) * 0.065
+              : 0.04 + seeded(index, 6) * 0.035 },
+        },
         transparent: true,
-        opacity: 0.52,
-        blending: THREE.AdditiveBlending,
+        blending: THREE.NormalBlending,
         depthWrite: false,
-      }));
-      hub.position.copy(nodes[indices[0]].position);
-      hub.scale.set(0.34, 0.34, 1);
-      hub.userData.phase = index * 1.24;
-      network.add(hub);
-      hubs.push(hub);
-    });
+        vertexShader: `
+          varying float vFacing;
+          void main() {
+            vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+            vec3 sphereNormal = normalize(normalMatrix * normalize(position));
+            vec3 viewDirection = normalize(-viewPosition.xyz);
+            vFacing = dot(sphereNormal, viewDirection);
+            gl_Position = projectionMatrix * viewPosition;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          uniform float uOpacity;
+          varying float vFacing;
+          void main() {
+            float depthFade = mix(0.22, 1.0, smoothstep(-0.35, 0.58, vFacing));
+            gl_FragColor = vec4(uColor, uOpacity * depthFade);
+          }
+        `,
+      });
+      globe.add(new THREE.Line(geometry, material));
 
-    const signalEdges = edges.filter((edge, index) => edge.bridge || index % 19 === 0).slice(0, 18);
-    const signals = signalEdges.map((edge, index) => {
-      const signal = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: glowTexture,
-        color: index % 4 === 0 ? 0xffd18a : 0xdffefe,
+      const baseRadius = layer === "foreground"
+        ? 0.004 + seeded(index, 16) * 0.0025
+        : layer === "midground"
+          ? 0.0022 + seeded(index, 16) * 0.002
+          : 0.0015 + seeded(index, 16) * 0.0013;
+      const baseTubeGeometry = new THREE.TubeGeometry(curve, 58, baseRadius, 4, false);
+      const baseTubeMaterial = new THREE.MeshBasicMaterial({
+        color: flowColors[index % flowColors.length],
         transparent: true,
-        opacity: 0.88,
-        blending: THREE.AdditiveBlending,
+        opacity: layer === "foreground"
+          ? 0.12 + seeded(index, 17) * 0.055
+          : layer === "midground"
+            ? 0.055 + seeded(index, 17) * 0.04
+            : 0.025 + seeded(index, 17) * 0.025,
+        blending: THREE.NormalBlending,
         depthWrite: false,
-      }));
-      const scale = index % 4 === 0 ? 0.17 : 0.12;
-      signal.scale.set(scale, scale, 1);
-      network.add(signal);
-      return { sprite: signal, edge, offset: seeded(index, 24), speed: 0.06 + seeded(index, 25) * 0.045 };
-    });
+      });
+      globe.add(new THREE.Mesh(baseTubeGeometry, baseTubeMaterial));
 
-    const dustPositions = new Float32Array(85 * 3);
-    for (let index = 0; index < 85; index += 1) {
-      dustPositions[index * 3] = (seeded(index, 31) - 0.5) * 4.8;
-      dustPositions[index * 3 + 1] = (seeded(index, 32) - 0.5) * 3.8;
-      dustPositions[index * 3 + 2] = -0.9 - seeded(index, 33) * 1.5;
+      if (emphasized) {
+        const glowGeometry = new THREE.TubeGeometry(curve, 58, 0.014, 5, false);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+          color: flowColors[index % flowColors.length],
+          transparent: true,
+          opacity: 0.026,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+        globe.add(new THREE.Mesh(glowGeometry, glowMaterial));
+
+        const emphasisGeometry = new THREE.TubeGeometry(curve, 58, 0.006 + seeded(index, 20) * 0.0025, 5, false);
+        const emphasisMaterial = new THREE.MeshBasicMaterial({
+          color: flowColors[index % flowColors.length],
+          transparent: true,
+          opacity: 0.25,
+          blending: THREE.NormalBlending,
+          depthWrite: false,
+        });
+        globe.add(new THREE.Mesh(emphasisGeometry, emphasisMaterial));
+      }
+
+      if (index % 4 === 1) {
+        const dataPoint = new THREE.Mesh(
+          new THREE.SphereGeometry(layer === "foreground" ? 0.026 : 0.019, 10, 10),
+          new THREE.MeshBasicMaterial({
+            color: layer === "background" ? 0x8eb9bf : 0xd7eeee,
+            transparent: true,
+            opacity: layer === "background" ? 0.42 : 0.72,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          }),
+        );
+        const offset = seeded(index, 28);
+        dataPoint.position.copy(curve.getPoint(offset));
+        globe.add(dataPoint);
+        dataPoints.push({
+          marker: dataPoint,
+          curve,
+          offset,
+          speed: 0.004 + seeded(index, 29) * 0.003,
+        });
+      }
+
     }
-    const dustGeometry = new THREE.BufferGeometry();
-    dustGeometry.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
-    network.add(new THREE.Points(dustGeometry, new THREE.PointsMaterial({
-      color: 0x8bbfc5,
-      size: 0.018,
+
+    const memberMarkerTexture = createMarkerTexture(false);
+    const yaleMarkerTexture = createMarkerTexture(true);
+    const pulseTexture = createPulseTexture();
+    const memberMarkerMaterial = new THREE.SpriteMaterial({
+      map: memberMarkerTexture,
+      color: 0xffffff,
       transparent: true,
-      opacity: 0.27,
+      opacity: 0.9,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
-    })));
+    });
+    const yaleMarkerMaterial = new THREE.SpriteMaterial({
+      map: yaleMarkerTexture,
+      color: 0xffffff,
+      transparent: true,
+      opacity: 1,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const pulseMaterial = new THREE.SpriteMaterial({
+      map: pulseTexture,
+      color: 0xffe0a8,
+      transparent: true,
+      opacity: 0.1,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const nodeMarkers: THREE.Sprite[] = [];
+    const haloMarkers: THREE.Sprite[] = [];
+    networkNodes.forEach((entry, index) => {
+      const markerMaterial = (entry.anchor ? yaleMarkerMaterial : memberMarkerMaterial).clone();
+      markerMaterial.opacity = entry.anchor ? 1 : 0.82;
+      const marker = new THREE.Sprite(markerMaterial);
+      marker.position.copy(new THREE.Vector3(...entry.vector).normalize().multiplyScalar(surfaceRadius));
+      const scale = entry.anchor ? 0.47 : 0.34;
+      marker.scale.set(scale, scale, 1);
+      marker.userData.baseScale = scale;
+      marker.userData.phase = index * 1.17;
+      marker.userData.anchor = entry.anchor;
+
+      const halo = new THREE.Sprite(pulseMaterial.clone());
+      halo.position.copy(marker.position);
+      halo.scale.set(scale * (entry.anchor ? 1.2 : 1.1), scale * (entry.anchor ? 1.2 : 1.1), 1);
+      halo.userData.baseScale = scale;
+      halo.userData.phase = index * 1.17;
+      halo.userData.anchor = entry.anchor;
+      halo.renderOrder = 1;
+      marker.renderOrder = 2;
+      globe.add(halo);
+      globe.add(marker);
+      haloMarkers.push(halo);
+      nodeMarkers.push(marker);
+    });
+
+    // A connected mesh makes the collaboration visible at a glance, while the
+    // unlabeled nodes allow the network to grow without implying a fixed roster.
+    const meshLinks = [
+      [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8],
+      [1, 2], [1, 4], [1, 7], [2, 3], [2, 7], [3, 6], [3, 8], [4, 5],
+      [4, 7], [4, 10], [5, 6], [5, 8], [5, 10], [6, 8], [6, 12],
+      [7, 8], [7, 9], [8, 11], [9, 11], [10, 12], [11, 12],
+    ];
+    meshLinks.forEach(([from, to], index) => {
+      const start = nodeMarkers[from].position.clone();
+      const end = nodeMarkers[to].position.clone();
+      const midpoint = start.clone().add(end).multiplyScalar(0.5).normalize()
+        .multiplyScalar(surfaceRadius * (1.08 + (index % 3) * 0.028));
+      const curve = new THREE.QuadraticBezierCurve3(start, midpoint, end);
+      const material = new THREE.LineBasicMaterial({
+        color: index % 5 === 0 ? 0xc3eef0 : 0x74bcc8,
+        transparent: true,
+        opacity: index % 5 === 0 ? 0.54 : 0.34,
+        depthWrite: false,
+      });
+      globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(26)), material));
+
+      const linkTube = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 34, index % 5 === 0 ? 0.011 : 0.007, 5, false),
+        new THREE.MeshBasicMaterial({
+          color: index % 5 === 0 ? 0xb9e9eb : 0x67afbc,
+          transparent: true,
+          opacity: index % 5 === 0 ? 0.18 : 0.1,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        }),
+      );
+      globe.add(linkTube);
+
+      if (index % 2 === 0) {
+        const pulse = new THREE.Mesh(
+          new THREE.SphereGeometry(index % 4 === 0 ? 0.036 : 0.027, 12, 12),
+          new THREE.MeshBasicMaterial({
+            color: index % 4 === 0 ? 0xffdfaa : 0xe2ffff,
+            transparent: true,
+            opacity: 0.96,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          }),
+        );
+        const pulseOffset = seeded(index, 48);
+        pulse.position.copy(curve.getPoint(pulseOffset));
+        globe.add(pulse);
+        activeFlows.push({
+          marker: pulse,
+          curve,
+          offset: pulseOffset,
+          speed: 0.055 + seeded(index, 49) * 0.025,
+          targetNode: to,
+          linkMaterial: material,
+        });
+      }
+    });
 
     let width = 1;
     let height = 1;
     let frame = 0;
-    const updateGeometry = (seconds: number) => {
-      nodes.forEach((node, index) => {
-        const spec = clusterSpecs[node.cluster];
-        const center = new THREE.Vector3(...spec.center);
-        const expansion = 1 + Math.sin(seconds * 0.22 + node.cluster * 0.75) * 0.055;
-        const driftX = Math.sin(seconds * node.drift * 0.24 + node.phase) * 0.035;
-        const driftY = Math.cos(seconds * node.drift * 0.2 + node.phase * 1.3) * 0.03;
-        node.position.copy(center).addScaledVector(node.local, expansion);
-        node.position.x += driftX;
-        node.position.y += driftY;
-        node.position.z += Math.sin(seconds * 0.17 + node.phase) * 0.025;
-        nodePositions[index * 3] = node.position.x;
-        nodePositions[index * 3 + 1] = node.position.y;
-        nodePositions[index * 3 + 2] = node.position.z;
-      });
-      (nodeGeometry.attributes.position as THREE.BufferAttribute).needsUpdate = true;
-
-      edges.forEach((edge, index) => {
-        const from = nodes[edge.from].position;
-        const to = nodes[edge.to].position;
-        linePositions.set([from.x, from.y, from.z, to.x, to.y, to.z], index * 6);
-      });
-      (lineGeometry.attributes.position as THREE.BufferAttribute).needsUpdate = true;
-    };
-
     const render = (time: number) => {
       const seconds = time * 0.001;
-      updateGeometry(seconds);
-      const pointerX = pointerRef.current.x;
-      const pointerY = pointerRef.current.y;
-      network.rotation.y += (pointerX * 0.075 - network.rotation.y) * 0.025;
-      network.rotation.x += (-0.04 - pointerY * 0.04 - network.rotation.x) * 0.025;
-      network.position.x += (pointerX * 0.06 - network.position.x) * 0.022;
+      const idleY = reducedMotion ? 0 : Math.sin(seconds * 0.11) * 0.04;
+      const idleX = reducedMotion ? -0.04 : -0.04 + Math.cos(seconds * 0.09) * 0.016;
+      const targetY = pointerRef.current.x * 0.07 + idleY;
+      const targetX = pointerRef.current.y * -0.04 + idleX;
+      globe.rotation.y += (targetY - globe.rotation.y) * 0.022;
+      globe.rotation.x += (targetX - globe.rotation.x) * 0.022;
 
-      hubs.forEach((hub, index) => {
-        hub.position.copy(nodes[clusterNodeIndices[index][0]].position);
-        const wave = 0.88 + Math.sin(seconds * 1.05 + hub.userData.phase) * 0.18;
-        hub.scale.set(0.34 * wave, 0.34 * wave, 1);
-        (hub.material as THREE.SpriteMaterial).opacity = 0.34 + wave * 0.2;
-      });
-      signals.forEach((signal) => {
-        const progress = (signal.offset + seconds * signal.speed) % 1;
-        const from = nodes[signal.edge.from].position;
-        const to = nodes[signal.edge.to].position;
-        const eased = progress * progress * (3 - 2 * progress);
-        signal.sprite.position.lerpVectors(from, to, eased);
-        (signal.sprite.material as THREE.SpriteMaterial).opacity = Math.sin(progress * Math.PI) * 0.9;
-      });
+      if (!reducedMotion) {
+        nodeMarkers.forEach((marker) => { marker.userData.activity = 0; });
+        dataPoints.forEach((dataPoint) => {
+          const progress = (dataPoint.offset + seconds * dataPoint.speed) % 1;
+          dataPoint.marker.position.copy(dataPoint.curve.getPoint(progress));
+        });
+        activeFlows.forEach((flow, index) => {
+          const progress = (flow.offset + seconds * flow.speed) % 1;
+          flow.marker.position.copy(flow.curve.getPoint(progress));
+          const linkWave = 0.5 + Math.sin(seconds * 1.4 + index * 0.72) * 0.5;
+          flow.linkMaterial.opacity = 0.3 + linkWave * 0.24;
+          const arrival = Math.pow(Math.max(0, 1 - Math.abs(progress - 0.96) / 0.13), 3);
+          nodeMarkers[flow.targetNode].userData.activity = Math.max(
+            nodeMarkers[flow.targetNode].userData.activity || 0,
+            arrival,
+          );
+        });
+        nodeMarkers.forEach((marker, index) => {
+          const isAnchor = Boolean(marker.userData.anchor);
+          const speed = isAnchor ? 1.58 : 2.05;
+          const wave = Math.pow((Math.sin(seconds * speed + marker.userData.phase) + 1) * 0.5, isAnchor ? 1.15 : 1.35);
+          const activity = marker.userData.activity || 0;
+          const pulse = (isAnchor ? 0.96 + wave * 0.16 : 0.92 + wave * 0.18) + activity * 0.28;
+          const scale = marker.userData.baseScale * pulse;
+          marker.scale.set(scale, scale, 1);
+          const material = marker.material as THREE.SpriteMaterial;
+          material.opacity = Math.min(1, (isAnchor ? 0.7 + wave * 0.3 : 0.56 + wave * 0.44) + activity * 0.25);
 
-      lineMaterial.opacity = 0.24 + Math.sin(seconds * 0.45) * 0.045;
+          const halo = haloMarkers[index];
+          const haloScale = marker.userData.baseScale * ((isAnchor ? 1.12 + wave * 0.92 : 1.02 + wave * 0.78) + activity * 1.35);
+          halo.scale.set(haloScale, haloScale, 1);
+          (halo.material as THREE.SpriteMaterial).opacity = Math.min(0.95, (isAnchor ? 0.06 + wave * 0.58 : 0.04 + wave * 0.5) + activity * 0.62);
+        });
+      }
+
       renderer.render(scene, camera);
       if (!reducedMotion) frame = requestAnimationFrame(render);
     };
@@ -310,28 +513,34 @@ export function HeroNetwork() {
       const bounds = field.getBoundingClientRect();
       width = Math.max(1, bounds.width);
       height = Math.max(1, bounds.height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.65));
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
-      camera.position.z = width < 520 ? 8.35 : 7.7;
+      camera.position.z = width < 520 ? 9.6 : 8.6;
       camera.updateProjectionMatrix();
-      if (reducedMotion) render(0);
+      if (reducedMotion) requestAnimationFrame(() => render(0));
     };
 
+    resize();
     const observer = new ResizeObserver(resize);
     observer.observe(field);
-    resize();
-    if (!reducedMotion) frame = requestAnimationFrame(render);
+    render(0);
 
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
       scene.traverse((object) => {
-        const renderable = object as THREE.Mesh;
-        renderable.geometry?.dispose?.();
-        const materials = Array.isArray(renderable.material) ? renderable.material : renderable.material ? [renderable.material] : [];
+        const mesh = object as THREE.Mesh;
+        mesh.geometry?.dispose?.();
+        const materials = Array.isArray(mesh.material) ? mesh.material : mesh.material ? [mesh.material] : [];
         materials.forEach((material) => material.dispose());
       });
-      glowTexture.dispose();
+      memberMarkerTexture.dispose();
+      yaleMarkerTexture.dispose();
+      pulseTexture.dispose();
+      memberMarkerMaterial.dispose();
+      yaleMarkerMaterial.dispose();
+      pulseMaterial.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
     };
@@ -351,9 +560,9 @@ export function HeroNetwork() {
 
   return (
     <div
-      className="hero-network hero-network-3d hero-network-cloud"
+      className="hero-network hero-network-3d hero-network-sphere"
       role="img"
-      aria-label="Animated network of connected research clusters"
+      aria-label="Animated federated research network"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
     >

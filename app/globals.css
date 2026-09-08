@@ -2696,24 +2696,8 @@ footer {
 .hero-network-sphere .hero-network-label-yale strong { font-size:.57rem; }
 .hero-network-sphere .hero-network-label-yale small { display:block; font-size:.34rem; }
 }
-/* The hero network is an open field of connected research clusters. */
-.hero-network-cloud::before {
-  inset:-7% -12% -9%;
-  background:
-    radial-gradient(circle at 61% 48%,rgba(78,163,179,.2),transparent 38%),
-    radial-gradient(ellipse at 58% 53%,rgba(8,19,29,.26),transparent 68%);
-  border:0;
-}
-.hero-network-cloud .hero-network-field {
-  height:440px;
-  min-height:440px;
-  overflow:visible;
-}
-@media (max-width:760px) {
-  .hero-network-cloud .hero-network-field { height:320px; min-height:320px; overflow:hidden; }
-}
-/* Desktop hero balance: give the editorial copy more room and let the network
-   spread toward the far-right edge without changing the mobile composition. */
+/* Desktop hero balance: give the editorial copy more room and let the sphere
+   anchor the far-right edge without changing the stacked mobile composition. */
 @media (min-width:981px) {
 .home-hero-layout {
     grid-template-columns:minmax(0,1.18fr) minmax(420px,.82fr);
@@ -2729,16 +2713,6 @@ footer {
     transform:translateX(4%);
   }
 .hero-network-sphere .hero-network-field {
-    height:470px;
-    min-height:470px;
-  }
-.hero-network-cloud {
-    width:125%;
-    min-height:470px;
-    margin-left:-8%;
-    transform:translateX(3%);
-  }
-.hero-network-cloud .hero-network-field {
     height:470px;
     min-height:470px;
   }
