@@ -63,8 +63,8 @@ export default function Home() {
         <div className="home-shell home-hero-layout">
           <div className="home-hero-content">
             <h1>
-              <BlurText text="Reliable Real-World Evidence" />
-              <span className="hero-line-2"><BlurText text="Through AI" delay={0.14} /></span>
+              <BlurText text="Reliable Real-World" />
+              <span className="hero-line-2"><BlurText text="Evidence Through AI" delay={0.14} /></span>
             </h1>
             <p className="home-hero-lead">A privacy-preserving data network connecting public, private, industry, and academic partners to generate reliable, decision-ready real-world evidence.</p>
             <HeroActions />
