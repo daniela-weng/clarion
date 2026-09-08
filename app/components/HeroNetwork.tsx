@@ -178,6 +178,14 @@ export function HeroNetwork() {
       offset: number;
       speed: number;
     }> = [];
+    const activeFlows: Array<{
+      marker: THREE.Mesh;
+      curve: THREE.Curve<THREE.Vector3>;
+      offset: number;
+      speed: number;
+      targetNode: number;
+      linkMaterial: THREE.LineBasicMaterial;
+    }> = [];
 
     // One intentional surface route passes directly through Yale so the
     // coordinating node reads as part of the network rather than floating over it.
@@ -206,8 +214,8 @@ export function HeroNetwork() {
     });
     globe.add(new THREE.Mesh(yaleRouteGeometry, yaleRouteMaterial));
 
-    for (let index = 0; index < 42; index += 1) {
-      const layer = index < 7 ? "foreground" : index < 28 ? "midground" : "background";
+    for (let index = 0; index < 22; index += 1) {
+      const layer = index < 4 ? "foreground" : index < 15 ? "midground" : "background";
       const emphasized = layer === "foreground";
       const normalAzimuth = seeded(index, 1) * Math.PI * 2;
       const normalSign = seeded(index, 4) > 0.5 ? 1 : -1;
@@ -408,18 +416,45 @@ export function HeroNetwork() {
       const material = new THREE.LineBasicMaterial({
         color: index % 5 === 0 ? 0xc3eef0 : 0x74bcc8,
         transparent: true,
-        opacity: index % 5 === 0 ? 0.42 : 0.26,
+        opacity: index % 5 === 0 ? 0.54 : 0.34,
         depthWrite: false,
       });
       globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(26)), material));
 
-      if (index % 3 === 0) {
+      const linkTube = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 34, index % 5 === 0 ? 0.011 : 0.007, 5, false),
+        new THREE.MeshBasicMaterial({
+          color: index % 5 === 0 ? 0xb9e9eb : 0x67afbc,
+          transparent: true,
+          opacity: index % 5 === 0 ? 0.18 : 0.1,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        }),
+      );
+      globe.add(linkTube);
+
+      if (index % 2 === 0) {
         const pulse = new THREE.Mesh(
-          new THREE.SphereGeometry(0.028, 10, 10),
-          new THREE.MeshBasicMaterial({ color: 0xe2ffff, transparent: true, opacity: 0.92, blending: THREE.AdditiveBlending, depthWrite: false }),
+          new THREE.SphereGeometry(index % 4 === 0 ? 0.036 : 0.027, 12, 12),
+          new THREE.MeshBasicMaterial({
+            color: index % 4 === 0 ? 0xffdfaa : 0xe2ffff,
+            transparent: true,
+            opacity: 0.96,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          }),
         );
+        const pulseOffset = seeded(index, 48);
+        pulse.position.copy(curve.getPoint(pulseOffset));
         globe.add(pulse);
-        dataPoints.push({ marker: pulse, curve, offset: seeded(index, 48), speed: 0.035 + seeded(index, 49) * 0.018 });
+        activeFlows.push({
+          marker: pulse,
+          curve,
+          offset: pulseOffset,
+          speed: 0.055 + seeded(index, 49) * 0.025,
+          targetNode: to,
+          linkMaterial: material,
+        });
       }
     });
 
@@ -436,24 +471,37 @@ export function HeroNetwork() {
       globe.rotation.x += (targetX - globe.rotation.x) * 0.022;
 
       if (!reducedMotion) {
+        nodeMarkers.forEach((marker) => { marker.userData.activity = 0; });
         dataPoints.forEach((dataPoint) => {
           const progress = (dataPoint.offset + seconds * dataPoint.speed) % 1;
           dataPoint.marker.position.copy(dataPoint.curve.getPoint(progress));
+        });
+        activeFlows.forEach((flow, index) => {
+          const progress = (flow.offset + seconds * flow.speed) % 1;
+          flow.marker.position.copy(flow.curve.getPoint(progress));
+          const linkWave = 0.5 + Math.sin(seconds * 1.4 + index * 0.72) * 0.5;
+          flow.linkMaterial.opacity = 0.3 + linkWave * 0.24;
+          const arrival = Math.pow(Math.max(0, 1 - Math.abs(progress - 0.96) / 0.13), 3);
+          nodeMarkers[flow.targetNode].userData.activity = Math.max(
+            nodeMarkers[flow.targetNode].userData.activity || 0,
+            arrival,
+          );
         });
         nodeMarkers.forEach((marker, index) => {
           const isAnchor = Boolean(marker.userData.anchor);
           const speed = isAnchor ? 1.58 : 2.05;
           const wave = Math.pow((Math.sin(seconds * speed + marker.userData.phase) + 1) * 0.5, isAnchor ? 1.15 : 1.35);
-          const pulse = isAnchor ? 0.96 + wave * 0.16 : 0.92 + wave * 0.18;
+          const activity = marker.userData.activity || 0;
+          const pulse = (isAnchor ? 0.96 + wave * 0.16 : 0.92 + wave * 0.18) + activity * 0.28;
           const scale = marker.userData.baseScale * pulse;
           marker.scale.set(scale, scale, 1);
           const material = marker.material as THREE.SpriteMaterial;
-          material.opacity = isAnchor ? 0.7 + wave * 0.3 : 0.56 + wave * 0.44;
+          material.opacity = Math.min(1, (isAnchor ? 0.7 + wave * 0.3 : 0.56 + wave * 0.44) + activity * 0.25);
 
           const halo = haloMarkers[index];
-          const haloScale = marker.userData.baseScale * (isAnchor ? 1.12 + wave * 0.92 : 1.02 + wave * 0.78);
+          const haloScale = marker.userData.baseScale * ((isAnchor ? 1.12 + wave * 0.92 : 1.02 + wave * 0.78) + activity * 1.35);
           halo.scale.set(haloScale, haloScale, 1);
-          (halo.material as THREE.SpriteMaterial).opacity = isAnchor ? 0.06 + wave * 0.78 : 0.04 + wave * 0.72;
+          (halo.material as THREE.SpriteMaterial).opacity = Math.min(0.95, (isAnchor ? 0.06 + wave * 0.58 : 0.04 + wave * 0.5) + activity * 0.62);
         });
       }
 
