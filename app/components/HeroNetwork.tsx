@@ -4,13 +4,19 @@ import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from "react
 import * as THREE from "three";
 
 const networkNodes = [
-  { short: "YALE", label: "Yale University", note: "Coordinating center", vector: [0, 0, 1], side: "right", yale: true },
-  { short: "UMN", label: "University of Minnesota", note: "", vector: [-0.55, 0.72, 0.35], side: "left", yale: false },
-  { short: "IU", label: "Indiana University", note: "", vector: [-0.92, 0.05, 0.22], side: "left", yale: false },
-  { short: "UCI", label: "University of California, Irvine", note: "", vector: [-0.52, -0.75, 0.4], side: "left", yale: false },
-  { short: "COL", label: "Columbia University", note: "", vector: [0.52, 0.73, 0.43], side: "right", yale: false },
-  { short: "COR", label: "Cornell University", note: "", vector: [0.92, 0.08, 0.23], side: "right", yale: false },
-  { short: "UF", label: "University of Florida", note: "", vector: [0.46, -0.76, 0.45], side: "right", yale: false },
+  { vector: [0, 0, 1], anchor: true },
+  { vector: [-0.55, 0.72, 0.35], anchor: false },
+  { vector: [-0.92, 0.05, 0.22], anchor: false },
+  { vector: [-0.52, -0.75, 0.4], anchor: false },
+  { vector: [0.52, 0.73, 0.43], anchor: false },
+  { vector: [0.92, 0.08, 0.23], anchor: false },
+  { vector: [0.46, -0.76, 0.45], anchor: false },
+  { vector: [-0.24, 0.2, 0.96], anchor: false },
+  { vector: [0.27, -0.26, 0.92], anchor: false },
+  { vector: [-0.78, 0.48, -0.06], anchor: false },
+  { vector: [0.76, 0.46, -0.04], anchor: false },
+  { vector: [-0.68, -0.51, -0.08], anchor: false },
+  { vector: [0.68, -0.48, -0.12], anchor: false },
 ] as const;
 
 function seeded(index: number, salt: number) {
@@ -100,7 +106,6 @@ function createPulseTexture() {
 export function HeroNetwork() {
   const fieldRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const labelRefs = useRef<Array<HTMLDivElement | null>>([]);
   const pointerRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -362,22 +367,22 @@ export function HeroNetwork() {
     const nodeMarkers: THREE.Sprite[] = [];
     const haloMarkers: THREE.Sprite[] = [];
     networkNodes.forEach((entry, index) => {
-      const markerMaterial = (entry.yale ? yaleMarkerMaterial : memberMarkerMaterial).clone();
-      markerMaterial.opacity = entry.yale ? 1 : 0.82;
+      const markerMaterial = (entry.anchor ? yaleMarkerMaterial : memberMarkerMaterial).clone();
+      markerMaterial.opacity = entry.anchor ? 1 : 0.82;
       const marker = new THREE.Sprite(markerMaterial);
       marker.position.copy(new THREE.Vector3(...entry.vector).normalize().multiplyScalar(surfaceRadius));
-      const scale = entry.yale ? 0.47 : 0.38;
+      const scale = entry.anchor ? 0.47 : 0.34;
       marker.scale.set(scale, scale, 1);
       marker.userData.baseScale = scale;
       marker.userData.phase = index * 1.17;
-      marker.userData.yale = entry.yale;
+      marker.userData.anchor = entry.anchor;
 
       const halo = new THREE.Sprite(pulseMaterial.clone());
       halo.position.copy(marker.position);
-      halo.scale.set(scale * (entry.yale ? 1.2 : 1.1), scale * (entry.yale ? 1.2 : 1.1), 1);
+      halo.scale.set(scale * (entry.anchor ? 1.2 : 1.1), scale * (entry.anchor ? 1.2 : 1.1), 1);
       halo.userData.baseScale = scale;
       halo.userData.phase = index * 1.17;
-      halo.userData.yale = entry.yale;
+      halo.userData.anchor = entry.anchor;
       halo.renderOrder = 1;
       marker.renderOrder = 2;
       globe.add(halo);
@@ -386,21 +391,41 @@ export function HeroNetwork() {
       nodeMarkers.push(marker);
     });
 
+    // A connected mesh makes the collaboration visible at a glance, while the
+    // unlabeled nodes allow the network to grow without implying a fixed roster.
+    const meshLinks = [
+      [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8],
+      [1, 2], [1, 4], [1, 7], [2, 3], [2, 7], [3, 6], [3, 8], [4, 5],
+      [4, 7], [4, 10], [5, 6], [5, 8], [5, 10], [6, 8], [6, 12],
+      [7, 8], [7, 9], [8, 11], [9, 11], [10, 12], [11, 12],
+    ];
+    meshLinks.forEach(([from, to], index) => {
+      const start = nodeMarkers[from].position.clone();
+      const end = nodeMarkers[to].position.clone();
+      const midpoint = start.clone().add(end).multiplyScalar(0.5).normalize()
+        .multiplyScalar(surfaceRadius * (1.08 + (index % 3) * 0.028));
+      const curve = new THREE.QuadraticBezierCurve3(start, midpoint, end);
+      const material = new THREE.LineBasicMaterial({
+        color: index % 5 === 0 ? 0xc3eef0 : 0x74bcc8,
+        transparent: true,
+        opacity: index % 5 === 0 ? 0.42 : 0.26,
+        depthWrite: false,
+      });
+      globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(26)), material));
+
+      if (index % 3 === 0) {
+        const pulse = new THREE.Mesh(
+          new THREE.SphereGeometry(0.028, 10, 10),
+          new THREE.MeshBasicMaterial({ color: 0xe2ffff, transparent: true, opacity: 0.92, blending: THREE.AdditiveBlending, depthWrite: false }),
+        );
+        globe.add(pulse);
+        dataPoints.push({ marker: pulse, curve, offset: seeded(index, 48), speed: 0.035 + seeded(index, 49) * 0.018 });
+      }
+    });
+
     let width = 1;
     let height = 1;
     let frame = 0;
-    const temporaryPosition = new THREE.Vector3();
-
-    const placeLabel = (element: HTMLDivElement | null, object: THREE.Object3D, isYale: boolean) => {
-      if (!element) return;
-      object.getWorldPosition(temporaryPosition);
-      temporaryPosition.project(camera);
-      element.style.left = `${(temporaryPosition.x * 0.5 + 0.5) * width}px`;
-      element.style.top = `${(-temporaryPosition.y * 0.5 + 0.5) * height}px`;
-      const opacity = isYale ? 1 : 0.86;
-      element.style.setProperty("--network-label-opacity", `${opacity}`);
-    };
-
     const render = (time: number) => {
       const seconds = time * 0.001;
       const idleY = reducedMotion ? 0 : Math.sin(seconds * 0.11) * 0.04;
@@ -416,24 +441,22 @@ export function HeroNetwork() {
           dataPoint.marker.position.copy(dataPoint.curve.getPoint(progress));
         });
         nodeMarkers.forEach((marker, index) => {
-          const isYale = Boolean(marker.userData.yale);
-          const speed = isYale ? 1.58 : 2.05;
-          const wave = Math.pow((Math.sin(seconds * speed + marker.userData.phase) + 1) * 0.5, isYale ? 1.15 : 1.35);
-          const pulse = isYale ? 0.96 + wave * 0.16 : 0.92 + wave * 0.18;
+          const isAnchor = Boolean(marker.userData.anchor);
+          const speed = isAnchor ? 1.58 : 2.05;
+          const wave = Math.pow((Math.sin(seconds * speed + marker.userData.phase) + 1) * 0.5, isAnchor ? 1.15 : 1.35);
+          const pulse = isAnchor ? 0.96 + wave * 0.16 : 0.92 + wave * 0.18;
           const scale = marker.userData.baseScale * pulse;
           marker.scale.set(scale, scale, 1);
           const material = marker.material as THREE.SpriteMaterial;
-          material.opacity = isYale ? 0.7 + wave * 0.3 : 0.56 + wave * 0.44;
+          material.opacity = isAnchor ? 0.7 + wave * 0.3 : 0.56 + wave * 0.44;
 
           const halo = haloMarkers[index];
-          const haloScale = marker.userData.baseScale * (isYale ? 1.12 + wave * 0.92 : 1.02 + wave * 0.78);
+          const haloScale = marker.userData.baseScale * (isAnchor ? 1.12 + wave * 0.92 : 1.02 + wave * 0.78);
           halo.scale.set(haloScale, haloScale, 1);
-          (halo.material as THREE.SpriteMaterial).opacity = isYale ? 0.06 + wave * 0.78 : 0.04 + wave * 0.72;
+          (halo.material as THREE.SpriteMaterial).opacity = isAnchor ? 0.06 + wave * 0.78 : 0.04 + wave * 0.72;
         });
       }
 
-      scene.updateMatrixWorld(true);
-      nodeMarkers.forEach((node, index) => placeLabel(labelRefs.current[index], node, Boolean(networkNodes[index].yale)));
       renderer.render(scene, camera);
       if (!reducedMotion) frame = requestAnimationFrame(render);
     };
@@ -491,23 +514,12 @@ export function HeroNetwork() {
     <div
       className="hero-network hero-network-3d hero-network-sphere"
       role="img"
-      aria-label="A federated data sphere showing Yale University coordinating research across six participating academic institutions"
+      aria-label="Animated federated research network"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
     >
       <div className="hero-network-field" ref={fieldRef} aria-hidden="true">
         <canvas ref={canvasRef} className="hero-network-canvas" />
-        {networkNodes.map((entry, index) => (
-          <div
-            className={`hero-network-label${entry.yale ? " hero-network-label-yale" : ""}`}
-            data-side={entry.side}
-            data-yale={entry.yale ? "true" : undefined}
-            key={entry.short}
-            ref={(element) => { labelRefs.current[index] = element; }}
-          >
-            <b>{entry.short}</b>
-          </div>
-        ))}
       </div>
     </div>
   );
