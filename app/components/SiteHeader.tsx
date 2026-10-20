@@ -22,7 +22,7 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="site-header" data-scrolled={isScrolled}>
+    <header className="site-header" data-scrolled={isScrolled} data-theme={pathname === "/" ? "dark" : undefined}>
       <div className="site-header-inner">
         <Link className="wordmark" href="/" aria-label="Clarion home">
           <Image
