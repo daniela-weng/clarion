@@ -1,17 +1,18 @@
 "use client";
 
 import type { ComponentType, ReactNode } from "react";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import SpecularButtonJs from "./SpecularButton";
 
 // The vendored JS component infers `children` as string from its default; widen it.
 const SpecularButton = SpecularButtonJs as unknown as ComponentType<Record<string, unknown> & { children?: ReactNode }>;
 
-/** Hero call to action: a glass button whose gold rim catches light as the cursor approaches. */
-export function HeroCta() {
+/** Shared homepage CTA look: navy glass with a gold tint whose rim catches light as the cursor approaches. */
+function GlassCta({ children, onClick, className = "" }: { children: ReactNode; onClick: () => void; className?: string }) {
   return (
     <SpecularButton
-      className="hx-cta"
+      className={`hx-cta ${className}`.trim()}
       size="lg"
       radius={10}
       tint="#f2b56b"
@@ -28,6 +29,17 @@ export function HeroCta() {
       glow={1}
       followMouse
       proximity={250}
+      onClick={onClick}
+    >
+      {children} <ArrowRight aria-hidden="true" />
+    </SpecularButton>
+  );
+}
+
+/** Hero call to action: scrolls to the medical centers map. */
+export function HeroCta() {
+  return (
+    <GlassCta
       onClick={() => {
         const target = document.getElementById("centers-title");
         if (!target) return;
@@ -36,8 +48,20 @@ export function HeroCta() {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }}
     >
-      Explore the Network <ArrowRight aria-hidden="true" />
-    </SpecularButton>
+      Participating Medical Centers
+    </GlassCta>
+  );
+}
+
+/**
+ * Partners call to action on a light background: the hero CTA's shape, type, and arrow,
+ * with a solid navy body and a gold rim on hover (glass + rim light only read on dark).
+ */
+export function ContactCta() {
+  return (
+    <Link className="hx-cta-solid" href="/contact">
+      Contact the Coordinating Center <ArrowRight aria-hidden="true" />
+    </Link>
   );
 }
 

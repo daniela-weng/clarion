@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowDownRight, BrainCircuit, Database, Scale, ShieldCheck } from "lucide-react";
+import { BrainCircuit, Check, Database, Scale, ShieldCheck } from "lucide-react";
 
 type FeaturePoint = { term?: string; detail: string };
 type Feature = { title: string; lead?: string; icon: typeof Scale; points: FeaturePoint[] };
@@ -94,31 +94,7 @@ export function FeaturesBento() {
           <p className="hx-eyebrow">Features of Clarion</p>
           <h2 id="features-title">Streamlined Governance and <span className="hx-gold">Advanced AI Technology</span> to Ensure Efficiency and Quality</h2>
         </div>
-        <nav className="bx-index-nav reveal" aria-label="Features of Clarion">
-          <ol>
-            {features.map(({ title }, index) => (
-              <li key={title}>
-                <a href={`#feature-${index + 1}`}>
-                  <span className="bx-index-num" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="bx-index-title">{title}</span>
-                  <ArrowDownRight className="bx-index-arrow" aria-hidden="true" />
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
       </div>
-
-      {/* shared blue→gold stroke for the card icons (userSpaceOnUse so straight lines still render) */}
-      <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: "absolute" }}>
-        <defs>
-          <linearGradient id="bx-icon-stroke" gradientUnits="userSpaceOnUse" x1="2" y1="2" x2="22" y2="22">
-            <stop offset="0%" stopColor="#2b5aa6" />
-            <stop offset="60%" stopColor="#4f7fd0" />
-            <stop offset="100%" stopColor="#c8913f" />
-          </linearGradient>
-        </defs>
-      </svg>
 
       <div className="bx-grid" ref={gridRef}>
         {features.map(({ title, lead, icon: Icon, points }, index) => (
@@ -128,16 +104,20 @@ export function FeaturesBento() {
             <div className="bx-body">
               <div className="bx-head">
                 <span className="bx-icon" aria-hidden="true"><Icon strokeWidth={1.6} /></span>
-                <span className="bx-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                <div className="bx-head-text">
+                  <p className="bx-seq" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
+                  <h3 id={`feature-${index + 1}-title`}>{title}</h3>
+                </div>
               </div>
-              <h3 id={`feature-${index + 1}-title`}>{title}</h3>
-              {/* the lead slot is always rendered so dividers line up across cards */}
-              <p className="bx-lead" aria-hidden={lead ? undefined : true}>{lead}</p>
+              {lead && <p className="bx-lead">{lead}</p>}
               <ul className="bx-points">
                 {points.map((point) => (
                   <li key={point.detail} className={point.term ? "has-term" : undefined}>
-                    {point.term && <strong>{point.term}</strong>}
-                    <span>{point.detail}</span>
+                    <span className="bx-check" aria-hidden="true"><Check strokeWidth={2.4} /></span>
+                    <span className="bx-point-text">
+                      {point.term && <strong>{point.term} </strong>}
+                      {point.detail}
+                    </span>
                   </li>
                 ))}
               </ul>

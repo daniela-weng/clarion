@@ -1,12 +1,19 @@
-import Link from "next/link";
-import { ArrowRight, BadgeCheck, FlaskConical, HandCoins } from "lucide-react";
+import type { Metadata } from "next";
+import { BadgeCheck, FlaskConical, HandCoins } from "lucide-react";
 import { BlurText } from "./components/BlurText";
 import { HeroBackdrop } from "./components/HeroBackdrop";
-import { HeroCta } from "./components/HeroCta";
+import { ContactCta, HeroCta } from "./components/HeroCta";
 import { CentersStrip } from "./components/CentersStrip";
 import { FeaturesBento } from "./components/FeaturesBento";
 import { NetworkMap, interestedSites } from "./components/NetworkMap";
 import { RevealController } from "./components/RevealController";
+
+export const metadata: Metadata = {
+  title: { absolute: "Clarion Network for AI-Driven Reproducible Real-World Evidence" },
+  description: "Clarion Network for AI-Driven Reproducible Real-World Evidence will establish a national, distributed infrastructure to advance high-quality real-world evidence generation using artificial intelligence.",
+  openGraph: { title: "Clarion Network for AI-Driven Reproducible Real-World Evidence", description: "Clarion Network for AI-Driven Reproducible Real-World Evidence will establish a national, distributed infrastructure to advance high-quality real-world evidence generation using artificial intelligence." },
+  twitter: { title: "Clarion Network for AI-Driven Reproducible Real-World Evidence", description: "Clarion Network for AI-Driven Reproducible Real-World Evidence will establish a national, distributed infrastructure to advance high-quality real-world evidence generation using artificial intelligence." },
+};
 
 const centerNames = [
   "Yale University",
@@ -74,13 +81,9 @@ export default function Home() {
               <h2 id="centers-title" tabIndex={-1}>Participating Medical Centers</h2>
               <p>Expanding network with more centers joining.</p>
             </div>
-            <p className="mc-stat">
-              <span className="mc-stat-num">8</span>
-              <span className="mc-stat-label">showed interest</span>
-            </p>
             <ul className="mc-legend" aria-hidden="true">
               <li><span className="mc-dot mc-dot-hub" /> Coordinating center</li>
-              <li><span className="mc-dot" /> Member site</li>
+              <li><span className="mc-dot" /> Participating medical center</li>
             </ul>
           </div>
           <div className="hx-map-panel mc-map reveal">
@@ -91,43 +94,24 @@ export default function Home() {
 
       <section className="hx-section hx-light hx-partners-section" aria-labelledby="partners-title">
         <div className="hx-shell">
-          <div className="hx-partners pt-panel reveal">
-            <svg className="pt-arcs" viewBox="0 0 420 260" fill="none" aria-hidden="true">
-              <path d="M400 40 Q250 -10 60 120" />
-              <path d="M400 40 Q300 60 170 220" />
-              <path d="M400 40 Q340 120 330 250" />
-              <circle cx="400" cy="40" r="6" />
-              <circle cx="60" cy="120" r="3.5" />
-              <circle cx="170" cy="220" r="3.5" />
-              <circle cx="330" cy="250" r="3.5" />
-            </svg>
-
-            <div className="pt-top">
-              <div>
-                <p className="hx-eyebrow">Public–Private Partnership</p>
-                <h2 id="partners-title">Private &amp; Industry <span className="hx-gold">Partners</span></h2>
-              </div>
-              <p className="hx-partners-lead">Collaborating across the life sciences and healthcare ecosystem to turn data insights into clinical value.</p>
+          <div className="pp-layout">
+            <div className="pp-intro reveal">
+              <p className="hx-eyebrow">Public–Private Partnership</p>
+              <h2 id="partners-title">Private &amp; Industry <span className="hx-gold">Partners</span></h2>
+              <p className="pp-lead">Collaborating across the life sciences and healthcare ecosystem to turn data insights into clinical value.</p>
+              <ContactCta />
             </div>
 
-            <ul className="pt-tiles">
-              {partnerPoints.map(({ label, icon: Icon }) => (
-                <li key={label}>
-                  <span className="pt-tile-icon" aria-hidden="true"><Icon strokeWidth={1.6} /></span>
-                  <span className="pt-tile-label">{label}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="pt-model">
-              <div className="pt-model-text">
-                <ul className="pt-chips" aria-label="How industry members participate">
-                  <li>Membership fees</li>
-                  <li>Project-based collaborations</li>
-                </ul>
-                <p className="hx-partners-note">Industry members, including pharmaceutical and life sciences companies, participate through membership fees and project-based collaborations, thereby accelerating translation while maintaining scientific independence and methodological transparency.</p>
-              </div>
-              <Link className="pt-cta" href="/contact">Contact the coordinating center <ArrowRight aria-hidden="true" /></Link>
+            <div className="pp-detail reveal">
+              <ul className="pp-points">
+                {partnerPoints.map(({ label, icon: Icon }) => (
+                  <li key={label}>
+                    <span className="bx-icon" aria-hidden="true"><Icon strokeWidth={1.6} /></span>
+                    <span className="pp-point-label">{label}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="pp-model">Clarion will establish a sustainable public–private partnership model by engaging industry members, including pharmaceutical and life sciences companies, who will participate through <strong>membership fees</strong> and <strong>project-based collaborations</strong>, thereby accelerating translation while maintaining scientific independence and methodological transparency.</p>
             </div>
           </div>
         </div>

@@ -18,10 +18,9 @@ export function SiteFooter() {
             <span>CLARION</span>
           </Link>
           <p className="footer-statement">
-            <span>A collaborative network supporting rigorous, privacy-preserving</span>{" "}
-            <span>real-world evidence generation in oncology.</span>
+            <span>A national, distributed infrastructure to advance high-quality</span>{" "}
+            <span>real-world evidence generation using artificial intelligence.</span>
           </p>
-          <p className="footer-coord"><span>Coordinating center</span> Yale University</p>
         </div>
         <nav className="footer-nav" aria-label="Footer navigation">
           {navLinks.map((link) => <Link key={link.href} href={link.href}>{link.label}</Link>)}
@@ -29,7 +28,7 @@ export function SiteFooter() {
         </nav>
         <div className="footer-meta">
           <span>© {new Date().getFullYear()} Clarion</span>
-          <span>Collaborative oncology research network</span>
+          <span>Clarion Network for AI-Driven Reproducible Real-World Evidence</span>
         </div>
       </div>
     </footer>

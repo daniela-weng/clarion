@@ -10,16 +10,16 @@ const sourceSerif = Source_Serif_4({subsets:['latin'],style:['normal','italic'],
 
 export const metadata: Metadata = {
   title: {
-    default: "Clarion | Real-world evidence generation in oncology",
+    default: "Clarion Network for AI-Driven Reproducible Real-World Evidence",
     template: "%s | Clarion",
   },
-  description: "A collaborative network supporting rigorous, privacy-preserving real-world evidence generation in oncology.",
+  description: "A national, distributed infrastructure to advance high-quality real-world evidence generation using artificial intelligence.",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     shortcut: "/favicon.svg",
   },
-  openGraph: { title: "Clarion", description: "Real-world evidence generation in oncology.", images: ["/og.png"] },
-  twitter: { card: "summary_large_image", title: "Clarion", description: "Real-world evidence generation in oncology.", images: ["/og.png"] },
+  openGraph: { title: "Clarion", description: "A national, distributed infrastructure to advance high-quality real-world evidence generation using artificial intelligence.", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "Clarion", description: "A national, distributed infrastructure to advance high-quality real-world evidence generation using artificial intelligence.", images: ["/og.png"] },
 };
 
 export const viewport: Viewport = {
