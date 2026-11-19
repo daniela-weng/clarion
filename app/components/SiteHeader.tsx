@@ -15,14 +15,15 @@ export function SiteHeader() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   useEffect(() => {
-    const updateHeader = () => setIsScrolled(window.scrollY > 12);
+    // Hysteresis: turn on past 24px, off only under 4px, so the state cannot flicker at one edge.
+    const updateHeader = () => setIsScrolled((was) => (was ? window.scrollY > 4 : window.scrollY > 24));
     updateHeader();
     window.addEventListener("scroll", updateHeader, { passive: true });
     return () => window.removeEventListener("scroll", updateHeader);
   }, []);
 
   return (
-    <header className="site-header" data-scrolled={isScrolled} data-theme={pathname === "/" ? "dark" : undefined}>
+    <header className="site-header" data-scrolled={isScrolled} data-theme="dark">
       <div className="site-header-inner">
         <Link className="wordmark" href="/" aria-label="Clarion home">
           <Image

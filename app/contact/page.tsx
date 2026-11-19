@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Mail } from "lucide-react";
+import { PageHero } from "../components/PageHero";
 import { RevealController } from "../components/RevealController";
 
 export const metadata: Metadata = {
@@ -10,15 +11,12 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <main id="main-content" className="content-page contact-route">
-      <section className="page-hero">
-        <div className="contact-hero-field" aria-hidden="true" />
-        <p className="section-label">Contact</p>
-        <h1>Clarion coordinating team<span className="hero-accent">.</span></h1>
-        <p className="page-hero-copy">
-          For research collaboration inquiries, sponsored project discussions, or network information, contact
-          the coordinating team at Yale University.
-        </p>
-      </section>
+      <PageHero seed={71} tone="light" tileSize={1.8} rotation={12}
+        compact
+        lead="Clarion"
+        accent="coordinating team"
+        body="For research collaboration inquiries, sponsored project discussions, or network information, contact the coordinating team at Yale University."
+      />
 
       <section className="contact contact-page">
         <div className="contact-layout">

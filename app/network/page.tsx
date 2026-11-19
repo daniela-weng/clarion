@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Database, Handshake, Landmark, UserRound, Users } from "lucide-react";
 import { NetworkMap } from "../components/NetworkMap";
+import { PageHero } from "../components/PageHero";
 import { RevealController } from "../components/RevealController";
 
 export const metadata: Metadata = {
@@ -38,37 +39,21 @@ const memberships = [
 export default function NetworkPage() {
   return (
     <main id="main-content" className="network-page">
-      <section className="network-hero">
-        <div className="network-hero-gradient" aria-hidden="true" />
-        <div className="network-hero-mesh" aria-hidden="true" />
-        <div className="network-hero-glow" aria-hidden="true" />
-        <div className="network-hero-overlay" aria-hidden="true" />
-        <div className="network-hero-inner">
-          <div className="network-hero-copy">
-            <p className="section-label">The Clarion network</p>
-            <h1><span>Participating roles and</span><span>institutions<span className="hero-accent">.</span></span></h1>
-            <div className="network-hero-rule" />
-            <p>Clarion brings together academic institutions, research leaders, and funding partners within a coordinated network led by Yale University. Each participant operates under defined responsibilities for governance, project execution, and scientific collaboration.</p>
-          </div>
-          <aside className="network-hero-facts-panel" aria-label="Network at a glance">
-            <p>Network at a glance</p>
-            <dl className="network-hero-facts">
-              <div><dt>07</dt><dd>Academic institutions</dd></div>
-              <div><dt>04</dt><dd>Membership roles</dd></div>
-              <div><dt>01</dt><dd>Coordinating center</dd></div>
-            </dl>
-          </aside>
-        </div>
-      </section>
+      <PageHero seed={27} tone="light" tileSize={0.9} rotation={0}
+        lead="Participating roles and"
+        accent="institutions"
+        body="Clarion brings together academic institutions, research leaders, and funding partners within a coordinated network led by Yale University. Each participant operates under defined responsibilities for governance, project execution, and scientific collaboration."
+        stats={[{ value: "07", label: "Academic institutions" }, { value: "04", label: "Membership roles" }, { value: "01", label: "Coordinating center" }]}
+      />
 
-      <section className="network-section network-membership ui-section ui-section-standard">
+      <section id="membership" className="network-section network-membership ui-section ui-section-standard">
         <div className="network-section-intro ui-section-heading reveal"><p className="section-label">Membership</p><h2>How members participate.</h2><p>Four membership categories define how organizations contribute to, govern, and engage with the Network.</p></div>
         <div className="membership-cards">
           {memberships.map((member, i) => { const Icon = member.icon; return <article key={member.title} className="membership-card reveal"><span className="card-index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span><div className="membership-card-heading"><span className="membership-icon" aria-hidden="true"><Icon size={22} strokeWidth={1.7} /></span><div><h3>{member.title}</h3><p className="membership-label">{member.label}</p></div></div><p className="membership-description">{member.description}</p></article>; })}
         </div>
       </section>
 
-      <section className="network-institutions ui-section ui-section-standard">
+      <section id="institutions" className="network-institutions ui-section ui-section-standard">
         <div className="institution-heading ui-section-heading reveal">
           <div><p className="section-label">Academic membership · 7 institutions</p><h2>Participating academic institutions.</h2></div>
           <p>Seven academic institutions contribute local expertise and securely governed data, connected through a common research framework coordinated by Yale University.</p>
@@ -76,7 +61,7 @@ export default function NetworkPage() {
         <NetworkMap />
       </section>
 
-      <section className="roles-section network-roles network-leadership ui-section ui-section-standard">
+      <section id="leadership" className="roles-section network-roles network-leadership ui-section ui-section-standard">
         <div className="section-heading ui-section-heading reveal"><p className="section-label">Project leadership</p><h2>Principal Investigators.</h2></div>
         <article className="leadership-profile reveal">
           <div className="leadership-profile-heading"><span className="membership-icon" aria-hidden="true"><UserRound size={22} strokeWidth={1.7} /></span><div><p className="membership-label">Role in each study</p></div></div>

@@ -18,14 +18,16 @@ const features: Feature[] = [
   },
   {
     title: "Diverse Data Sources",
+    lead: "Multi-source, multi-site real-world data to enable comprehensive and generalizable evidence.",
     icon: Database,
     points: [
-      { term: "Structured Data", detail: "Standardized diagnostic codes, laboratory panels, and medications." },
-      { term: "Unstructured Data", detail: "Parses complex data modalities including clinical narratives, images, and genomics." },
+      { term: "Electronic Health Records (EHRs)", detail: "Longitudinal clinical data from academic medical centers, community hospitals, outpatient clinics, primary care, specialty care, and emergency departments." },
+      { term: "Administrative Claims and Large-Scale Healthcare Databases", detail: "Commercial claims datasets such as MarketScan and multi-institutional EHR databases such as Epic Cosmos." },
+      { term: "Diverse Healthcare Systems and Populations", detail: "Data from geographically distributed institutions serving urban, suburban, and rural communities, with variation in demographics, socioeconomic characteristics, disease burden, and healthcare delivery settings." },
     ],
   },
   {
-    title: "AI Models and Tools",
+    title: "Multimodal Data Extraction",
     lead: "Advanced AI-based extraction to unlock the “Dark Matter” of health records.",
     icon: BrainCircuit,
     points: [

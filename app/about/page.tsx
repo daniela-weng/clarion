@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageHero } from "../components/PageHero";
 import { RevealController } from "../components/RevealController";
 
 export const metadata: Metadata = {
@@ -9,21 +10,13 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main id="main-content" className="content-page about-page">
-      <section className="page-hero">
-        <div className="about-data-field" aria-hidden="true" />
-        <div className="about-hero-grid">
-          <div>
-            <p className="section-label">About Clarion</p>
-            <h1>A network for multi-institutional oncology research<span className="hero-accent">.</span></h1>
-          </div>
-          <p className="page-hero-copy">
-            Clarion is a Yale-coordinated network of academic institutions and healthcare systems using
-            structured and unstructured EHR data to advance real-world evidence generation in oncology.
-          </p>
-        </div>
-      </section>
+      <PageHero seed={11} tone="light" tileSize={1.8} rotation={0} longTitle
+        lead="A network for"
+        accent="multi-institutional oncology research"
+        body="Clarion is a Yale-coordinated network of academic institutions and healthcare systems using structured and unstructured EHR data to advance real-world evidence generation in oncology."
+      />
 
-      <section className="charter-section about-mission ui-section ui-section-split">
+      <section id="mission" className="charter-section about-mission ui-section ui-section-split">
         <div className="section-heading ui-section-heading">
           <p className="section-label">Mission</p>
           <h2>What the network is built to advance.</h2>
@@ -43,7 +36,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="charter-section about-values about-principles ui-section">
+      <section id="principles" className="charter-section about-values about-principles ui-section">
         <div className="about-principles-intro reveal">
           <div className="section-heading ui-section-heading">
             <p className="section-label">Core principles</p>
