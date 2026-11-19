@@ -5,7 +5,7 @@ import { HeroBackdrop } from "./components/HeroBackdrop";
 import { ContactCta, HeroCta } from "./components/HeroCta";
 import { CentersStrip } from "./components/CentersStrip";
 import { FeaturesBento } from "./components/FeaturesBento";
-import { NetworkMap, interestedSites } from "./components/NetworkMap";
+import { CentersSection } from "./components/CentersSection";
 import { RevealController } from "./components/RevealController";
 
 export const metadata: Metadata = {
@@ -74,23 +74,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="hx-section hx-centers" aria-labelledby="centers-title">
-        <div className="hx-shell mc-layout">
-          <div className="mc-side reveal">
-            <div className="hx-heading">
-              <h2 id="centers-title" tabIndex={-1}>Participating Medical Centers</h2>
-              <p>Expanding network with more centers joining.</p>
-            </div>
-            <ul className="mc-legend" aria-hidden="true">
-              <li><span className="mc-dot mc-dot-hub" /> Coordinating center</li>
-              <li><span className="mc-dot" /> Participating medical center</li>
-            </ul>
-          </div>
-          <div className="hx-map-panel mc-map reveal">
-            <NetworkMap sites={interestedSites} arcs />
-          </div>
-        </div>
-      </section>
+      <CentersSection />
 
       <section className="hx-section hx-light hx-partners-section" aria-labelledby="partners-title">
         <div className="hx-shell">

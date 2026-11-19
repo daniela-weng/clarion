@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail } from "lucide-react";
+
 import { PageHero } from "../components/PageHero";
 import { RevealController } from "../components/RevealController";
 
@@ -28,13 +28,11 @@ export default function ContactPage() {
           <div className="contact-directory reveal">
             <div className="contact-person">
               <article className="reveal">
-                <span className="contact-mark" aria-hidden="true"><Mail size={20} strokeWidth={1.7} /></span>
                 <strong>Vipina K. Keloth, PhD</strong>
                 <span className="contact-role">Associate Research Scientist</span>
                 <a href="mailto:vipina.kuttichikeloth@yale.edu">vipina.kuttichikeloth@yale.edu</a>
               </article>
               <article className="reveal">
-                <span className="contact-mark" aria-hidden="true"><Mail size={20} strokeWidth={1.7} /></span>
                 <strong>Hua Xu, PhD</strong>
                 <span className="contact-role">Robert T. McCluskey Professor</span>
                 <a href="mailto:hua.xu@yale.edu">hua.xu@yale.edu</a>

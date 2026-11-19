@@ -1,11 +1,59 @@
 import type { Metadata } from "next";
+import { Handshake, Layers, Network } from "lucide-react";
+import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 import { PageHero } from "../components/PageHero";
+import { PrinciplesPanel } from "../components/PrinciplesPanel";
 import { RevealController } from "../components/RevealController";
 
 export const metadata: Metadata = {
   title: "About",
   description: "Clarion's mission and core principles for multi-institutional, privacy-preserving oncology real-world evidence generation.",
 };
+
+const pillarIcons = [Network, Layers, Handshake];
+
+const pillars = [
+  {
+    title: "Centralized coordination",
+    body: "Consistent governance and analysis execution for every project across participating sites.",
+  },
+  {
+    title: "Standardization and interoperability",
+    body: "Shared data standards that enhance reproducibility and accelerate translational research.",
+  },
+  {
+    title: "Collaboration",
+    body: "Academic institutions, healthcare systems, researchers, and industry partners working together.",
+  },
+];
+
+const principles = [
+  {
+    title: "Collaboration",
+    definition: "Promote equitable participation across all member institutions.",
+    detail: "Members contribute local data stewardship, analytic execution, scientific interpretation, and publication review.",
+  },
+  {
+    title: "Transparency",
+    definition: "Maintain open governance, project review, and data use policies.",
+    detail: "Projects follow defined feasibility, committee approval, publication, and disclosure processes.",
+  },
+  {
+    title: "Compliance",
+    definition: "Adhere strictly to legal, ethical, and regulatory standards.",
+    detail: "Research follows IRB requirements, institutional policy, security safeguards, and approved data-use conditions.",
+  },
+  {
+    title: "Innovation",
+    definition: "Encourage advanced analytics, including AI methods for unstructured EHR data.",
+    detail: "Modular, network-distributed workflows are executed within each institution’s secure environment.",
+  },
+  {
+    title: "Impact",
+    definition: "Focus on clinically relevant, real-world insights that improve cancer care.",
+    detail: "Approved outputs support treatment decisions, scientific publications, reports, and regulatory briefs.",
+  },
+];
 
 export default function AboutPage() {
   return (
@@ -16,70 +64,39 @@ export default function AboutPage() {
         body="Clarion is a Yale-coordinated network of academic institutions and healthcare systems using structured and unstructured EHR data to advance real-world evidence generation in oncology."
       />
 
-      <section id="mission" className="charter-section about-mission ui-section ui-section-split">
-        <div className="section-heading ui-section-heading">
-          <p className="section-label">Mission</p>
-          <h2>What the network is built to advance.</h2>
-        </div>
-        <div className="about-prose mission-body reveal">
-          <p className="mission-statement">
-            Clarion facilitates high-quality, multi-institutional cancer research through the integration of
-            structured and unstructured EHR data. The network generates real-world evidence to improve
-            clinical outcomes, inform treatment decisions, and advance cancer science.
-          </p>
-          <p className="mission-detail">
-            The network provides centralized coordination for projects, enabling consistent governance and
-            analysis execution across participating sites. It promotes data standardization and
-            interoperability to enhance reproducibility and accelerate translational research, and it fosters
-            collaboration among academic institutions, healthcare systems, researchers, and industry partners.
-          </p>
+      <section id="mission" className="ab-mission mv-b" aria-labelledby="mission-title">
+        <div className="ab-shell">
+          <div className="mv-cols">
+          <div className="mv-left">
+          <p className="ab-eyebrow reveal">Mission</p>
+          <h2 id="mission-title" className="mv-b-statement reveal">
+            Clarion facilitates high-quality, multi-institutional cancer research through the integration of{" "}
+            <em>structured and unstructured EHR data</em>. The network generates <em>real{"\u2011"}world evidence</em> to
+            improve clinical outcomes, inform treatment decisions, and advance cancer science.
+          </h2>
+          </div>
+          <div className="mv-stack">
+            <ScrollStack useWindowScroll smoothScroll={false} stackPosition="18%" itemDistance={64}
+              itemStackDistance={28} itemScale={0.04} baseScale={0.88} dimAmount={0.25} holdDistance={120} onStackComplete={undefined}>
+              {pillars.map((pillar, i) => {
+                const Icon = pillarIcons[i];
+                return (
+                <ScrollStackItem key={pillar.title} itemClassName="mv-card" style={undefined}>
+                  <span className="mv-card-icon" aria-hidden="true"><Icon strokeWidth={1.25} /></span>
+                  <div className="mv-card-body">
+                    <h3>{pillar.title}</h3>
+                    <p>{pillar.body}</p>
+                  </div>
+                </ScrollStackItem>
+                );
+              })}
+            </ScrollStack>
+          </div>
+          </div>
         </div>
       </section>
 
-      <section id="principles" className="charter-section about-values about-principles ui-section">
-        <div className="about-principles-intro reveal">
-          <div className="section-heading ui-section-heading">
-            <p className="section-label">Core principles</p>
-            <h2>Five commitments that guide the network.</h2>
-          </div>
-          <p>
-            The charter establishes a shared standard for how Clarion&apos;s members govern research, protect
-            institutional responsibilities, and pursue clinically meaningful real-world evidence.
-          </p>
-        </div>
-        <div className="principles-rail reveal">
-          <article>
-            <span className="principle-number">01</span>
-            <h3>Collaboration</h3>
-            <p className="principle-definition">Promote equitable participation across all member institutions.</p>
-            <p>Members contribute local data stewardship, analytic execution, scientific interpretation, and publication review.</p>
-          </article>
-          <article>
-            <span className="principle-number">02</span>
-            <h3>Transparency</h3>
-            <p className="principle-definition">Maintain open governance, project review, and data use policies.</p>
-            <p>Projects follow defined feasibility, committee approval, publication, and disclosure processes.</p>
-          </article>
-          <article>
-            <span className="principle-number">03</span>
-            <h3>Compliance</h3>
-            <p className="principle-definition">Adhere strictly to legal, ethical, and regulatory standards.</p>
-            <p>Research follows IRB requirements, institutional policy, security safeguards, and approved data-use conditions.</p>
-          </article>
-          <article>
-            <span className="principle-number">04</span>
-            <h3>Innovation</h3>
-            <p className="principle-definition">Encourage advanced analytics, including AI methods for unstructured EHR data.</p>
-            <p>Modular, network-distributed workflows are executed within each institution&apos;s secure environment.</p>
-          </article>
-          <article>
-            <span className="principle-number">05</span>
-            <h3>Impact</h3>
-            <p className="principle-definition">Focus on clinically relevant, real-world insights that improve cancer care.</p>
-            <p>Approved outputs support treatment decisions, scientific publications, reports, and regulatory briefs.</p>
-          </article>
-        </div>
-      </section>
+      <PrinciplesPanel principles={principles} />
 
       <RevealController />
     </main>
